@@ -1,6 +1,6 @@
 module.exports = {
   // Find the appropriate database to connect to, default to localhost if not found.
-  db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://tymoteuszb:ScrapSwapMongo2016@ds015710.mlab.com:15710/io-scrapswap',
+  db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://scrapswap:scrapswap@ds015710.mlab.com:15710/io-scrapswap',
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
   google: {
     clientID: process.env.GOOGLE_CLIENTID || '62351010161-eqcnoa340ki5ekb9gvids4ksgqt9hf48.apps.googleusercontent.com',
