@@ -1,8 +1,8 @@
 {
-  "name": "react-webpack-node",
-  "version": "1.5.2",
-  "description": "A simple Node.js app using Express 4 with Webpack, React, alt, ImmutableJS",
-  "repository": "https://github.com/choonkending/react-webpack-node",
+  "name": "io-scrapswap",
+  "version": "0.0.0",
+  "description": "IO2 2016 laboratory project",
+  "repository": "https://github.com/tymoteuszb/io-scrapswap",
   "main": "index.js",
   "scripts": {
     "lint": "eslint app",
