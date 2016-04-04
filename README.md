@@ -2,4 +2,5 @@
 
 ScrapSwap for IO2'16
 
-Based on https://github.com/choonkending/react-webpack-node
+Live preview: https://io-scrapswap.herokuapp.com/
+Based on: https://github.com/choonkending/react-webpack-node
