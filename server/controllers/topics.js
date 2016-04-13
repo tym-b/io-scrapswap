@@ -24,8 +24,9 @@ exports.add = function(req, res) {
     if (err) {
       console.log(err);
       res.status(400).send(err);
+    } else {
+      res.status(200).send('OK');
     }
-    res.status(200).send('OK');
   });
 };
 

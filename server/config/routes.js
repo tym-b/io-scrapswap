@@ -2,6 +2,7 @@
  * Routes for express app
  */
 var topics = require('../controllers/topics');
+var adverts = require('../controllers/adverts');
 var express = require('express');
 var users = require('../controllers/users');
 var mongoose = require('mongoose');
@@ -39,18 +40,16 @@ module.exports = function(app, passport) {
 
   // topic routes
   app.get('/topic', topics.all);
+  app.post('/topic/:id', topics.add);
+  app.put('/topic/:id', topics.update);
+  app.delete('/topic/:id', topics.remove);
 
-  app.post('/topic/:id', function(req, res) {
-    topics.add(req, res);
-  });
-
-  app.put('/topic/:id', function(req, res) {
-    topics.update(req, res);
-  });
-
-  app.delete('/topic/:id', function(req, res) {
-    topics.remove(req, res);
-  });
+  //advert routes
+  app.get('/advert', adverts.all);
+  app.get('/advert/:id', adverts.one);
+  app.post('/advert', adverts.add);
+  app.put('/advert/:id', adverts.update);
+  app.delete('/advert/:id', adverts.remove);
 
   // This is where the magic happens. We take the locals data we have already
   // fetched and seed our stores with data.
