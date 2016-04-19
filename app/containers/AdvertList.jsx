@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import AdvertList from 'components/AdvertList';
+
 class AdvertListContainer extends Component {
   constructor(props) {
     super(props);
