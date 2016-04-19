@@ -4,7 +4,6 @@ import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
 import { manualLogin, signUp, toggleLoginMode } from 'actions/users';
 import styles from 'css/components/login';
-import hourGlassSvg from 'images/hourglass.svg';
 
 const cx = classNames.bind(styles);
 

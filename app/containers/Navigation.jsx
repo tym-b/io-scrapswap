@@ -6,23 +6,15 @@ import { logOut } from 'actions/users';
 import classNames from 'classnames/bind';
 import styles from 'css/components/navigation';
 
+import AppBar from 'material-ui/lib/app-bar';
+import IconButton from 'material-ui/lib/icon-button';
+import SwapIcon from 'material-ui/lib/svg-icons/action/cached';
+
 const cx = classNames.bind(styles);
 
 const Navigation = ({user, dispatch}) => {
     return (
-      <nav className={cx('navigation')} role="navigation">
-        <Link to="/"
-          className={cx('item', 'logo')}
-          activeClassName={cx('active')}>Ninja Ocean</Link>
-          { user.authenticated ? (
-            <Link onClick={()=> dispatch(logOut())}
-              className={cx('item')} to="/">Logout</Link>
-          ) : (
-            <Link className={cx('item')} to="/login">Log in</Link>
-          )}
-          <Link className={cx('item')} to="/dashboard">Dashboard</Link>
-          <Link to="/about" className={cx('item')} activeClassName={cx('active')}>About</Link>
-      </nav>
+      <AppBar title="ScrapSwap" iconElementLeft={<IconButton><SwapIcon /></IconButton>} />
     );
 };
 
