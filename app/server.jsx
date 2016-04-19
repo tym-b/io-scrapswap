@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { RouterContext, match, createMemoryHistory } from 'react-router'
 import axios from 'axios';
 import { Provider } from 'react-redux';
@@ -106,7 +106,7 @@ export default function render(req, res) {
       //This method waits for all render component promises to resolve before returning to browser
       fetchComponentDataBeforeRender(store.dispatch, renderProps.components, renderProps.params)
       .then(html => {
-        const componentHTML = renderToString(InitialView);
+        const componentHTML = renderToStaticMarkup(InitialView);
         const initialState = store.getState();
         res.status(200).end(renderFullPage(componentHTML, initialState, {
           title: headconfig.title,

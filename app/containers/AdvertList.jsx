@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 
 import AdvertList from 'components/AdvertList';
 
+import { fetchAdverts } from 'actions/adverts';
+
 class AdvertListContainer extends Component {
+
+  static need = [
+    fetchAdverts
+  ]
+
   constructor(props) {
     super(props);
   }

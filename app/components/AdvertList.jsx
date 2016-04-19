@@ -7,12 +7,19 @@ const cx = classNames.bind(styles);
 export default class AdvertList extends Component {
   constructor(props) {
     super(props);
+    this.renderAdvertList = this.renderAdvertList.bind(this);
+  }
+
+  renderAdvertList() {
+    return this.props.adverts.map((advert, key) => {
+      return (<li key={key}>{advert.title}</li>);
+    });
   }
 
   render() {
     return (
       <ul>
-        <li>aaa</li>
+        {this.renderAdvertList()}
       </ul>
     );
   }
