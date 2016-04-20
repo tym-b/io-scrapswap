@@ -39,7 +39,6 @@ if (isDev) {
   app.use(require('webpack-hot-middleware')(compiler));
 }
 
-
 // Bootstrap passport config
 require('./config/passport')(app, passport);
 

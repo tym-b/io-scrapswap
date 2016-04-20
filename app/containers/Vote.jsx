@@ -8,6 +8,7 @@ import {
   createTopic, typing, incrementCount,
   decrementCount, destroyTopic, fetchTopics } from 'actions/topics';
 import styles from 'css/components/vote';
+import { fetchAdverts } from 'actions/adverts';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +17,7 @@ class Vote extends Component {
   //Data that needs to be called before rendering the component
   //This is used for server side rending via the fetchComponentDataBeforeRender() method
   static need = [
+    fetchAdverts,
     fetchTopics
   ]
 

@@ -23,7 +23,7 @@ axios.defaults.baseURL = `http://${clientConfig.host}:${clientConfig.port}`;
  * @param head - optional arguments to be placed into the head
  */
 function renderFullPage(renderedContent, initialState, head={
-  title: 'React Webpack Node',
+  title: 'ScrapSwap',
   meta: '<meta name="viewport" content="width=device-width, initial-scale=1" />',
   link: '<link rel="stylesheet" href="/assets/styles/main.css"/>'
 }) {
@@ -96,13 +96,11 @@ export default function render(req, res) {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-
       const InitialView = (
         <Provider store={store}>
             <RouterContext {...renderProps} />
         </Provider>
       );
-
       //This method waits for all render component promises to resolve before returning to browser
       fetchComponentDataBeforeRender(store.dispatch, renderProps.components, renderProps.params)
       .then(html => {

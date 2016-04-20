@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 
 import App from 'containers/App';
 import AdvertListContainer from 'containers/AdvertList';
+import LoginOrRegister from 'containers/LoginOrRegister';
 
 /*
  * @param {Redux Store}
@@ -33,6 +34,7 @@ export default (store) => {
   return (
     <Route path="/" component={App}>
       <IndexRoute component={AdvertListContainer} />
+      <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
     </Route>
   );
 };

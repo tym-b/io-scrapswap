@@ -8,13 +8,13 @@ import styles from 'css/components/navigation';
 
 import AppBar from 'material-ui/lib/app-bar';
 import IconButton from 'material-ui/lib/icon-button';
-import SwapIcon from 'material-ui/lib/svg-icons/action/cached';
+import AccountIcon from 'material-ui/lib/svg-icons/action/account-circle';
 
 const cx = classNames.bind(styles);
 
 const Navigation = ({user, dispatch}) => {
     return (
-      <AppBar title="ScrapSwap" iconElementLeft={<IconButton><SwapIcon /></IconButton>} />
+      <AppBar title="ScrapSwap" showMenuIconButton={false} iconElementRight={<IconButton to="/login"><AccountIcon /></IconButton>} />
     );
 };
 

@@ -2,7 +2,7 @@ import {
   GET_ADVERTS_REQUEST,
   GET_ADVERTS_SUCCESS,
   GET_ADVERTS_FAILURE
-} from 'constants';
+} from 'constants/index';
 
 export default function advert(state = {
   adverts: []
@@ -21,6 +21,7 @@ export default function advert(state = {
       return Object.assign({}, state, {
         isFetching: false
       });
+
     default:
       return state;
   }

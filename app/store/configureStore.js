@@ -1,9 +1,10 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
 import promiseMiddleware from 'api/promiseMiddleware';
 import createLogger from 'redux-logger';
+import devTools from 'remote-redux-devtools';
 
 /*
  * @param {Object} initial state to bootstrap our stores with for server-side rendering
@@ -16,13 +17,15 @@ export default function configureStore(initialState, history) {
   // Installs hooks that always keep react-router and redux
   // store in sync
   const reactRouterReduxMiddleware = routerMiddleware(history);
+  let finalCreateStore;
+
   if (__DEVCLIENT__) {
     middleware.push(reactRouterReduxMiddleware, createLogger());
+    finalCreateStore = compose(applyMiddleware(...middleware), devTools())(createStore);
   } else {
     middleware.push(reactRouterReduxMiddleware);
+    finalCreateStore = applyMiddleware(...middleware)(createStore);
   }
-
-  const finalCreateStore = applyMiddleware(...middleware)(createStore);
 
   const store = finalCreateStore(rootReducer, initialState);
 
