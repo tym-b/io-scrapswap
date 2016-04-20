@@ -18,5 +18,4 @@ export default class AppHeader extends Component {
 }
 
 AppHeader.propTypes = {
-  logged: PropTypes.bool.isRequired
 };
