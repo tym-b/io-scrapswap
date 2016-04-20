@@ -14,7 +14,8 @@
     "build": "npm run clean && npm run build:prod",
     "test": "cross-env NODE_ENV=test karma start",
     "test:watch": "cross-env NODE_ENV=test npm test -- --watch --no-single-run",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+	"doc": "node node_modules/apidoc/bin/apidoc -i server/ -o apidoc/"
   },
   "author": "Choon Ken Ding",
   "license": "MIT",
@@ -41,6 +42,7 @@
     "node": "5.x"
   },
   "dependencies": {
+    "apidoc": "^0.15.1",
     "autoprefixer": "^6.3.3",
     "axios": "^0.9.1",
     "babel": "^6.5.2",
@@ -110,5 +112,10 @@
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.5.1",
     "webpack-hot-middleware": "^2.10.0"
+  },
+  "apidoc": {
+    "name": "ScrapSwap Doc",
+    "title": "ScrapSwap Doc",
+    "url": "https://io-scrapswap.herokuapp.com/"
   }
 }
