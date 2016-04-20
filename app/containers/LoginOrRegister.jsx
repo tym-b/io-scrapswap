@@ -95,7 +95,6 @@ class LoginOrRegister extends Component {
       })}>
         <div className={cx('container')}>
           { this.renderHeader() }
-          <img className={cx('loading')} src={hourGlassSvg} />
           <div className={cx('email-container')}>
             <input className={cx('input')}
               type="email"
