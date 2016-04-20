@@ -45,11 +45,11 @@ module.exports = function(app, passport) {
   app.delete('/topic/:id', topics.remove);
 
   //advert routes
-  app.get('/advert', adverts.all);
-  app.get('/advert/:id', adverts.one);
-  app.post('/advert', adverts.add);
-  app.put('/advert/:id', adverts.update);
-  app.delete('/advert/:id', adverts.remove);
+  app.get('/api/advert', adverts.all);
+  app.get('/api/advert/:id', adverts.one);
+  app.post('/api/advert', adverts.add);
+  app.put('/api/advert/:id', adverts.update);
+  app.delete('/api/advert/:id', adverts.remove);
 
   // This is where the magic happens. We take the locals data we have already
   // fetched and seed our stores with data.
