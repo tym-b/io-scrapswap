@@ -4,7 +4,10 @@ import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
 import promiseMiddleware from 'api/promiseMiddleware';
 import createLogger from 'redux-logger';
-import devTools from 'remote-redux-devtools';
+
+if (__DEVCLIENT__) {
+  import devTools from 'remote-redux-devtools';
+}
 
 /*
  * @param {Object} initial state to bootstrap our stores with for server-side rendering
