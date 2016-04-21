@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
@@ -16,6 +16,7 @@ export default function configureStore(initialState, history) {
   // Installs hooks that always keep react-router and redux
   // store in sync
   const reactRouterReduxMiddleware = routerMiddleware(history);
+
   if (__DEVCLIENT__) {
     middleware.push(reactRouterReduxMiddleware, createLogger());
   } else {

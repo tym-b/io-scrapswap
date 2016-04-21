@@ -22,7 +22,6 @@
   font-family: montserrat;
   font-size: 16px;
   font-weight: 400;
-
   line-height: 24px;
 }
 
@@ -32,4 +31,11 @@
   font-weight: 400;
 
   line-height: 24px;
+}
+
+a {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
 }

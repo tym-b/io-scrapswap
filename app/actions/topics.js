@@ -129,6 +129,13 @@ export function fetchTopics() {
   };
 }
 
+// Fetch posts logic
+export function fetchTopics2() {
+  return {
+    type: types.GET_TOPICS,
+    promise: makeTopicRequest('get')
+  };
+}
 
 export function incrementCount(id, index) {
   return dispatch => {

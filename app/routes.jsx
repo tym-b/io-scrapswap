@@ -2,10 +2,8 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
 import App from 'containers/App';
-import Vote from 'containers/Vote';
-import About from 'containers/About';
+import AdvertListContainer from 'containers/AdvertList';
 import LoginOrRegister from 'containers/LoginOrRegister';
-import Dashboard from 'containers/Dashboard';
 
 /*
  * @param {Redux Store}
@@ -35,10 +33,8 @@ export default (store) => {
   };
   return (
     <Route path="/" component={App}>
-      <IndexRoute component={Vote} />
+      <IndexRoute component={AdvertListContainer} />
       <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
-      <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
-      <Route path="about" component={About} />
     </Route>
   );
 };
