@@ -14,6 +14,7 @@ const muiTheme = getMuiTheme({
     primary1Color: colors.green500,
     primary2Color: colors.green700,
     primary3Color: colors.green100,
+    textColor: colors.fullWhite
   },
 }, {
   avatar: {
