@@ -8,8 +8,10 @@ import styles from 'css/components/navigation';
 import AppHeader from '../components/AppHeader'
 
 const Navigation = ({user, dispatch}) => {
+	let logout = () => dispatch(logOut());
+
     return (
-      <AppHeader user={user} />
+      <AppHeader user={user} onLogoutClick={logout} />
     );
 };
 

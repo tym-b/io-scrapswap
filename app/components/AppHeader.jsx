@@ -10,12 +10,21 @@ export default class AppHeader extends Component {
     super(props);
   }
 
+  renderAccountInfo() {
+    if (this.props.user.authenticated) {
+      return (
+        <Link to="/" onClick={this.props.onLogoutClick}><IconButton><AccountIcon /></IconButton> wyloguj</Link>
+      );
+    }
+
+    return (
+      <Link to="/login"><IconButton><AccountIcon /></IconButton> zaloguj</Link>
+    );
+  }
+
   render() {
     return (
-      <AppBar title={<Link to="/">ScrapSwap</Link>} showMenuIconButton={false} iconElementRight={<Link to="/login"><IconButton><AccountIcon /></IconButton></Link>} />
+      <AppBar title={<Link to="/">ScrapSwap</Link>} showMenuIconButton={false} iconElementRight={this.renderAccountInfo()} />
     );
   }
 }
-
-AppHeader.propTypes = {
-};
