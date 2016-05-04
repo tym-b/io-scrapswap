@@ -13,6 +13,7 @@
 import favicon from 'images/favicon.png';
 
 const config = {
+  title: 'ScrapSwap',
   link: [
     { rel: 'icon', href: favicon },
     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:400,300,500', type: 'text/css'},
