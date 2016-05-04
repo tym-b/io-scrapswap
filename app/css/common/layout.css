@@ -1,8 +1,0 @@
-@value color-mercury from './colors.css';
-
-.box {
-}
-
-.flexNotMoreThan200 {
-  flex: 0 1 200px;
-}

@@ -1,11 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames/bind';
 import { connect } from 'react-redux';
 import { manualLogin, signUp, toggleLoginMode } from 'actions/users';
-import styles from 'css/components/login';
-
-const cx = classNames.bind(styles);
 
 class LoginOrRegister extends Component {
   /*
@@ -48,11 +44,11 @@ class LoginOrRegister extends Component {
     const { isLogin } = this.props.user;
     if (isLogin) {
       return (
-        <div className={cx('header')}>
-          <h1 className={cx('heading')}>Login with Email</h1>
-          <div className={cx('alternative')}>
+        <div>
+          <h1>Login with Email</h1>
+          <div>
             Not what you want?
-            <a className={cx('alternative-link')}
+            <a
               onClick={this.toggleMode}> Register an Account</a>
           </div>
         </div>
@@ -60,12 +56,11 @@ class LoginOrRegister extends Component {
     }
 
     return (
-      <div className={cx('header')}>
-      <h1 className={cx('heading')}>Register with Email</h1>
-        <div className={cx('alternative')}>
+      <div>
+      <h1>Register with Email</h1>
+        <div>
           Already have an account?
-          <a className={cx('alternative-link')}
-            onClick={this.toggleMode}> Login</a>
+          <a onClick={this.toggleMode}> Login</a>
         </div>
       </div>
     );
@@ -75,14 +70,12 @@ class LoginOrRegister extends Component {
     const { isLogin } = this.props.user;
     if (isLogin) {
       return (
-        <button className={cx('button')}
-          onClick={this.onLoginSubmit}>Login</button>
+        <button onClick={this.onLoginSubmit}>Login</button>
       );
     }
 
     return (
-      <button className={cx('button')}
-        onClick={this.onRegisterSubmit}>Register</button>
+      <button onClick={this.onRegisterSubmit}>Register</button>
     );
   }
 
@@ -90,33 +83,26 @@ class LoginOrRegister extends Component {
     const { isWaiting, message } = this.props.user;
 
     return (
-      <div className={cx('login', {
-        'waiting': isWaiting
-      })}>
-        <div className={cx('container')}>
+      <div>
+        <div>
           { this.renderHeader() }
-          <div className={cx('email-container')}>
-            <input className={cx('input')}
-              type="email"
+          <div>
+            <input type="email"
               ref="email"
               placeholder="email" />
-            <input className={cx('input')}
-              type="password"
+            <input type="password"
               ref="password"
               placeholder="password" />
-            <div className={cx('hint')}>
+            <div>
               <div>Hint</div>
               <div>email: example@ninja.com password: ninja</div>
             </div>
-            <p className={cx('message', {
-              'message-show': message && message.length > 0
-              })}>{message}</p>
+            <p>{message}</p>
             { this.renderButton() }
           </div>
-          <div className={cx('google-container')}>
-            <h1 className={cx('heading')}>Google Login Demo</h1>
-            <a className={cx('button')}
-          href="/auth/google">Login with Google</a>
+          <div>
+            <h1>Google Login Demo</h1>
+            <a href="/auth/google">Login with Google</a>
           </div>
         </div>
       </div>

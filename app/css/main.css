@@ -6,10 +6,3 @@ body {
   margin: 0;
   padding: 0;
 }
-
-.app {
-  composes: box from './common/layout.css';
-  font-family: 'Roboto', sans-serif;
-  font-weight: normal;
-  font-smoothing: antialiased;
-}

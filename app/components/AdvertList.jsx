@@ -1,8 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames/bind';
-import styles from 'css/components/topic-item';
-
-const cx = classNames.bind(styles);
 
 export default class AdvertList extends Component {
   constructor(props) {
