@@ -8,6 +8,8 @@ import AppBar from 'material-ui/lib/app-bar';
 import IconButton from 'material-ui/lib/icon-button';
 import AccountIcon from 'material-ui/lib/svg-icons/action/account-circle';
 
+import { toggleLogin } from 'actions/layout';
+
 const cx = classNames.bind(styles);
 
 export default class AppHeader extends Component {
@@ -30,13 +32,11 @@ export default class AppHeader extends Component {
     }
 
     return (
-      <Link to="/login">
-        <div className={cx('account-container')}>
-          <IconButton className={cx('account-button')} tooltip="Logowanie">
-            <AccountIcon />
-          </IconButton>
-        </div>
-      </Link>
+      <div className={cx('account-container')} onClick={this.props.onLoginClick}>
+        <IconButton className={cx('account-button')} tooltip="Logowanie" tooltipPosition="bottom-left">
+          <AccountIcon />
+        </IconButton>
+      </div>
     );
   }
 

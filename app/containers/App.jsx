@@ -7,6 +7,8 @@ import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
 import themeDecorator from 'material-ui/lib/styles/theme-decorator';
 import colors from 'material-ui/lib/styles/colors';
 
+import LoginOrRegister from 'containers/LoginOrRegister';
+
 const cx = classNames.bind(styles);
 
 const muiTheme = getMuiTheme({
@@ -35,6 +37,7 @@ const App = ({children}) => {
   return (
     <div>
       <Navigation />
+      <LoginOrRegister />
         {children}
     </div>
   );

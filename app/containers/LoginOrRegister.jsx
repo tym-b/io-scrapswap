@@ -3,17 +3,16 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { manualLogin, signUp, toggleLoginMode } from 'actions/users';
 
+import LoginDialog from 'components/LoginDialog';
+import { toggleLogin } from 'actions/layout';
+
 class LoginOrRegister extends Component {
-  /*
-   * This replaces getInitialState. Likewise getDefaultProps and propTypes are just
-   * properties on the constructor
-   * Read more here: https://facebook.github.io/react/blog/2015/01/27/react-v0.13.0-beta-1.html#es6-classes
-   */
   constructor(props) {
     super(props);
     this.toggleMode = this.toggleMode.bind(this);
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
+    this.closeLoginDialog = this.closeLoginDialog.bind(this);
   }
 
   toggleMode() {
@@ -79,11 +78,16 @@ class LoginOrRegister extends Component {
     );
   }
 
+  closeLoginDialog() {
+    this.props.dispatch(toggleLogin(false));
+  }
+
   render() {
     const { isWaiting, message } = this.props.user;
 
     return (
       <div>
+        <LoginDialog open={this.props.layout.loginOpen} handleClose={this.closeLoginDialog} />
         <div>
           { this.renderHeader() }
           <div>
@@ -112,19 +116,14 @@ class LoginOrRegister extends Component {
 
 LoginOrRegister.propTypes = {
   user: PropTypes.object,
+  layout: PropTypes.object,
   dispatch: PropTypes.func
 };
 
-// Function passed in to `connect` to subscribe to Redux store updates.
-// Any time it updates, mapStateToProps is called.
-function mapStateToProps(state) {
+export default connect((state) => {
   return {
-    user: state.user
+    user: state.user,
+    layout: state.layout
   };
-}
-
-// Connects React component to the redux store
-// It does not modify the component class passed to it
-// Instead, it returns a new, connected component class, for you to use.
-export default connect(mapStateToProps)(LoginOrRegister);
+})(LoginOrRegister);
 
