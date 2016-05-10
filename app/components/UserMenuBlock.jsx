@@ -16,7 +16,7 @@ export default class UserMenuBlock extends Component {
   render() {
     return (
       <div className={cx('account-container')}>
-        <span className={cx('account-name')}>{this.props.user.name}</span>
+        <span className={cx('account-name')}>{this.props.profile.name}</span>
         <IconButton className={cx('account-button')}>
           <AccountIcon />
         </IconButton>
@@ -26,5 +26,5 @@ export default class UserMenuBlock extends Component {
 }
 
 UserMenuBlock.propTypes = {
-  user: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired
 };

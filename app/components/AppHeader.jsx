@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import { toggleLogin } from 'actions/layout';
 import UserMenuBlock from 'components/UserMenuBlock'
@@ -14,9 +15,15 @@ export default class AppHeader extends Component {
   }
 
   renderAccountInfo() {
+    if (this.props.user.pending) {
+      return (
+        <CircularProgress size={0.5} />
+      );
+    }
+
     if (this.props.user.authenticated) {
       return (
-        <UserMenuBlock user={this.props.user} />
+        <UserMenuBlock profile={this.props.user.profile} />
       );
     }
 

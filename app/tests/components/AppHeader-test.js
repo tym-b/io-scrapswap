@@ -4,6 +4,7 @@ import expect from 'expect';
 import { wrap } from 'react-stateless-wrapper';
 import AppHeader from 'components/AppHeader';
 import AppBar from 'material-ui/AppBar';
+import UserMenuBlock from 'components/UserMenuBlock';
 import _ from 'lodash';
 
 import scrapswapMuiThemeProvider from '../../scrapswapMuiThemeProvider';
@@ -27,6 +28,10 @@ describe('AppHeader', () => {
 
     it('should render AppBar component', () => {
       ReactTestUtils.findRenderedComponentWithType(result, AppBar);
+    });
+
+    it('should render UserMenuBlock component', () => {
+      ReactTestUtils.findRenderedComponentWithType(result, UserMenuBlock);
     });
   });
 });

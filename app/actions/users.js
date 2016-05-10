@@ -30,10 +30,10 @@ function beginLogin() {
   return { type: types.MANUAL_LOGIN_USER };
 }
 
-function loginSuccess(message) {
+function loginSuccess(userData) {
   return {
     type: types.LOGIN_SUCCESS_USER,
-    message: message
+    userData: userData
   };
 }
 
@@ -87,7 +87,7 @@ export function manualLogin(data) {
     return makeUserRequest('post', data, '/login')
       .then(response => {
         if (response.status === 200) {
-          dispatch(loginSuccess(response.data.message));
+          dispatch(loginSuccess(response.data));
           dispatch(push('/'));
         } else {
           dispatch(loginError('Oops! Something went wrong!'));

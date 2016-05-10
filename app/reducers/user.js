@@ -12,8 +12,7 @@ import {
 
 export default function user(state={
   isLogin: true,
-  message: '',
-  isWaiting: false,
+  pending: false,
   authenticated: false }, action={}) {
   switch (action.type) {
     case TOGGLE_LOGIN_MODE:
@@ -23,50 +22,50 @@ export default function user(state={
       });
     case MANUAL_LOGIN_USER:
       return Object.assign({}, state, {
-        isWaiting: true,
+        pending: true,
         message: ''
       });
     case LOGIN_SUCCESS_USER:
       return Object.assign({}, state, {
-        isWaiting: false,
+        pending: false,
         authenticated: true,
-        message: ''
+        ...action.userData
       });
     case LOGIN_ERROR_USER:
       return Object.assign({}, state, {
-        isWaiting: false,
+        pending: false,
         authenticated: false,
         message: action.message
       });
     case SIGNUP_USER:
       return Object.assign({}, state, {
-        isWaiting: true,
+        pending: true,
         message: ''
       });
     case SIGNUP_SUCCESS_USER:
       return Object.assign({}, state, {
-        isWaiting: false,
+        pending: false,
         authenticated: true
       });
     case SIGNUP_ERROR_USER:
       return Object.assign({}, state, {
-        isWaiting: false,
+        pending: false,
         authenticated: false,
         message: action.message
       });
     case LOGOUT_USER:
       return Object.assign({}, state, {
-        isWaiting: true,
+        pending: true,
         message: ''
       });
     case LOGOUT_SUCCESS_USER:
       return Object.assign({}, state, {
-        isWaiting: false,
+        pending: false,
         authenticated: false
       });
     case LOGOUT_ERROR_USER:
       return Object.assign({}, state, {
-        isWaiting: false,
+        pending: false,
         authenticated: true,
         isLogin: true
       });
