@@ -21,7 +21,7 @@ export default class AppHeader extends Component {
     if (this.props.user.authenticated) {
       return (
         <Link to="/">
-          <div className={cx('account-container')} onClick={this.props.onLogoutClick}>
+          <div className={cx('account-container')} onTouchTap={this.props.onLogoutClick}>
             <span className={cx('account-name')}>Jan Kowalski</span>
             <IconButton className={cx('account-button')}>
               <AccountIcon />
@@ -32,7 +32,7 @@ export default class AppHeader extends Component {
     }
 
     return (
-      <div className={cx('account-container')} onClick={this.props.onLoginClick}>
+      <div className={cx('account-container')} onTouchTap={this.props.onLoginClick}>
         <IconButton className={cx('account-button')} tooltip="Logowanie" tooltipPosition="bottom-left">
           <AccountIcon />
         </IconButton>
