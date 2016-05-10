@@ -1,16 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-import classNames from 'classnames/bind';
-import styles from 'css/components/AppHeader';
-
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 
 import { toggleLogin } from 'actions/layout';
-
-const cx = classNames.bind(styles);
+import UserMenuBlock from 'components/UserMenuBlock'
 
 export default class AppHeader extends Component {
   constructor(props) {
@@ -20,23 +16,14 @@ export default class AppHeader extends Component {
   renderAccountInfo() {
     if (this.props.user.authenticated) {
       return (
-        <Link to="/">
-          <div className={cx('account-container')} onTouchTap={this.props.onLogoutClick}>
-            <span className={cx('account-name')}>Jan Kowalski</span>
-            <IconButton className={cx('account-button')}>
-              <AccountIcon />
-            </IconButton>
-          </div>
-        </Link>
+        <UserMenuBlock user={this.props.user} />
       );
     }
 
     return (
-      <div className={cx('account-container')} onTouchTap={this.props.onLoginClick}>
-        <IconButton className={cx('account-button')} tooltip="Logowanie" tooltipPosition="bottom-left">
-          <AccountIcon />
-        </IconButton>
-      </div>
+      <IconButton tooltip="Logowanie" tooltipPosition="bottom-left" onTouchTap={this.props.onLoginClick}>
+        <AccountIcon />
+      </IconButton>
     );
   }
 
@@ -46,3 +33,7 @@ export default class AppHeader extends Component {
     );
   }
 }
+
+UserMenuBlock.propTypes = {
+  user: PropTypes.object
+};
