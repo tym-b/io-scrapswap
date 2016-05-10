@@ -1,24 +1,34 @@
 import React, { Component, PropTypes } from 'react';
 
-import Dialog from 'material-ui/lib/dialog';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class LoginDialog extends Component {
   constructor(props) {
     super(props);
+    this.closeLoginDialog = this.closeLoginDialog.bind(this);
   }
 
   closeLoginDialog() {
-    
+    this.props.handleClose();
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Zaloguj"
+        primary={true}
+        onTouchTap={this.closeLoginDialog} />
+    ];
+
     return (
       <Dialog
         title="Logowanie"
         modal={false}
+        actions={actions}
         open={this.props.open}
-        onRequestClose={() => console.log('aaa')}>
-          Bla bla bla
+        onRequestClose={this.closeLoginDialog}>
+        aaaa
       </Dialog>
     );
   }

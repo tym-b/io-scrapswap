@@ -4,9 +4,9 @@ import { Link } from 'react-router';
 import classNames from 'classnames/bind';
 import styles from 'css/components/AppHeader';
 
-import AppBar from 'material-ui/lib/app-bar';
-import IconButton from 'material-ui/lib/icon-button';
-import AccountIcon from 'material-ui/lib/svg-icons/action/account-circle';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 
 import { toggleLogin } from 'actions/layout';
 
@@ -42,7 +42,7 @@ export default class AppHeader extends Component {
 
   render() {
     return (
-      <AppBar title={<Link to="/">ScrapSwap</Link>} showMenuIconButton={false} iconElementRight={this.renderAccountInfo()} />
+      <AppBar title={<Link to="/">ScrapSwap</Link>} iconElementRight={this.renderAccountInfo()} />
     );
   }
 }
