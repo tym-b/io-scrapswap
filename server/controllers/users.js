@@ -16,14 +16,10 @@ exports.postLogin = function(req, res, next) {
     // logIn()) that can be used to establish a login session
     req.logIn(user, function(err) {
       if(err) return res.status(401).json({message: err});
-      return res.status(200).json(
-        {
-          message: 'You have been successfully logged in.'
-        });
+      return res.status(200).json(user);
     });
   })(req, res, next);
 };
-
 
 /**
  * POST /logout
@@ -52,10 +48,7 @@ exports.postSignUp = function(req, res, next) {
       if(err) return next(err);
       req.logIn(user, function(err) {
         if(err) return res.status(401).json({message: err});
-        return res.status(200).json(
-          {
-            message: 'You have been successfully logged in.'
-          });
+        return res.status(200).json(user);
       });
     });
   });
