@@ -7,6 +7,7 @@ import createRoutes from 'routes.jsx';
 import configureStore from 'store/configureStore';
 import headconfig from 'components/Meta';
 import { fetchComponentDataBeforeRender } from 'api/fetchComponentDataBeforeRender';
+import _ from 'lodash';
 
 import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -33,15 +34,22 @@ function renderFullPage(renderedContent, initialState, head={
   return `
   <!doctype html>
     <html lang="">
-
     <head>
-        ${head.title}
-
-        ${head.meta}
-
-        ${head.link}
+      ${head.title}
+      ${head.meta}
+      ${head.link}
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+        
+        a {
+          color: inherit;
+          text-decoration: inherit;
+        }
+      </style>
     </head>
-    <body>
+    <body style="margin: 0px; padding: 0px;">
     <div id="app">${renderedContent}</div>
     <script>
       window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
@@ -61,13 +69,13 @@ function renderFullPage(renderedContent, initialState, head={
 export default function render(req, res) {
     const history = createMemoryHistory();
     const authenticated = req.isAuthenticated();
+    let user = _.cloneDeep(req.user);
     const store = configureStore({
-      user: {
+      user: _.assign(user, {
         authenticated: authenticated,
         isWaiting: false,
-        message: '',
         isLogin: true
-      }
+      })
     }, history);
 
     const routes = createRoutes(store);

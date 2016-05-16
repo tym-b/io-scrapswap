@@ -1,12 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 
-import classNames from 'classnames/bind';
-import styles from 'css/components/UserMenuBlock';
-
 import IconButton from 'material-ui/IconButton';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 
-const cx = classNames.bind(styles);
+const styles = {
+  accountContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+
+  accountName: {
+    color: '#fff',
+    fontSize: '16px',
+    display: 'flex'
+  },
+
+  accountIcon: {
+    display: 'flex'
+  }
+};
 
 export default class UserMenuBlock extends Component {
   constructor(props) {
@@ -15,9 +27,9 @@ export default class UserMenuBlock extends Component {
 
   render() {
     return (
-      <div className={cx('account-container')}>
-        <span className={cx('account-name')}>{this.props.profile.name}</span>
-        <IconButton className={cx('account-button')}>
+      <div style={styles.accountContainer}>
+        <span style={styles.accountName}>{this.props.profile.name}</span>
+        <IconButton style={styles.accountIcon}>
           <AccountIcon />
         </IconButton>
       </div>
