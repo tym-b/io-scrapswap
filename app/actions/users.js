@@ -22,24 +22,30 @@ export function login(data) {
   };
 }
 
+export function signUp(data) {
+  // return dispatch => {
+  //   return makeUserRequest('post', data, '/signup')
+  //     .then(response => {
+  //       if (response.status === 200) {
+  //         dispatch(signUpSuccess(response.data.message));
+  //         dispatch(push('/'));
+  //       } else {
+  //         dispatch(signUpError('Oops! Something went wrong'));
+  //       }
+  //     })
+  //     .catch(err => {
+  //       dispatch(signUpError(err.data.message));
+  //     });
+  // };
+  return {
+    type: types.SIGNUP,
+    promise: makeUserRequest('post', data, '/signup')
+  };
+}
 
 // Log In Action Creators
 function beginLogin() {
   return { type: types.MANUAL_LOGIN_USER };
-}
-
-function loginSuccess(userData) {
-  return {
-    type: types.LOGIN_SUCCESS_USER,
-    userData: userData
-  };
-}
-
-function loginError(message) {
-  return {
-    type: types.LOGIN_ERROR_USER,
-    message: message
-  };
 }
 
 // Sign Up Action Creators
@@ -93,25 +99,6 @@ export function manualLogin(data) {
       })
       .catch(err => {
         dispatch(loginError(err.data.message));
-      });
-  };
-}
-
-export function signUp(data) {
-  return dispatch => {
-    dispatch(beginSignUp());
-
-    return makeUserRequest('post', data, '/signup')
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(signUpSuccess(response.data.message));
-          dispatch(push('/'));
-        } else {
-          dispatch(signUpError('Oops! Something went wrong'));
-        }
-      })
-      .catch(err => {
-        dispatch(signUpError(err.data.message));
       });
   };
 }

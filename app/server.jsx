@@ -62,6 +62,7 @@ function renderFullPage(renderedContent, initialState, head={
  */
 export default function render(req, res) {
   const history = createMemoryHistory();
+
   const authState = Immutable.fromJS({
     user: {
       authenticated: req.isAuthenticated(),

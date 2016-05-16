@@ -71,7 +71,6 @@ class LoginDialog extends Component {
 
       <FlatButton
         label="Zamknij"
-        primary={true}
         onTouchTap={this.closeLoginDialog} />,
 
       <FlatButton
