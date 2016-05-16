@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { manualLogin, signUp, toggleLoginMode } from 'actions/users';
 
 import LoginDialog from 'components/LoginDialog';
-import { toggleLogin } from 'actions/layout';
+import RegisterDialog from 'components/RegisterDialog';
 
 class LoginOrRegister extends Component {
   constructor(props) {
@@ -12,7 +12,6 @@ class LoginOrRegister extends Component {
     this.toggleMode = this.toggleMode.bind(this);
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this);
-    this.closeLoginDialog = this.closeLoginDialog.bind(this);
   }
 
   toggleMode() {
@@ -78,16 +77,13 @@ class LoginOrRegister extends Component {
     );
   }
 
-  closeLoginDialog() {
-    this.props.dispatch(toggleLogin(false));
-  }
-
   render() {
     const { isWaiting, message } = this.props.user;
 
     return (
       <div>
-        <LoginDialog open={this.props.layout.loginOpen} handleClose={this.closeLoginDialog} />
+        <LoginDialog open={this.props.layout.loginOpen} />
+        <RegisterDialog open={this.props.layout.registerOpen} />
         <div>
           { this.renderHeader() }
           <div>

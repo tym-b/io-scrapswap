@@ -17,3 +17,15 @@ export function toggleRegister(open) {
     }
   };
 }
+
+export function switchLogin() {
+  return {
+    type: types.LAYOUT_SWITCH_LOGIN
+  };
+}
+
+export function switchRegister() {
+  return {
+    type: types.LAYOUT_SWITCH_REGISTER
+  };
+}

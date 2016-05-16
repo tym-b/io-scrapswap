@@ -7,43 +7,59 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
 import { login } from 'actions/users';
+import { toggleLogin, switchRegister } from 'actions/layout';
 
 const styles = {
   dialog: {
-    width: '300px'
+    width: '350px'
+  },
+  submitButton: {
+    display: 'none'
   }
 };
 
-const validate = values => {
-  const errors = {
-    email: 'hehee'
-  };
+const validate = (values) => {
+  let errors = {};
+
+  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('email'))) {
+    errors.email = 'This is not a valid email.';
+  }
+
   return errors;
-}
+};
 
 class LoginDialog extends Component {
   constructor(props) {
     super(props);
     this.closeLoginDialog = this.closeLoginDialog.bind(this);
     this.tryLogin = this.tryLogin.bind(this);
+    this.openRegistration = this.openRegistration.bind(this);
   }
 
-  tryLogin() {
-    const email = ReactDOM.findDOMNode(this.refs.email).value;
-    const password = ReactDOM.findDOMNode(this.refs.password).value;
-    dispatch(manualLogin({
-      email: email,
-      password: password
+  tryLogin(values) {
+    this.props.dispatch(login({
+      email: values.get('email'),
+      password: values.get('password')
     }));
-    this.props.dispatch(login);
   }
 
   closeLoginDialog() {
-    this.props.handleClose();
+    this.props.dispatch(toggleLogin(false));
+  }
+
+  openRegistration() {
+    this.props.dispatch(switchRegister());
   }
 
   render() {
+    const { handleSubmit } = this.props;
+
     const actions = [
+      <FlatButton
+        label="Rejestracja"
+        primary={true}
+        onTouchTap={this.switchRegister} />,
+
       <FlatButton
         label="Zamknij"
         primary={true}
@@ -52,10 +68,8 @@ class LoginDialog extends Component {
       <FlatButton
         label="Zaloguj"
         primary={true}
-        onTouchTap={this.tryLogin} />
+        onTouchTap={handleSubmit(this.tryLogin)} />
     ];
-
-    const { handleSubmit } = this.props;
 
     return (
       <Dialog
@@ -66,7 +80,7 @@ class LoginDialog extends Component {
         contentStyle={styles.dialog}
         onRequestClose={this.closeLoginDialog}>
         <p>Zaloguj się na ScrapSwap. Wpisz swoje dane poniżej.</p>
-        <form name="loginForm" onSubmit={handleSubmit}>
+        <form name="loginForm" onSubmit={handleSubmit(this.tryLogin)}>
           <Field name="email"
             type="email"
             component={email =>
@@ -85,6 +99,7 @@ class LoginDialog extends Component {
                 errorText={password.touched && password.error}
                 {...password} />
             } />
+          <input type="submit" style={styles.submitButton} />
         </form>
       </Dialog>
     );
@@ -92,10 +107,10 @@ class LoginDialog extends Component {
 }
 
 export default reduxForm({
-  form: 'login'
+  form: 'login',
+  validate
 })(LoginDialog);
 
 LoginDialog.propTypes = {
-  open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func
+  open: PropTypes.bool.isRequired
 };
