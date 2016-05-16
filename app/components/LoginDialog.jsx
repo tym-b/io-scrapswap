@@ -11,10 +11,17 @@ import { toggleLogin, switchRegister } from 'actions/layout';
 
 const styles = {
   dialog: {
-    width: '350px'
+    width: '400px'
   },
+
   submitButton: {
     display: 'none'
+  },
+
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 };
 
@@ -44,6 +51,8 @@ class LoginDialog extends Component {
   }
 
   closeLoginDialog() {
+    const { reset } = this.props;
+    reset();
     this.props.dispatch(toggleLogin(false));
   }
 
@@ -58,7 +67,7 @@ class LoginDialog extends Component {
       <FlatButton
         label="Rejestracja"
         primary={true}
-        onTouchTap={this.switchRegister} />,
+        onTouchTap={this.openRegistration} />,
 
       <FlatButton
         label="Zamknij"
@@ -80,7 +89,7 @@ class LoginDialog extends Component {
         contentStyle={styles.dialog}
         onRequestClose={this.closeLoginDialog}>
         <p>Zaloguj się na ScrapSwap. Wpisz swoje dane poniżej.</p>
-        <form name="loginForm" onSubmit={handleSubmit(this.tryLogin)}>
+        <form style={styles.form} name="loginForm" onSubmit={handleSubmit(this.tryLogin)}>
           <Field name="email"
             type="email"
             component={email =>
