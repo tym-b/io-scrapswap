@@ -61,20 +61,17 @@ function renderFullPage(renderedContent, initialState, head={
  * and pass it into the Router.run function.
  */
 export default function render(req, res) {
-    const history = createMemoryHistory();
-    const authenticated = req.isAuthenticated();
-    let user = _.cloneDeep(req.user);
+  const history = createMemoryHistory();
+  const authState = Immutable.fromJS({
+    user: {
+      authenticated: req.isAuthenticated(),
+      pending: false,
+      ...req.user
+    }
+  });
 
-    const initialState = Immutable.fromJS({
-      authenticated: authenticated,
-      pending: false
-    });
-
-    const store = configureStore({
-      user: initialState.merge(req.user)
-    }, history);
-
-    const routes = createRoutes(store);
+  const store = configureStore(authState, history);
+  const routes = createRoutes(store);
  
   const muiTheme = scrapswapMuiThemeProvider(req.headers.userAgent);
 
@@ -103,6 +100,7 @@ export default function render(req, res) {
         }));
       })
       .catch(err => {
+        console.log(err);
         res.end(renderFullPage("",{}));
       });
     } else {

@@ -17,7 +17,7 @@ export default function advert(state = initialState, action) {
       return state.set('pending', false);
       
     case GET_ADVERTS_SUCCESS:
-      return state.set('pending', false).set('adverts', action.req.data);
+      return state.set('pending', false).set('adverts', Immutable.fromJS(action.req.data));
 
     case GET_ADVERTS_FAILURE:
       return state.set('pending', false);

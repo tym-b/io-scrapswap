@@ -3,7 +3,7 @@ import user from 'reducers/user';
 import layout from 'reducers/layout';
 import advert from 'reducers/advert';
 import routing from 'reducers/routing';
-import {reducer as form} from 'redux-form';
+import { reducer as form } from 'redux-form/immutable';
 
 const rootReducer = combineReducers({
   user,
