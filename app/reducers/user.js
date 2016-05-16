@@ -1,74 +1,58 @@
-import {
-  TOGGLE_LOGIN_MODE,
-  MANUAL_LOGIN_USER,
-  LOGIN_SUCCESS_USER,
-  LOGIN_ERROR_USER,
-  SIGNUP_USER,
-  SIGNUP_SUCCESS_USER,
-  SIGNUP_ERROR_USER,
-  LOGOUT_USER,
-  LOGOUT_SUCCESS_USER,
-  LOGOUT_ERROR_USER } from 'constants/index';
+import Immutable from 'immutable';
 
-export default function user(state={
-  isLogin: true,
+import {
+  LOGIN,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  SIGNUP,
+  SIGNUP_SUCCESS,
+  SIGNUP_ERROR,
+  LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR } from 'constants/index';
+
+const initialState = Immutable.fromJS({
   pending: false,
-  authenticated: false }, action={}) {
+  authenticated: false
+});
+
+export default function user(state = initialState, action) {
   switch (action.type) {
-    case TOGGLE_LOGIN_MODE:
-      return Object.assign({}, state, {
-        isLogin: !state.isLogin,
-        message: ''
-      });
-    case MANUAL_LOGIN_USER:
-      return Object.assign({}, state, {
-        pending: true,
-        message: ''
-      });
-    case LOGIN_SUCCESS_USER:
-      return Object.assign({}, state, {
-        pending: false,
-        authenticated: true,
-        ...action.userData
-      });
-    case LOGIN_ERROR_USER:
-      return Object.assign({}, state, {
-        pending: false,
-        authenticated: false,
-        message: action.message
-      });
-    case SIGNUP_USER:
-      return Object.assign({}, state, {
-        pending: true,
-        message: ''
-      });
-    case SIGNUP_SUCCESS_USER:
-      return Object.assign({}, state, {
-        pending: false,
-        authenticated: true
-      });
-    case SIGNUP_ERROR_USER:
-      return Object.assign({}, state, {
-        pending: false,
-        authenticated: false,
-        message: action.message
-      });
-    case LOGOUT_USER:
-      return Object.assign({}, state, {
-        pending: true,
-        message: ''
-      });
-    case LOGOUT_SUCCESS_USER:
-      return Object.assign({}, state, {
-        pending: false,
-        authenticated: false
-      });
-    case LOGOUT_ERROR_USER:
-      return Object.assign({}, state, {
-        pending: false,
-        authenticated: true,
-        isLogin: true
-      });
+    case LOGIN:
+      return state.set('pending', true);
+
+    case LOGIN_SUCCESS:
+      return state.set('pending', false)
+        .set('authenticated', true)
+        .merge(action.userData);
+
+    case LOGIN_ERROR:
+      return state.set('pending', false)
+        .set('authenticated', false);
+
+    case SIGNUP:
+      return state.set('pending', true);
+
+    case SIGNUP_SUCCESS:
+      return state.set('pending', false)
+        .set('authenticated', true)
+        .merge(action.userData);
+
+    case SIGNUP_ERROR:
+      return state.set('pending', false)
+        .set('authenticated', false);
+
+    case LOGOUT:
+      return state.set('pending', true);
+
+    case LOGOUT_SUCCESS:
+      return state.set('pending', false)
+        .set('authenticated', false);
+
+    case LOGOUT_ERROR:
+      return state.set('pending', false)
+        .set('authenticated', true);
+
     default:
       return state;
   }

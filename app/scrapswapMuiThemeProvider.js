@@ -6,8 +6,7 @@ export default (userAgent) => {
     palette: {
       primary1Color: green500,
       primary2Color: green700,
-      primary3Color: green100,
-      textColor: fullWhite
+      primary3Color: green100
     },
   }, {
     avatar: {

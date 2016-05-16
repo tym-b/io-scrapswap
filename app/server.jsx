@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { renderToString } from 'react-dom/server';
 import { RouterContext, match, createMemoryHistory } from 'react-router'
 import axios from 'axios';
@@ -63,12 +64,14 @@ export default function render(req, res) {
     const history = createMemoryHistory();
     const authenticated = req.isAuthenticated();
     let user = _.cloneDeep(req.user);
+
+    const initialState = Immutable.fromJS({
+      authenticated: authenticated,
+      pending: false
+    });
+
     const store = configureStore({
-      user: _.assign(user, {
-        authenticated: authenticated,
-        isWaiting: false,
-        isLogin: true
-      })
+      user: initialState.merge(req.user)
     }, history);
 
     const routes = createRoutes(store);

@@ -109,6 +109,7 @@
     "react-transform-hmr": "^1.0.4",
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
+    "redux-form": "^5.2.3",
     "redux-immutable": "^3.0.6",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.0.1",

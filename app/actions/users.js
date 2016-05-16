@@ -15,6 +15,13 @@ function makeUserRequest(method, data, api='/login') {
   });
 }
 
+export function login(data) {
+  return {
+    type: types.LOGIN,
+    promise: makeUserRequest('post', data, '/login')
+  };
+}
+
 
 // Log In Action Creators
 function beginLogin() {
