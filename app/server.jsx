@@ -73,7 +73,7 @@ export default function render(req, res) {
   const store = configureStore(authState, history);
   const routes = createRoutes(store);
  
-  const muiTheme = scrapswapMuiThemeProvider(req.headers.userAgent);
+  const muiTheme = scrapswapMuiThemeProvider(req.headers['user-agent']);
 
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
