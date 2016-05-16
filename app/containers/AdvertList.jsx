@@ -29,7 +29,7 @@ AdvertListContainer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    adverts: state.advert.adverts
+    adverts: state.get('advert').get('adverts').toJS()
   };
 }
 

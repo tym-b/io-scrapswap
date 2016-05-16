@@ -6,15 +6,6 @@ import * as types from 'constants';
 
 polyfill();
 
-/*
- * Utility function to make AJAX requests using isomorphic fetch.
- * You can also use jquery's $.ajax({}) if you do not want to use the
- * /fetch API.
- * @param Object Data you wish to pass to the server
- * @param String HTTP method, e.g. post, get, put, delete
- * @param String endpoint - defaults to /login
- * @return Promise
- */
 function makeUserRequest(method, data, api='/login') {
   return request({
     url: api,

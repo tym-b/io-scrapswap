@@ -17,15 +17,8 @@ const clientConfig = {
   port: process.env.PORT || '3000'
 };
 
-// configure baseURL for axios requests (for serverside API calls)
 axios.defaults.baseURL = `http://${clientConfig.host}:${clientConfig.port}`;
 
-/*
- * Our html template file
- * @param {String} renderedContent
- * @param initial state of the store, so that the client can be hydrated with the same state as the server
- * @param head - optional arguments to be placed into the head
- */
 function renderFullPage(renderedContent, initialState, head={
   title: 'ScrapSwap',
   meta: '<meta name="viewport" content="width=device-width, initial-scale=1" />',
@@ -42,7 +35,7 @@ function renderFullPage(renderedContent, initialState, head={
         * {
           box-sizing: border-box;
         }
-        
+
         a {
           color: inherit;
           text-decoration: inherit;

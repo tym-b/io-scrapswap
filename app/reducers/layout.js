@@ -1,24 +1,24 @@
+import Immutable from 'immutable';
+
 import {
   LAYOUT_TOGGLE_LOGIN,
   LAYOUT_TOGGLE_REGISTER
 } from 'constants/index';
 
-export default function advert(state = {
+const initialState = Immutable.fromJS({
   loginOpen: false,
   registerOpen: false
-}, action) {
+});
+
+export default function layout(state = initialState, action) {
   switch (action.type) {
     case LAYOUT_TOGGLE_LOGIN:
-      return Object.assign({}, state, {
-        loginOpen: action.data.open || !state.loginOpen
-      });
+      return state.set('loginOpen', action.data.open || !state.get('loginOpen'));
 
     case LAYOUT_TOGGLE_REGISTER:
-      return Object.assign({}, state, {
-        registerOpen: action.data.open || !state.registerOpen
-      });
+      return state.set('registerOpen', action.data.open || !state.get('registerOpen'));
 
     default:
       return state;
   }
-}
+};

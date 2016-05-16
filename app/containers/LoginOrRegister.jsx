@@ -122,8 +122,8 @@ LoginOrRegister.propTypes = {
 
 export default connect((state) => {
   return {
-    user: state.user,
-    layout: state.layout
+    user: state.get('user'),
+    layout: state.get('layout').toJS()
   };
 })(LoginOrRegister);
 
