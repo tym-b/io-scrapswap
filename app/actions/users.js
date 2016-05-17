@@ -29,7 +29,7 @@ function loginSuccess() {
   };
 }
 
-function loginFailure(error) {
+function loginFailure(error = null) {
   return {
     type: types.LOGIN_FAILURE,
     data: {
@@ -64,86 +64,47 @@ export function logout() {
   }
 }
 
-export function signUp(data) {
-  // return dispatch => {
-  //   return makeUserRequest('post', data, '/signup')
-  //     .then(response => {
-  //       if (response.status === 200) {
-  //         dispatch(signUpSuccess(response.data.message));
-  //         dispatch(push('/'));
-  //       } else {
-  //         dispatch(signUpError('Oops! Something went wrong'));
-  //       }
-  //     })
-  //     .catch(err => {
-  //       dispatch(signUpError(err.data.message));
-  //     });
-  // };
+function registerRequest() {
+  return {
+    type: types.REGISTER_REQUEST
+  };
+}
+
+function registerSuccess() {
+  return {
+    type: types.REGISTER_SUCCESS
+  };
+}
+
+function registerFailure(error = null) {
+  return {
+    type: types.REGISTER_FAILURE,
+    data: {
+      error: error
+    }
+  };
+}
+
+export function register(data) {
+  debugger;
+  return dispatch => {
+    dispatch(registerRequest());
+    return makeUserRequest('post', data, '/signup')
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(registerSuccess(response.data.message));
+        } else {
+          dispatch(registerFailure(response.data.message));
+          throw new SubmissionError(err.data.message);
+        }
+      })
+      .catch(err => {
+        dispatch(registerFailure(err.data.message));
+        throw new SubmissionError(err.data.message);
+      });
+  };
   return {
     type: types.SIGNUP,
     promise: makeUserRequest('post', data, '/signup')
   };
 }
-
-// Log In Action Creators
-function beginLogin() {
-  return { type: types.MANUAL_LOGIN_USER };
-}
-
-// Sign Up Action Creators
-function signUpError(message) {
-  return {
-    type: types.SIGNUP_ERROR_USER,
-    message: message
-  };
-}
-
-function beginSignUp() {
-  return { type: types.SIGNUP_USER };
-}
-
-function signUpSuccess(message) {
-  return {
-    type: types.SIGNUP_SUCCESS_USER,
-    message: message
-  };
-}
-
-export function toggleLoginMode() {
-  return { type: types.TOGGLE_LOGIN_MODE };
-}
-
-export function manualLogin(data) {
-  return dispatch => {
-    dispatch(beginLogin());
-
-    return makeUserRequest('post', data, '/login')
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(loginSuccess(response.data));
-          dispatch(push('/'));
-        } else {
-          dispatch(loginError('Oops! Something went wrong!'));
-        }
-      })
-      .catch(err => {
-        dispatch(loginError(err.data.message));
-      });
-  };
-}
-
-export function logOut() {
-  return dispatch => {
-    dispatch(beginLogout());
-
-    return makeUserRequest('post', null, '/logout')
-      .then( response => {
-        if (response.status === 200) {
-          dispatch(logoutSuccess());
-        } else {
-          dispatch(logoutError());
-        }
-      });
-  };
-}
-

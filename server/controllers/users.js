@@ -42,7 +42,7 @@ exports.postSignUp = function(req, res, next) {
 
   User.findOne({email: req.body.email}, function(err, existingUser) {
     if(existingUser) {
-      return res.status(409).json({ message: 'Account with this email address already exists!'});
+      return res.status(409).json({ message: { email: 'Adres email znajduje się już w bazie' } });
     }
     user.save(function(err) {
       if(err) return next(err);

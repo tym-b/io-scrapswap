@@ -91,7 +91,7 @@ class LoginDialog extends Component {
   }
 
   render() {
-    const { handleSubmit, user: { loginError } } = this.props;
+    const { handleSubmit } = this.props;
 
     const actions = [
       <FlatButton
@@ -124,10 +124,9 @@ class LoginDialog extends Component {
                 disabled={this.props.user.pending}
                 hintText="jan@kowalski.pl"
                 floatingLabelText="Email"
-                error={loginError.email}
                 errorText={email.touched && email.error}
                 {...email} />
-            } /><br />
+            } />
           <Field name="password"
             type="password"
             component={password =>

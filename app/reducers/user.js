@@ -4,9 +4,9 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  SIGNUP_REQUEST,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAILURE,
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE } from 'constants/index';
@@ -34,15 +34,15 @@ export default function user(state = initialState, action) {
       return state.set('pending', false)
         .set('authenticated', false);
 
-    case SIGNUP_REQUEST:
+    case REGISTER_REQUEST:
       return state.set('pending', true);
 
-    case SIGNUP_SUCCESS:
+    case REGISTER_SUCCESS:
       return state.set('pending', false)
         .set('authenticated', true)
         .merge(action.userData);
 
-    case SIGNUP_FAILURE:
+    case REGISTER_FAILURE:
       return state.set('pending', false)
         .set('authenticated', false);
 
