@@ -6,8 +6,8 @@ import {
   LAYOUT_SWITCH_LOGIN,
   LAYOUT_SWITCH_REGISTER,
   LAYOUT_SET_SNACKBAR_INFO,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE
 } from 'constants/index';
 
 const initialState = Immutable.fromJS({
@@ -32,6 +32,12 @@ export default function layout(state = initialState, action) {
 
     case LAYOUT_SET_SNACKBAR_INFO:
       return state.set('snackbarInfo', action.data.info);
+
+    case LOGOUT_SUCCESS:
+      return state.set('snackbarInfo', 'Pomyślnie wylogowano');
+
+    case LOGOUT_FAILURE:
+      return state.set('snackbarInfo', 'Problem podczas wylogowywania');
 
     default:
       return state;

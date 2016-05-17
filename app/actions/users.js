@@ -57,6 +57,13 @@ export function login(data) {
   }
 }
 
+export function logout() {
+  return {
+    type: 'LOGOUT',
+    promise: makeUserRequest('post', null, '/logout')
+  }
+}
+
 export function signUp(data) {
   // return dispatch => {
   //   return makeUserRequest('post', data, '/signup')
@@ -100,19 +107,6 @@ function signUpSuccess(message) {
     type: types.SIGNUP_SUCCESS_USER,
     message: message
   };
-}
-
-// Log Out Action Creators
-function beginLogout() {
-  return { type: types.LOGOUT_USER};
-}
-
-function logoutSuccess() {
-  return { type: types.LOGOUT_SUCCESS_USER };
-}
-
-function logoutError() {
-  return { type: types.LOGOUT_ERROR_USER };
 }
 
 export function toggleLoginMode() {

@@ -7,7 +7,6 @@ import IconButton from 'material-ui/IconButton';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { logOut } from 'actions/users';
 import { toggleLogin } from 'actions/layout';
 
 import UserMenuBlock from 'components/UserMenuBlock';
@@ -15,10 +14,7 @@ import UserMenuBlock from 'components/UserMenuBlock';
 class AppHeader extends Component {
   constructor(props) {
     super(props);
-  }
-
-  logout() {
-    this.props.dispatch(logOut());
+    this.openLoginDialog = this.openLoginDialog.bind(this);
   }
 
   openLoginDialog() {
@@ -31,7 +27,7 @@ class AppHeader extends Component {
         <CircularProgress size={0.5} />
       );
     }
-    
+
     if (this.props.user.authenticated) {
       return (
         <UserMenuBlock profile={this.props.user.profile} />
