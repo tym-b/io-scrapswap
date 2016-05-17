@@ -30,7 +30,7 @@ class AppHeader extends Component {
 
     if (this.props.user.authenticated) {
       return (
-        <UserMenuBlock profile={this.props.user.profile} />
+        <UserMenuBlock />
       );
     }
 

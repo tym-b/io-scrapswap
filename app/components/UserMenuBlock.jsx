@@ -20,8 +20,12 @@ const styles = {
     display: 'flex'
   },
 
-  accountIcon: {
+  accountIconButton: {
     display: 'flex'
+  },
+
+  accountIcon: {
+    color: '#fff'
   }
 };
 
@@ -40,10 +44,10 @@ class UserMenuBlock extends Component {
   render() {
     return (
       <div style={styles.accountContainer}>
-        <span style={styles.accountName}>{this.props.profile.name}</span>
+        <span style={styles.accountName}>{this.props.user.profile.name}</span>
         <IconMenu
           onItemTouchTap={this.handleMenuClick}
-          iconButtonElement={<IconButton style={styles.accountIcon}><AccountIcon /></IconButton>}
+          iconButtonElement={<IconButton style={styles.accountIconButton}><AccountIcon color={styles.accountIcon.color} /></IconButton>}
           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           targetOrigin={{horizontal: 'right', vertical: 'top'}}>
           <MenuItem
@@ -54,10 +58,6 @@ class UserMenuBlock extends Component {
     );
   }
 }
-
-UserMenuBlock.propTypes = {
-  profile: PropTypes.object.isRequired
-};
 
 export default connect(state => {
   return {

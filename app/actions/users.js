@@ -23,9 +23,12 @@ function loginRequest() {
   };
 }
 
-function loginSuccess() {
+function loginSuccess(data) {
   return {
-    type: types.LOGIN_SUCCESS
+    type: types.LOGIN_SUCCESS,
+    data: {
+      user: data
+    }
   };
 }
 
@@ -44,7 +47,7 @@ export function login(data) {
     return makeUserRequest('post', data, '/login')
     .then(response => {
       if (response.status === 200) {
-        dispatch(loginSuccess());
+        dispatch(loginSuccess(response.data));
       } else {
         dispatch(loginFailure(response.data.message));
         throw new SubmissionError(response.data.message);
@@ -70,9 +73,12 @@ function registerRequest() {
   };
 }
 
-function registerSuccess() {
+function registerSuccess(data) {
   return {
-    type: types.REGISTER_SUCCESS
+    type: types.REGISTER_SUCCESS,
+    data: {
+      user: data
+    }
   };
 }
 
@@ -91,7 +97,7 @@ export function register(data) {
     return makeUserRequest('post', data, '/signup')
       .then(response => {
         if (response.status === 200) {
-          dispatch(registerSuccess(response.data.message));
+          dispatch(registerSuccess(response.data));
         } else {
           dispatch(registerFailure(response.data.message));
           throw new SubmissionError(err.data.message);

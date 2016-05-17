@@ -28,7 +28,7 @@ export default function user(state = initialState, action) {
     case LOGIN_SUCCESS:
       return state.set('pending', false)
         .set('authenticated', true)
-        .merge(action.userData);
+        .merge(action.data.user);
 
     case LOGIN_FAILURE:
       return state.set('pending', false)
@@ -40,7 +40,7 @@ export default function user(state = initialState, action) {
     case REGISTER_SUCCESS:
       return state.set('pending', false)
         .set('authenticated', true)
-        .merge(action.userData);
+        .merge(action.data.user);
 
     case REGISTER_FAILURE:
       return state.set('pending', false)
