@@ -86,7 +86,6 @@ function registerFailure(error = null) {
 }
 
 export function register(data) {
-  debugger;
   return dispatch => {
     dispatch(registerRequest());
     return makeUserRequest('post', data, '/signup')
