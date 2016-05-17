@@ -1,17 +1,28 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 import CircularProgress from 'material-ui/CircularProgress';
 
+import { logOut } from 'actions/users';
 import { toggleLogin } from 'actions/layout';
-import UserMenuBlock from 'components/UserMenuBlock'
 
-export default class AppHeader extends Component {
+import UserMenuBlock from 'components/UserMenuBlock';
+
+class AppHeader extends Component {
   constructor(props) {
     super(props);
+  }
+
+  logout() {
+    this.props.dispatch(logOut());
+  }
+
+  openLoginDialog() {
+    this.props.dispatch(toggleLogin(true));
   }
 
   renderAccountInfo() {
@@ -20,7 +31,7 @@ export default class AppHeader extends Component {
         <CircularProgress size={0.5} />
       );
     }
-
+    
     if (this.props.user.authenticated) {
       return (
         <UserMenuBlock profile={this.props.user.profile} />
@@ -28,7 +39,7 @@ export default class AppHeader extends Component {
     }
 
     return (
-      <IconButton tooltip="Logowanie" tooltipPosition="bottom-left" onTouchTap={this.props.onLoginClick}>
+      <IconButton tooltip="Logowanie" tooltipPosition="bottom-left" onTouchTap={this.openLoginDialog}>
         <AccountIcon />
       </IconButton>
     );
@@ -41,6 +52,8 @@ export default class AppHeader extends Component {
   }
 }
 
-UserMenuBlock.propTypes = {
-  user: PropTypes.object
-};
+export default connect((state) => {
+  return {
+    user: state.get('user').toJS()
+  };
+})(AppHeader);

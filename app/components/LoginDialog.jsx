@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import { reduxForm, Field } from 'redux-form/immutable';
 
@@ -7,7 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
 import { login } from 'actions/users';
-import { toggleLogin, switchRegister } from 'actions/layout';
+import { toggleLogin, switchRegister, setSnackbarInfo } from 'actions/layout';
 
 const styles = {
   dialog: {
@@ -55,33 +56,53 @@ class LoginDialog extends Component {
   }
 
   tryLogin(values) {
-    this.props.dispatch(login({
+    const { reset } = this.props;
+
+    let promise = this.props.dispatch(login({
       email: values.get('email'),
       password: values.get('password')
     }));
+
+    promise.then(() => {
+      reset();
+      this.props.dispatch(setSnackbarInfo('Pomyślnie zalogowano'));
+      this.props.dispatch(toggleLogin(false));
+    });
+
+    return promise;
   }
 
   closeLoginDialog() {
-    const { reset } = this.props;
-    reset();
-    this.props.dispatch(toggleLogin(false));
+    const { reset, user: { pending } } = this.props;
+
+    if (!pending) {
+      reset();
+      this.props.dispatch(toggleLogin(false));
+    }
   }
 
   openRegistration() {
-    this.props.dispatch(switchRegister());
+    const { reset, user: { pending } } = this.props;
+
+    if (!pending) {
+      reset();
+      this.props.dispatch(switchRegister());
+    }
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, user: { loginError } } = this.props;
 
     const actions = [
       <FlatButton
         label="Zamknij"
+        disabled={this.props.user.pending}
         onTouchTap={this.closeLoginDialog} />,
 
       <FlatButton
         label="Zaloguj"
         primary={true}
+        disabled={this.props.user.pending}
         onTouchTap={handleSubmit(this.tryLogin)} />
     ];
 
@@ -100,31 +121,42 @@ class LoginDialog extends Component {
             type="email"
             component={email =>
               <TextField
+                disabled={this.props.user.pending}
                 hintText="jan@kowalski.pl"
                 floatingLabelText="Email"
+                error={loginError.email}
                 errorText={email.touched && email.error}
                 {...email} />
-            } /><br/>
+            } /><br />
           <Field name="password"
             type="password"
             component={password =>
               <TextField
                 type="password"
+                disabled={this.props.user.pending}
                 floatingLabelText="Hasło"
                 errorText={password.touched && password.error}
                 {...password} />
             } />
-          <input type="submit" style={styles.submitButton} />
+          <input disabled={this.props.user.pending} type="submit" style={styles.submitButton} />
         </form>
       </Dialog>
     );
   }
 }
 
-export default reduxForm({
+const formData = {
   form: 'login',
   validate
-})(LoginDialog);
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.get('user').toJS()
+  };
+};
+
+export default connect(mapStateToProps)(reduxForm(formData)(LoginDialog));
 
 LoginDialog.propTypes = {
   open: PropTypes.bool.isRequired

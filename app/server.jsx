@@ -68,6 +68,7 @@ export default function render(req, res) {
     user: {
       authenticated: req.isAuthenticated(),
       pending: false,
+      loginError: {},
       ...req.user
     }
   });

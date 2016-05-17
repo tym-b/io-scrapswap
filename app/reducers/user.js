@@ -1,24 +1,28 @@
 import Immutable from 'immutable';
 
 import {
-  LOGIN,
+  LOGIN_REQUEST,
   LOGIN_SUCCESS,
-  LOGIN_ERROR,
-  SIGNUP,
+  LOGIN_FAILURE,
+  SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
-  SIGNUP_ERROR,
-  LOGOUT,
+  SIGNUP_FAILURE,
+  LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
-  LOGOUT_ERROR } from 'constants/index';
+  LOGOUT_FAILURE } from 'constants/index';
+
+import { CHANGE as FORM_CHANGE } from 'redux-form/lib/actionTypes';
 
 const initialState = Immutable.fromJS({
   pending: false,
-  authenticated: false
+  authenticated: false,
+  loginError: null,
+  registerError: null
 });
 
 export default function user(state = initialState, action) {
   switch (action.type) {
-    case LOGIN:
+    case LOGIN_REQUEST:
       return state.set('pending', true);
 
     case LOGIN_SUCCESS:
@@ -26,11 +30,11 @@ export default function user(state = initialState, action) {
         .set('authenticated', true)
         .merge(action.userData);
 
-    case LOGIN_ERROR:
+    case LOGIN_FAILURE:
       return state.set('pending', false)
         .set('authenticated', false);
 
-    case SIGNUP:
+    case SIGNUP_REQUEST:
       return state.set('pending', true);
 
     case SIGNUP_SUCCESS:
@@ -38,18 +42,18 @@ export default function user(state = initialState, action) {
         .set('authenticated', true)
         .merge(action.userData);
 
-    case SIGNUP_ERROR:
+    case SIGNUP_FAILURE:
       return state.set('pending', false)
         .set('authenticated', false);
 
-    case LOGOUT:
+    case LOGOUT_REQUEST:
       return state.set('pending', true);
 
     case LOGOUT_SUCCESS:
       return state.set('pending', false)
         .set('authenticated', false);
 
-    case LOGOUT_ERROR:
+    case LOGOUT_FAILURE:
       return state.set('pending', false)
         .set('authenticated', true);
 

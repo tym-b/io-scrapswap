@@ -33,12 +33,6 @@ export default function layout(state = initialState, action) {
     case LAYOUT_SET_SNACKBAR_INFO:
       return state.set('snackbarInfo', action.data.info);
 
-    case LOGIN_SUCCESS:
-      return state.set('loginOpen', false).set('snackbarInfo', 'Pomyślnie zalogowano!');
-
-    case LOGIN_FAILURE:
-      return state.set('snackbarInfo', 'Problem podczas logowania!');
-
     default:
       return state;
   }

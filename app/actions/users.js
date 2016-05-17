@@ -2,6 +2,8 @@ import { polyfill } from 'es6-promise';
 import request from 'axios';
 import { push } from 'react-router-redux';
 
+import { SubmissionError } from 'redux-form';
+
 import * as types from 'constants';
 
 polyfill();
@@ -15,11 +17,44 @@ function makeUserRequest(method, data, api='/login') {
   });
 }
 
-export function login(data) {
+function loginRequest() {
   return {
-    type: types.LOGIN,
-    promise: makeUserRequest('post', data, '/login')
+    type: types.LOGIN_REQUEST
   };
+}
+
+function loginSuccess() {
+  return {
+    type: types.LOGIN_SUCCESS
+  };
+}
+
+function loginFailure(error) {
+  return {
+    type: types.LOGIN_FAILURE,
+    data: {
+      error: error
+    }
+  };
+}
+
+export function login(data) {
+  return dispatch => {
+    dispatch(loginRequest());
+    return makeUserRequest('post', data, '/login')
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(loginSuccess());
+      } else {
+        dispatch(loginFailure(response.data.message));
+        throw new SubmissionError(response.data.message);
+      }
+    })
+    .catch(err => {
+      dispatch(loginFailure(err.data.message));
+      throw new SubmissionError(err.data.message);
+    });
+  }
 }
 
 export function signUp(data) {

@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
-import Navigation from 'containers/Navigation';
+import AppHeader from 'components/Navigation';
 import LayoutComponents from 'components/LayoutComponents';
 
 const App = ({children}) => {
   return (
     <div>
-      <Navigation />
+      <AppHeader />
       <LayoutComponents />
         {children}
     </div>
