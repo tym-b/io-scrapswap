@@ -39,6 +39,9 @@ function renderFullPage(renderedContent, initialState, head={
 
         a {
           color: inherit;
+          cursor: pointer;
+          color: #5eb45e;
+          font-weight: bold;
           text-decoration: inherit;
         }
       </style>

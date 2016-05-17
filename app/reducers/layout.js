@@ -9,7 +9,8 @@ import {
 
 const initialState = Immutable.fromJS({
   loginOpen: false,
-  registerOpen: false
+  registerOpen: false,
+  snackbarInfo: ''
 });
 
 export default function layout(state = initialState, action) {

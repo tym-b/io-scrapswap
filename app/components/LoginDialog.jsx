@@ -28,8 +28,14 @@ const styles = {
 const validate = (values) => {
   let errors = {};
 
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('email'))) {
-    errors.email = 'This is not a valid email.';
+  if (!values.get('email')) {
+    errors.email = 'Adres email jest wymagany';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.get('email'))) {
+    errors.email = 'To nie jest poprawny adres email';
+  }
+
+  if (!values.get('password')) {
+    errors.password = 'Hasło jest wymagane';
   }
 
   return errors;
@@ -65,11 +71,6 @@ class LoginDialog extends Component {
 
     const actions = [
       <FlatButton
-        label="Rejestracja"
-        primary={true}
-        onTouchTap={this.openRegistration} />,
-
-      <FlatButton
         label="Zamknij"
         onTouchTap={this.closeLoginDialog} />,
 
@@ -88,6 +89,7 @@ class LoginDialog extends Component {
         contentStyle={styles.dialog}
         onRequestClose={this.closeLoginDialog}>
         <p>Zaloguj się na ScrapSwap. Wpisz swoje dane poniżej.</p>
+        <p>Nie masz jeszcze konta? <a onClick={this.openRegistration}>Zarejestruj się</a></p>
         <form style={styles.form} name="loginForm" onSubmit={handleSubmit(this.tryLogin)}>
           <Field name="email"
             type="email"
