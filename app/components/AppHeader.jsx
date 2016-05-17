@@ -11,6 +11,12 @@ import { toggleLogin } from 'actions/layout';
 
 import UserMenuBlock from 'components/UserMenuBlock';
 
+const styles = {
+  progress: {
+    color: '#fff'
+  }
+};
+
 class AppHeader extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +30,7 @@ class AppHeader extends Component {
   renderAccountInfo() {
     if (this.props.user.pending) {
       return (
-        <CircularProgress size={0.5} />
+        <CircularProgress size={0.4} color={styles.progress.color} />
       );
     }
 
