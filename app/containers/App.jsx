@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import Navigation from 'containers/Navigation';
-import LoginOrRegister from 'containers/LoginOrRegister';
+import LayoutComponents from 'components/LayoutComponents';
 
 const App = ({children}) => {
   return (
     <div>
       <Navigation />
-      <LoginOrRegister />
+      <LayoutComponents />
         {children}
     </div>
   );

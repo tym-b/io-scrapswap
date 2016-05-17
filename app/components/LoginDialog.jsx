@@ -22,6 +22,11 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
+  },
+
+  a: {
+    color: '#5eb45e',
+    fontWeight: 'bold'
   }
 };
 
@@ -89,7 +94,7 @@ class LoginDialog extends Component {
         contentStyle={styles.dialog}
         onRequestClose={this.closeLoginDialog}>
         <p>Zaloguj się na ScrapSwap. Wpisz swoje dane poniżej.</p>
-        <p>Nie masz jeszcze konta? <a onClick={this.openRegistration}>Zarejestruj się</a></p>
+        <p>Nie masz jeszcze konta? <a style={styles.a} onClick={this.openRegistration}>Zarejestruj się</a></p>
         <form style={styles.form} name="loginForm" onSubmit={handleSubmit(this.tryLogin)}>
           <Field name="email"
             type="email"

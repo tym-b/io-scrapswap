@@ -82,8 +82,6 @@ class LoginOrRegister extends Component {
 
     return (
       <div>
-        <LoginDialog open={this.props.layout.loginOpen} />
-        <RegisterDialog open={this.props.layout.registerOpen} />
         <div>
           { this.renderHeader() }
           <div>

@@ -4,7 +4,10 @@ import {
   LAYOUT_TOGGLE_LOGIN,
   LAYOUT_TOGGLE_REGISTER,
   LAYOUT_SWITCH_LOGIN,
-  LAYOUT_SWITCH_REGISTER
+  LAYOUT_SWITCH_REGISTER,
+  LAYOUT_SET_SNACKBAR_INFO,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE
 } from 'constants/index';
 
 const initialState = Immutable.fromJS({
@@ -26,6 +29,15 @@ export default function layout(state = initialState, action) {
 
     case LAYOUT_SWITCH_REGISTER:
       return state.set('loginOpen', false).set('registerOpen', true);
+
+    case LAYOUT_SET_SNACKBAR_INFO:
+      return state.set('snackbarInfo', action.data.info);
+
+    case LOGIN_SUCCESS:
+      return state.set('loginOpen', false).set('snackbarInfo', 'Pomyślnie zalogowano!');
+
+    case LOGIN_FAILURE:
+      return state.set('snackbarInfo', 'Problem podczas logowania!');
 
     default:
       return state;

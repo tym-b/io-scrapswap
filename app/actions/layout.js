@@ -29,3 +29,12 @@ export function switchRegister() {
     type: types.LAYOUT_SWITCH_REGISTER
   };
 }
+
+export function setSnackbarInfo(info = '') {
+  return {
+    type: types.LAYOUT_SET_SNACKBAR_INFO,
+    data: {
+      info: info
+    }
+  };
+}
