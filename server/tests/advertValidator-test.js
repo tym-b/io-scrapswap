@@ -1,6 +1,5 @@
 var expect = require("expect");
 var validator = require('../controllers/advertValidator.js');
-var category = require("../models/category.js");
 
 describe('AdvertValidator', function() {
   describe('Title', function() {
@@ -39,7 +38,7 @@ describe('AdvertValidator', function() {
 
   describe('Category', function() {
     it('should be ok because is correct category', function (done) {
-        expect(validator.checkCategory(category[0])).toBe(true);
+        expect(validator.checkCategory("Wood")).toBe(true);
         done();
     });
 
@@ -61,7 +60,7 @@ describe('AdvertValidator', function() {
       user: "570d0bcde617b41c20c37f4d",
       body: "Deski sa w dobrym stanie",
       location: "Poznan, ul. Malysza 13",
-      category: category[0],
+      category: "Wood",
       mainImage: "images/someMainImages.jpg",
       images: [
           { url: "images/img1.jpg" },
