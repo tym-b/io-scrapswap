@@ -4,6 +4,7 @@ import moment from 'moment';
 
 import LocationIcon from 'material-ui/svg-icons/communication/location-on';
 import DateIcon from 'material-ui/svg-icons/action/event';
+import AuthorIcon from 'material-ui/svg-icons/action/account-circle';
 import { green500 } from 'material-ui/styles/colors';
 
 const styles = {
@@ -43,6 +44,7 @@ const styles = {
     details: {
       display: 'block',
       fontSize: '14px',
+      fontWeight: '600',
       textAlign: 'right'
     },
 
@@ -67,8 +69,9 @@ class Advert extends Component {
         <div style={ styles.titleBox.container }>
           <span style={ styles.titleBox.title }>{ advert.title }</span>
           <div style={ styles.titleBox.details }>
-            <DateIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /> { moment(advert.date).fromNow() }<br/>
-            <LocationIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /> { advert.location }
+            { advert.user.profile.name } <AuthorIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /><br/>
+            { moment(advert.date).fromNow() } <DateIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /><br/>
+            { advert.location } <LocationIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} />
           </div>
         </div>
         <div style={ styles.contentBox.container }>
