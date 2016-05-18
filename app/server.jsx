@@ -35,6 +35,7 @@ function renderFullPage(renderedContent, initialState, head={
       <style>
         * {
           box-sizing: border-box;
+          font-family: 'Roboto', sans-serif;
         }
 
         a {

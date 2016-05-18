@@ -11,6 +11,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import moment from 'moment';
+
 const initialState = Immutable.fromJS(window.__INITIAL_STATE__);
 
 const store = configureStore(initialState, browserHistory);
@@ -22,6 +24,7 @@ const history = syncHistoryWithStore(browserHistory, store, {
 const routes = createRoutes(store);
 
 injectTapEventPlugin();
+moment.locale('pl');
 
 const muiTheme = scrapswapMuiThemeProvider(window.navigator.userAgent);
 

@@ -1,10 +1,26 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { ReactCSSTransitionGroup } from 'react-addons-css-transition-group';
+
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import Advert from 'components/Advert';
+import AdvertDialog from 'components/AdvertDialog';
 
-import { fetchAdverts } from 'actions/adverts';
+import { fetchAdverts, toggleDialog } from 'actions/adverts';
+
+const styles = {
+  container: {
+    width: '800px',
+    margin: '50px auto'
+  },
+
+  floatingButton: {
+    position: 'fixed',
+    bottom: '15px',
+    right: '15px'
+  }
+};
 
 class AdvertListContainer extends Component {
 
@@ -15,6 +31,7 @@ class AdvertListContainer extends Component {
   constructor(props) {
     super(props);
     this.renderAdvertList = this.renderAdvertList.bind(this);
+    this.openAdvertDialog = this.openAdvertDialog.bind(this);
   }
 
   renderAdvertList() {
@@ -23,11 +40,19 @@ class AdvertListContainer extends Component {
     });
   }
 
+  openAdvertDialog() {
+    this.props.dispatch(toggleDialog(true));
+  }
+
   render() {
     return (
-      <ReactCSSTransitionGroup>
+      <div style={ styles.container }>
         { this.renderAdvertList() }
-      </ReactCSSTransitionGroup>
+        <FloatingActionButton onTouchTap={this.openAdvertDialog} disabled={ !this.props.user.authenticated } style={ styles.floatingButton }>
+          <ContentAdd />
+        </FloatingActionButton>
+        <AdvertDialog />
+      </div>
     );
   }
 }
@@ -39,7 +64,8 @@ AdvertListContainer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    adverts: state.get('advert').get('adverts').toJS()
+    adverts: state.get('advert').get('adverts').toJS(),
+    user: state.get('user').toJS()
   };
 }
 

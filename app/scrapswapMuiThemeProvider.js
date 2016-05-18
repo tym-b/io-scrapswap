@@ -1,5 +1,5 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {green100, green500, green700, fullWhite} from 'material-ui/styles/colors';
+import {green100, green500, green700} from 'material-ui/styles/colors';
 
 export default (userAgent) => {
   return getMuiTheme({

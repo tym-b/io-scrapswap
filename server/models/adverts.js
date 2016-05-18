@@ -6,7 +6,7 @@ var AdvertSchema = new mongoose.Schema({
   title: { type: String, required: true },
   user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   body: { type: String, required: true },
-  location: { type: String },
+  location: { type: String, required: true },
   category: { type: String, enum: category},
   date: { type: Date, default: Date.now },
   mainImage: String,
