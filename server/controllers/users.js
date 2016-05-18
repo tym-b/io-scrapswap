@@ -3,7 +3,16 @@ var User = require('../models/user');
 var passport = require('passport');
 
 /**
- * POST /login
+  * @api {post} /login Sign in
+  * @apiName Sign in
+  * @apiGroup User
+  *
+  * @apiSuccess {String} _id ID of the User.
+  * @apiSuccess {String} email  Email of the User.
+  * @apiSuccess {String} password  Password of the User.
+  * @apiSuccess {Object[]} profile  User details.
+  *
+  * @apiError Error401 Not a registered user.
  */
 exports.postLogin = function(req, res, next) {
   // Do email and password validation for the server
@@ -22,8 +31,11 @@ exports.postLogin = function(req, res, next) {
 };
 
 /**
- * POST /logout
- */
+  * @api {post} /logout Log out
+  * @apiName Log out
+  * @apiGroup User
+  * @apiSuccess {String} . Redirect "/"
+*/
 exports.postLogout = function(req, res) {
   // Do email and password validation for the server
   req.logout();
@@ -31,8 +43,16 @@ exports.postLogout = function(req, res) {
 };
 
 /**
- * POST /signup
- * Create a new local account
+  * @api {post} /login Sign up
+  * @apiName Sign up
+  * @apiGroup User
+  *
+  * @apiSuccess {String} _id ID of the User.
+  * @apiSuccess {String} email  Email of the User.
+  * @apiSuccess {String} password  Password of the User.
+  * @apiSuccess {Object[]} profile  User details.
+  *
+  * @apiError Error409 Account with this email address already exists.
  */
 exports.postSignUp = function(req, res, next) {
   var user =  new User({
