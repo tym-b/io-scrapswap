@@ -1,3 +1,7 @@
-var category = ["Wood", "Plastic", "Metal", "Other"];
+var mongoose = require('mongoose');
 
-module.exports = category;
+var CategorySchema = new mongoose.Schema({
+  name: { type: String, required: true }
+});
+
+Category = mongoose.model('Category', CategorySchema);

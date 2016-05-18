@@ -58,10 +58,13 @@ exports.one = function(req, res) {
   * @apiError Error400 Error occured.
 */
 exports.add = function(req, res) {
-  Advert.create(req.body, function (err, newAdvert) {
+  var data = req.body;
+  data.user = req.user._id;
+  Advert.create(data, function (err, newAdvert) {
     if (!err) {
       res.status(200).send(newAdvert);
     }else {
+      console.log("--- Error in Advert.all ---");
       console.log(err);
       res.status(400).send(err);
     }

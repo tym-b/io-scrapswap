@@ -1,13 +1,12 @@
 /**
  * Routes for express app
  */
-var topics = require('../controllers/topics');
 var adverts = require('../controllers/adverts');
+var categories = require('../controllers/categories');
 var express = require('express');
 var users = require('../controllers/users');
 var mongoose = require('mongoose');
 var _ = require('lodash');
-var Topic = mongoose.model('Topic');
 var path = require('path');
 var compiled_app_module_path = path.resolve(__dirname, '../../', 'public', 'assets', 'server.js');
 var App = require(compiled_app_module_path);
@@ -38,11 +37,12 @@ module.exports = function(app, passport) {
       failureRedirect: '/login'
     }));
 
-  // topic routes
-  app.get('/topic', topics.all);
-  app.post('/topic/:id', topics.add);
-  app.put('/topic/:id', topics.update);
-  app.delete('/topic/:id', topics.remove);
+  //category routes
+  app.get('/api/category', categories.all);
+  app.get('/api/category/:id', categories.one);
+  app.post('/api/category', categories.add);
+  app.put('/api/category/:id', categories.update);
+  app.delete('/api/category/:id', categories.remove);
 
   //advert routes
   app.get('/api/advert', adverts.all);

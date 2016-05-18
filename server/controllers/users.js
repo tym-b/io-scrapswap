@@ -37,7 +37,6 @@ exports.postLogin = function(req, res, next) {
   * @apiSuccess {String} . Redirect "/"
 */
 exports.postLogout = function(req, res) {
-  // Do email and password validation for the server
   req.logout();
   res.redirect('/');
 };

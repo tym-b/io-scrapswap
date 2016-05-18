@@ -1,4 +1,4 @@
-var categoryEnum = require("../models/category.js");
+var categoryEnum = ["Wood", "Plastic", "Metal", "Other"];
 
 var advertValidator = function(){
   var service = {
