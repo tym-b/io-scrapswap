@@ -29,7 +29,7 @@ function addAdvertSuccess(data) {
   return {
     type: types.ADD_ADVERT_SUCCESS,
     data: {
-      user: data
+      advert: data
     }
   };
 }
@@ -56,7 +56,6 @@ export function addAdvert(data) {
       }
     })
     .catch(err => {
-      debugger;
       dispatch(addAdvertFailure(err.data.message));
       throw new SubmissionError(err.data.message);
     });

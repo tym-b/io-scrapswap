@@ -68,11 +68,11 @@ class Advert extends Component {
           <span style={ styles.titleBox.title }>{ advert.title }</span>
           <div style={ styles.titleBox.details }>
             <DateIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /> { moment(advert.date).fromNow() }<br/>
-            <LocationIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /> Poznań
+            <LocationIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /> { advert.location }
           </div>
         </div>
         <div style={ styles.contentBox.container }>
-          Im using bower for all my client libs, and npm for all my build tools. I want to keep it this way because of how my projects are laid out. Also if you look at the last reply of github.com/moment/moment/issues/1866 I solved my own problem but it requires a minor source edit. I still dont know how to fix this the right way as I dont know how you would distinguish between node and webpack.
+          { advert.body }
         </div>
       </div>
     );
