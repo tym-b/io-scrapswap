@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { ReactCSSTransitionGroup } from 'react-addons-css-transition-group';
 
-import AdvertList from 'components/AdvertList';
+import Advert from 'components/Advert';
 
 import { fetchAdverts } from 'actions/adverts';
 
@@ -13,11 +14,20 @@ class AdvertListContainer extends Component {
 
   constructor(props) {
     super(props);
+    this.renderAdvertList = this.renderAdvertList.bind(this);
+  }
+
+  renderAdvertList() {
+    return this.props.adverts.map((advert, key) => {
+      return (<Advert key={key} data={advert} />);
+    });
   }
 
   render() {
     return (
-      <AdvertList adverts={this.props.adverts} />
+      <ReactCSSTransitionGroup>
+        { this.renderAdvertList() }
+      </ReactCSSTransitionGroup>
     );
   }
 }
