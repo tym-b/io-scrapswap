@@ -9,12 +9,7 @@ import * as types from 'constants';
 polyfill();
 
 function makeUserRequest(method, data, api='/login') {
-  return request({
-    url: api,
-    method: method,
-    data: data,
-    withCredentials: true
-  });
+  return request[method](api, data);
 }
 
 function loginRequest() {

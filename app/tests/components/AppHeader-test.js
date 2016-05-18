@@ -1,37 +1,42 @@
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 import expect from 'expect';
-import { wrap } from 'react-stateless-wrapper';
 import AppHeader from 'components/AppHeader';
-import AppBar from 'material-ui/AppBar';
 import UserMenuBlock from 'components/UserMenuBlock';
 import _ from 'lodash';
 
 import scrapswapMuiThemeProvider from '../../scrapswapMuiThemeProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-describe('AppHeader', () => {
+import Immutable from 'immutable';
+
+const middlewares = [ thunk ];
+const mockStore = configureStore(middlewares);
+
+describe('AppHeader Component', () => {
   const muiTheme = scrapswapMuiThemeProvider(false);
 
-  let result;
+  it('should render UserMenuBlock when user is logged in', () => {
+    const store = mockStore(Immutable.fromJS({
+      user: {
+        authenticated: true,
+        profile: {
+          name: 'Jan Kowalski'
+        }
+      }
+    }));
 
-  describe('When user is logged in', () => {
-    let mockUser = {
-      authenticated: true
-    };
-
-    result = ReactTestUtils.renderIntoDocument(
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <AppHeader user={mockUser} onLogoutClick={_.noop} onLoginClick={_.noop} />
-      </MuiThemeProvider>
+    let result = ReactTestUtils.renderIntoDocument(
+      <Provider store={ store }>
+        <MuiThemeProvider muiTheme={ muiTheme }>
+          <AppHeader />
+        </MuiThemeProvider>
+      </Provider>
     );
 
-    it('should render AppBar component', () => {
-      ReactTestUtils.findRenderedComponentWithType(result, AppBar);
-    });
-
-    it('should render UserMenuBlock component', () => {
-      ReactTestUtils.findRenderedComponentWithType(result, UserMenuBlock);
-    });
+    ReactTestUtils.findRenderedComponentWithType(result, UserMenuBlock)
   });
 });

@@ -34,7 +34,7 @@ export default function advert(state = initialState, action) {
       return state.set('pending', false);
 
     case ADD_ADVERT_SUCCESS:
-      return state.set('pending', false).mergeIn(['adverts'], [action.data.advert]);
+      return state.set('pending', false).updateIn(['adverts'], a => a.push(action.data.advert));
 
     case TOGGLE_ADVERT_DIALOG:
       return state.set('dialogOpen', action.data.open || !state.get('dialogOpen'));

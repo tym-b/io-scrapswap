@@ -19,13 +19,13 @@ export function fetchAdverts() {
   };
 }
 
-function addAdvertRequest() {
+export function addAdvertRequest() {
   return {
     type: types.ADD_ADVERT_REQUEST
   };
 }
 
-function addAdvertSuccess(data) {
+export function addAdvertSuccess(data) {
   return {
     type: types.ADD_ADVERT_SUCCESS,
     data: {
@@ -34,7 +34,7 @@ function addAdvertSuccess(data) {
   };
 }
 
-function addAdvertFailure(error = null) {
+export function addAdvertFailure(error = null) {
   return {
     type: types.ADD_ADVERT_FAILURE,
     data: {
