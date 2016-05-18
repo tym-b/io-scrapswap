@@ -1,24 +1,35 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import createRoutes from 'routes.jsx';
 import configureStore from 'store/configureStore';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
-// Grab the state from a global injected into
-// server-generated HTML
-const initialState = window.__INITIAL_STATE__;
+import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+const initialState = Immutable.fromJS(window.__INITIAL_STATE__);
 
 const store = configureStore(initialState, browserHistory);
-const history = syncHistoryWithStore(browserHistory, store);
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState (state) {
+    return state.get('routing').toJS();
+  }
+});
 const routes = createRoutes(store);
 
-// Router converts <Route> element hierarchy to a route config:
-// Read more https://github.com/rackt/react-router/blob/latest/docs/Glossary.md#routeconfig
+injectTapEventPlugin();
+
+const muiTheme = scrapswapMuiThemeProvider(window.navigator.userAgent);
+
 render(
-  <Provider store={store}>
-    <Router history={history}>
-      {routes}
-    </Router>
-  </Provider>, document.getElementById('app'));
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <Provider store={store}>
+      <Router history={history}>
+        {routes}
+      </Router>
+    </Provider>
+  </MuiThemeProvider>, document.getElementById('app'));

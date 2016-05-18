@@ -1,48 +1,61 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
-import classNames from 'classnames/bind';
-import styles from 'css/components/AppHeader';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import AccountIcon from 'material-ui/svg-icons/action/account-circle';
+import CircularProgress from 'material-ui/CircularProgress';
 
-import AppBar from 'material-ui/lib/app-bar';
-import IconButton from 'material-ui/lib/icon-button';
-import AccountIcon from 'material-ui/lib/svg-icons/action/account-circle';
+import { toggleLogin } from 'actions/layout';
 
-const cx = classNames.bind(styles);
+import UserMenuBlock from 'components/UserMenuBlock';
 
-export default class AppHeader extends Component {
+const styles = {
+  progress: {
+    color: '#fff'
+  }
+};
+
+class AppHeader extends Component {
   constructor(props) {
     super(props);
+    this.openLoginDialog = this.openLoginDialog.bind(this);
+  }
+
+  openLoginDialog() {
+    this.props.dispatch(toggleLogin(true));
   }
 
   renderAccountInfo() {
+    if (this.props.user.pending) {
+      return (
+        <CircularProgress size={0.4} color={styles.progress.color} />
+      );
+    }
+
     if (this.props.user.authenticated) {
       return (
-        <Link to="/">
-          <div className={cx('account-container')} onClick={this.props.onLogoutClick}>
-            <span className={cx('account-name')}>Jan Kowalski</span>
-            <IconButton className={cx('account-button')}>
-              <AccountIcon />
-            </IconButton>
-          </div>
-        </Link>
+        <UserMenuBlock />
       );
     }
 
     return (
-      <Link to="/login">
-        <div className={cx('account-container')}>
-          <IconButton className={cx('account-button')} tooltip="Logowanie">
-            <AccountIcon />
-          </IconButton>
-        </div>
-      </Link>
+      <IconButton tooltip="Logowanie" tooltipPosition="bottom-left" onTouchTap={this.openLoginDialog}>
+        <AccountIcon />
+      </IconButton>
     );
   }
 
   render() {
     return (
-      <AppBar title={<Link to="/">ScrapSwap</Link>} showMenuIconButton={false} iconElementRight={this.renderAccountInfo()} />
+      <AppBar title={<Link to="/">ScrapSwap</Link>} iconElementRight={this.renderAccountInfo()} />
     );
   }
 }
+
+export default connect((state) => {
+  return {
+    user: state.get('user').toJS()
+  };
+})(AppHeader);

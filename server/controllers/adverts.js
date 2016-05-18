@@ -10,7 +10,7 @@ var Advert = mongoose.model('Advert');
   * @apiError Error404 Adverts were not found.
 */
 exports.all = function(req, res) {
-  Advert.find({}).populate('user').exec(function(err, adverts) {
+  Advert.find({}).lean().populate('user').exec(function(err, adverts) {
     if(!err) {
       res.json(adverts);
     }else {

@@ -6,6 +6,13 @@ var secrets = require('./config/secrets');
 var webpack = require('webpack');
 var app = express();
 
+app.use(function(req, res, next) {
+  global.navigator = {
+    userAgent: req.headers['user-agent']
+  };
+  next();
+});
+
 // Find the appropriate database to connect to, default to localhost if not found.
 var connect = function() {
   mongoose.connect(secrets.db, function(err, res) {

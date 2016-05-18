@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { renderToString } from 'react-dom/server';
 import { RouterContext, match, createMemoryHistory } from 'react-router'
 import axios from 'axios';
@@ -7,21 +8,18 @@ import createRoutes from 'routes.jsx';
 import configureStore from 'store/configureStore';
 import headconfig from 'components/Meta';
 import { fetchComponentDataBeforeRender } from 'api/fetchComponentDataBeforeRender';
+import _ from 'lodash';
+
+import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const clientConfig = {
   host: process.env.HOSTNAME || 'localhost',
   port: process.env.PORT || '3000'
 };
 
-// configure baseURL for axios requests (for serverside API calls)
 axios.defaults.baseURL = `http://${clientConfig.host}:${clientConfig.port}`;
 
-/*
- * Our html template file
- * @param {String} renderedContent
- * @param initial state of the store, so that the client can be hydrated with the same state as the server
- * @param head - optional arguments to be placed into the head
- */
 function renderFullPage(renderedContent, initialState, head={
   title: 'ScrapSwap',
   meta: '<meta name="viewport" content="width=device-width, initial-scale=1" />',
@@ -30,15 +28,23 @@ function renderFullPage(renderedContent, initialState, head={
   return `
   <!doctype html>
     <html lang="">
-
     <head>
-        ${head.title}
+      ${head.title}
+      ${head.meta}
+      ${head.link}
+      <style>
+        * {
+          box-sizing: border-box;
+        }
 
-        ${head.meta}
-
-        ${head.link}
+        a {
+          color: inherit;
+          cursor: pointer;
+          text-decoration: inherit;
+        }
+      </style>
     </head>
-    <body>
+    <body style="margin: 0px; padding: 0px;">
     <div id="app">${renderedContent}</div>
     <script>
       window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
@@ -56,40 +62,22 @@ function renderFullPage(renderedContent, initialState, head={
  * and pass it into the Router.run function.
  */
 export default function render(req, res) {
-    const history = createMemoryHistory();
-    const authenticated = req.isAuthenticated();
-    const store = configureStore({
-      user: {
-        authenticated: authenticated,
-        isWaiting: false,
-        message: '',
-        isLogin: true
-      }
-    }, history);
+  const history = createMemoryHistory();
 
-    const routes = createRoutes(store);
+  const authState = Immutable.fromJS({
+    user: {
+      authenticated: req.isAuthenticated(),
+      pending: false,
+      loginError: {},
+      ...req.user
+    }
+  });
 
-  /*
-   * From the react-router docs:
-   *
-   * This function is to be used for server-side rendering. It matches a set of routes to
-   * a location, without rendering, and calls a callback(error, redirectLocation, renderProps)
-   * when it's done.
-   *
-   * The function will create a `history` for you, passing additional `options` to create it.
-   * These options can include `basename` to control the base name for URLs, as well as the pair
-   * of `parseQueryString` and `stringifyQuery` to control query string parsing and serializing.
-   * You can also pass in an already instantiated `history` object, which can be constructured
-   * however you like.
-   *
-   * The three arguments to the callback function you pass to `match` are:
-   * - error: A javascript Error object if an error occured, `undefined` otherwise.
-   * - redirectLocation: A `Location` object if the route is a redirect, `undefined` otherwise
-   * - renderProps: The props you should pass to the routing context if the route matched, `undefined`
-   *                otherwise.
-   * If all three parameters are `undefined`, this means that there was no route found matching the
-   * given location.
-   */
+  const store = configureStore(authState, history);
+  const routes = createRoutes(store);
+ 
+  const muiTheme = scrapswapMuiThemeProvider(req.headers['user-agent']);
+
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       res.status(500).send(error.message);
@@ -97,9 +85,11 @@ export default function render(req, res) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       const InitialView = (
-        <Provider store={store}>
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <Provider store={store}>
             <RouterContext {...renderProps} />
-        </Provider>
+          </Provider>
+        </MuiThemeProvider>
       );
       //This method waits for all render component promises to resolve before returning to browser
       fetchComponentDataBeforeRender(store.dispatch, renderProps.components, renderProps.params)
@@ -113,6 +103,7 @@ export default function render(req, res) {
         }));
       })
       .catch(err => {
+        console.log(err);
         res.end(renderFullPage("",{}));
       });
     } else {

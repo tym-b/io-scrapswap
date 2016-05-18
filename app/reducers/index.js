@@ -1,14 +1,16 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux-immutable';
 import user from 'reducers/user';
+import layout from 'reducers/layout';
 import advert from 'reducers/advert';
-import { routerReducer as routing } from 'react-router-redux';
+import routing from 'reducers/routing';
+import { reducer as form } from 'redux-form/immutable';
 
-// Combine reducers with routeReducer which keeps track of
-// router state
 const rootReducer = combineReducers({
   user,
+  layout,
   advert,
-  routing
+  routing,
+  form
 });
 
 export default rootReducer;

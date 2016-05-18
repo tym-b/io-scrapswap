@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { Iterable } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
@@ -18,7 +19,11 @@ export default function configureStore(initialState, history) {
   const reactRouterReduxMiddleware = routerMiddleware(history);
 
   if (__DEVCLIENT__) {
-    middleware.push(reactRouterReduxMiddleware, createLogger());
+    const stateTransformer = (state) => {
+      if (Iterable.isIterable(state)) return state.toJS();
+      else return state;
+    };
+    middleware.push(reactRouterReduxMiddleware, createLogger({ stateTransformer }));
   } else {
     middleware.push(reactRouterReduxMiddleware);
   }

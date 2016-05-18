@@ -57,12 +57,13 @@ exports.postLogout = function(req, res) {
 exports.postSignUp = function(req, res, next) {
   var user =  new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    profile: req.body.profile
   });
 
   User.findOne({email: req.body.email}, function(err, existingUser) {
     if(existingUser) {
-      return res.status(409).json({ message: 'Account with this email address already exists!'});
+      return res.status(409).json({ message: { email: 'Adres email znajduje się już w bazie' } });
     }
     user.save(function(err) {
       if(err) return next(err);

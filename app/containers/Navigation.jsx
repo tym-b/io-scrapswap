@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { logOut } from 'actions/users';
+import { toggleLogin } from 'actions/layout';
 
-import AppHeader from '../components/AppHeader'
+import AppHeader from '../components/AppHeader';
 
 const Navigation = ({user, dispatch}) => {
 	let logout = () => dispatch(logOut());
+	let openLoginDialog = () => dispatch(toggleLogin(true));
 
     return (
-      <AppHeader user={user} onLogoutClick={logout} />
+      <AppHeader user={user} onLogoutClick={logout} onLoginClick={openLoginDialog} />
     );
 };
 
@@ -19,7 +21,7 @@ Navigation.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.get('user').toJS()
   };
 }
 

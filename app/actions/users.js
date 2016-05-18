@@ -2,19 +2,12 @@ import { polyfill } from 'es6-promise';
 import request from 'axios';
 import { push } from 'react-router-redux';
 
+import { SubmissionError } from 'redux-form';
+
 import * as types from 'constants';
 
 polyfill();
 
-/*
- * Utility function to make AJAX requests using isomorphic fetch.
- * You can also use jquery's $.ajax({}) if you do not want to use the
- * /fetch API.
- * @param Object Data you wish to pass to the server
- * @param String HTTP method, e.g. post, get, put, delete
- * @param String endpoint - defaults to /login
- * @return Promise
- */
 function makeUserRequest(method, data, api='/login') {
   return request({
     url: api,
@@ -24,112 +17,99 @@ function makeUserRequest(method, data, api='/login') {
   });
 }
 
-
-// Log In Action Creators
-function beginLogin() {
-  return { type: types.MANUAL_LOGIN_USER };
-}
-
-function loginSuccess(message) {
+function loginRequest() {
   return {
-    type: types.LOGIN_SUCCESS_USER,
-    message: message
+    type: types.LOGIN_REQUEST
   };
 }
 
-function loginError(message) {
+function loginSuccess(data) {
   return {
-    type: types.LOGIN_ERROR_USER,
-    message: message
+    type: types.LOGIN_SUCCESS,
+    data: {
+      user: data
+    }
   };
 }
 
-// Sign Up Action Creators
-function signUpError(message) {
+function loginFailure(error = null) {
   return {
-    type: types.SIGNUP_ERROR_USER,
-    message: message
+    type: types.LOGIN_FAILURE,
+    data: {
+      error: error
+    }
   };
 }
 
-function beginSignUp() {
-  return { type: types.SIGNUP_USER };
-}
-
-function signUpSuccess(message) {
-  return {
-    type: types.SIGNUP_SUCCESS_USER,
-    message: message
-  };
-}
-
-// Log Out Action Creators
-function beginLogout() {
-  return { type: types.LOGOUT_USER};
-}
-
-function logoutSuccess() {
-  return { type: types.LOGOUT_SUCCESS_USER };
-}
-
-function logoutError() {
-  return { type: types.LOGOUT_ERROR_USER };
-}
-
-export function toggleLoginMode() {
-  return { type: types.TOGGLE_LOGIN_MODE };
-}
-
-export function manualLogin(data) {
+export function login(data) {
   return dispatch => {
-    dispatch(beginLogin());
-
+    dispatch(loginRequest());
     return makeUserRequest('post', data, '/login')
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(loginSuccess(response.data.message));
-          dispatch(push('/'));
-        } else {
-          dispatch(loginError('Oops! Something went wrong!'));
-        }
-      })
-      .catch(err => {
-        dispatch(loginError(err.data.message));
-      });
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(loginSuccess(response.data));
+      } else {
+        dispatch(loginFailure(response.data.message));
+        throw new SubmissionError(response.data.message);
+      }
+    })
+    .catch(err => {
+      dispatch(loginFailure(err.data.message));
+      throw new SubmissionError(err.data.message);
+    });
+  }
+}
+
+export function logout() {
+  return {
+    type: 'LOGOUT',
+    promise: makeUserRequest('post', null, '/logout')
+  }
+}
+
+function registerRequest() {
+  return {
+    type: types.REGISTER_REQUEST
   };
 }
 
-export function signUp(data) {
-  return dispatch => {
-    dispatch(beginSignUp());
+function registerSuccess(data) {
+  return {
+    type: types.REGISTER_SUCCESS,
+    data: {
+      user: data
+    }
+  };
+}
 
+function registerFailure(error = null) {
+  return {
+    type: types.REGISTER_FAILURE,
+    data: {
+      error: error
+    }
+  };
+}
+
+export function register(data) {
+  return dispatch => {
+    dispatch(registerRequest());
     return makeUserRequest('post', data, '/signup')
       .then(response => {
         if (response.status === 200) {
-          dispatch(signUpSuccess(response.data.message));
-          dispatch(push('/'));
+          dispatch(registerSuccess(response.data));
         } else {
-          dispatch(signUpError('Oops! Something went wrong'));
+          dispatch(registerFailure(response.data.message));
+          throw new SubmissionError(err.data.message);
         }
       })
       .catch(err => {
-        dispatch(signUpError(err.data.message));
+        dispatch(registerFailure(err.data.message));
+        throw new SubmissionError(err.data.message);
       });
   };
-}
-
-export function logOut() {
-  return dispatch => {
-    dispatch(beginLogout());
-
-    return makeUserRequest('post', null, '/logout')
-      .then( response => {
-        if (response.status === 200) {
-          dispatch(logoutSuccess());
-        } else {
-          dispatch(logoutError());
-        }
-      });
+  return {
+    type: types.SIGNUP,
+    promise: makeUserRequest('post', data, '/signup')
   };
 }
-
