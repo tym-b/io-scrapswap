@@ -10,7 +10,7 @@ var Advert = mongoose.model('Advert');
  * @apiError Error404 Adverts were not found.
  */
 exports.all = function(req, res) {
-    Advert.find({}).lean().populate('user').populate('category').exec(function(err, adverts) {
+    Advert.find({}).lean().sort('date').populate('user').populate('category').exec(function(err, adverts) {
         if (!err) {
             res.json(adverts);
         } else {
@@ -42,7 +42,7 @@ exports.one = function(req, res) {
     var query = {
         _id: req.params.id
     };
-    Advert.findOne(query).populate('user').populate('category').exec(function(err, advert) {
+    Advert.findOne(query).lean().populate('user').populate('category').exec(function(err, advert) {
         if (!err) {
             res.json(advert);
         } else {
@@ -65,7 +65,16 @@ exports.add = function(req, res) {
         data.user = req.user._id;
         Advert.create(data, function(err, newAdvert) {
             if (!err) {
-                res.status(200).send(newAdvert);
+                var query = {
+                    _id: newAdvert._id
+                };
+                Advert.findOne(query).lean().populate('user').populate('category').exec(function(err, advert) {
+                    if (!err) {
+                        res.status(200).send(advert);
+                    } else {
+                        res.status(200).send(newAdvert);
+                    }
+                });
             } else {
                 console.log("--- Error in Advert.all ---");
                 console.log(err);
