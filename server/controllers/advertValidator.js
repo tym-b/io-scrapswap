@@ -4,7 +4,8 @@ var advertValidator = function(){
   var service = {
     checkTitle: checkTitle,
     checkBody: checkBody,
-    checkCategory: checkCategory
+    checkCategory: checkCategory,
+    checkAdvert: checkAdvert
   };
 
   return service;
@@ -21,7 +22,9 @@ var advertValidator = function(){
     return !isEmpty(category) && isString(category) && isInArray(category, categoryEnum);
   }
 
-
+  function checkAdvert(advert) {
+    return checkTitle(advert.title) && checkBody(advert.body) && checkCategory(advert.category);
+  }
 
   function isEmpty(value){
     return !value;

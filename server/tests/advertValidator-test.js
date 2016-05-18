@@ -54,5 +54,37 @@ describe('AdvertValidator', function() {
     });
   });
 
+  describe('Advert', function() {
 
+    var mockAdvert = {
+      title: "Stare deski",
+      user: "570d0bcde617b41c20c37f4d",
+      body: "Deski sa w dobrym stanie",
+      location: "Poznan, ul. Malysza 13",
+      category: category[0],
+      mainImage: "images/someMainImages.jpg",
+      images: [
+          { url: "images/img1.jpg" },
+          { url: "images/img2.jpg" },
+          { url: "images/img3.jpg" }
+      ]
+    };
+
+    it('should be ok because advert is correct', function (done) {
+        expect(validator.checkAdvert(mockAdvert)).toBe(true);
+        done();
+    });
+
+    it('should be false because title is null', function (done) {
+        mockAdvert.title = "";
+        expect(validator.checkAdvert(mockAdvert)).toBe(false);
+        done();
+    });
+
+    it('should be false because category is not correct', function (done) {
+        mockAdvert.category = "1a2s3d4f";
+        expect(validator.checkAdvert(mockAdvert)).toBe(false);
+        done();
+    });
+  });
 });
