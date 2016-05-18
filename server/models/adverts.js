@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
+var category = require("./category.js");
 
-var category = ["Wood", "Plastic", "Metal", "Other"];
 
 var AdvertSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -14,3 +14,5 @@ var AdvertSchema = new mongoose.Schema({
 });
 
 Advert = mongoose.model('Advert', AdvertSchema);
+
+exports.schema = AdvertSchema;
