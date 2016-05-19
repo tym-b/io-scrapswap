@@ -38,7 +38,8 @@ const styles = {
     title: {
       fontWeight: '300',
       fontSize: '36px',
-      letterSpacing: '0.01em'
+      letterSpacing: '0.01em',
+      maxWidth: '550px'
     },
 
     details: {
