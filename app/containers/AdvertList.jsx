@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentAddIcon from 'material-ui/svg-icons/content/add';
 
 import Advert from 'components/Advert';
 import AdvertDialog from 'components/AdvertDialog';
@@ -51,7 +51,7 @@ class AdvertListContainer extends Component {
       <div style={ styles.container }>
         { this.renderAdvertList() }
         <FloatingActionButton onTouchTap={this.openAdvertDialog} disabled={ !this.props.user.authenticated } style={ styles.floatingButton }>
-          <ContentAdd />
+          <ContentAddIcon />
         </FloatingActionButton>
         <AdvertDialog />
       </div>

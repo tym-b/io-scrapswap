@@ -5,6 +5,7 @@ import moment from 'moment';
 import LocationIcon from 'material-ui/svg-icons/communication/location-on';
 import DateIcon from 'material-ui/svg-icons/action/event';
 import AuthorIcon from 'material-ui/svg-icons/action/account-circle';
+import ArrowRightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import { green500 } from 'material-ui/styles/colors';
 
 const styles = {
@@ -42,6 +43,21 @@ const styles = {
       maxWidth: '550px'
     },
 
+    category: {
+      fontSize: '16px',
+      fontStyle: 'italic',
+      color: '#555',
+      lineHeight: '16px'
+    },
+
+    categoryIcon: {
+      color: '#555555',
+      width: '16px',
+      height: '16px',
+      lineHeight: '16px',
+      verticalAlign: 'middle'
+    },
+
     details: {
       display: 'block',
       fontSize: '14px',
@@ -68,7 +84,13 @@ class Advert extends Component {
     return (
       <div>
         <div style={ styles.titleBox.container }>
-          <span style={ styles.titleBox.title }>{ advert.title }</span>
+          <div style={ styles.titleBox.title }>
+            <div>
+              <ArrowRightIcon style={ styles.titleBox.categoryIcon } color={styles.titleBox.categoryIcon.color} />
+              <span style={styles.titleBox.category}>{ advert.category.name }</span>
+            </div>
+            <span>{ advert.title }</span>
+          </div>
           <div style={ styles.titleBox.details }>
             { advert.user.profile.name } <AuthorIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /><br/>
             { moment(advert.date).fromNow() } <DateIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /><br/>
