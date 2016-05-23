@@ -72,6 +72,7 @@ class AdvertDialog extends Component {
 
     let promise = this.props.dispatch(addAdvert({
       title: values.get('title'),
+      category: values.get('category'),
       location: values.get('location'),
       body: values.get('body')
     }));

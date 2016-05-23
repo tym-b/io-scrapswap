@@ -29,7 +29,7 @@ class AdvertListContainer extends Component {
     fetchAdverts,
     fetchCategories
   ]
-  
+
   constructor(props) {
     super(props);
     this.renderAdvertList = this.renderAdvertList.bind(this);
@@ -67,7 +67,8 @@ AdvertListContainer.propTypes = {
 function mapStateToProps(state) {
   return {
     adverts: state.get('advert').get('adverts').toJS(),
-    user: state.get('user').toJS()
+    user: state.get('user').toJS(),
+    category: state.get('category').toJS()
   };
 }
 
