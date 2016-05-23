@@ -3,6 +3,7 @@ import user from 'reducers/user';
 import layout from 'reducers/layout';
 import advert from 'reducers/advert';
 import routing from 'reducers/routing';
+import category from 'reducers/category';
 import { reducer as form } from 'redux-form/immutable';
 
 const rootReducer = combineReducers({
@@ -10,7 +11,8 @@ const rootReducer = combineReducers({
   layout,
   advert,
   routing,
-  form
+  form,
+  category
 });
 
 export default rootReducer;

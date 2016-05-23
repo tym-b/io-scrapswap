@@ -6,6 +6,8 @@ import { reduxForm, Field } from 'redux-form/immutable';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import { toggleDialog, addAdvert } from 'actions/adverts';
 import { setSnackbarInfo } from 'actions/layout';
@@ -120,6 +122,18 @@ class AdvertDialog extends Component {
                 errorText={title.touched && title.error}
                 {...title} />
             } />
+          <Field name="category"
+            type="text"
+            component={category =>
+              <SelectField
+                fullWidth={true}
+                disabled={this.props.advert.pending}
+                floatingLabelText="Kategoria"
+                errorText={category.touched && category.error}
+                {...category}>
+                <MenuItem value={1} primaryText="Never" />
+              </SelectField>
+            } />
           <Field name="location"
             type="text"
             component={location =>
@@ -157,7 +171,8 @@ const formData = {
 
 const mapStateToProps = (state) => {
   return {
-    advert: state.get('advert').toJS()
+    advert: state.get('advert').toJS(),
+    category: state.get('category').toJS()
   };
 };
 

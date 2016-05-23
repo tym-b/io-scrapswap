@@ -8,6 +8,7 @@ import Advert from 'components/Advert';
 import AdvertDialog from 'components/AdvertDialog';
 
 import { fetchAdverts, toggleDialog } from 'actions/adverts';
+import { fetchCategories } from 'actions/categories';
 
 const styles = {
   container: {
@@ -25,9 +26,10 @@ const styles = {
 class AdvertListContainer extends Component {
 
   static need = [
-    fetchAdverts
+    fetchAdverts,
+    fetchCategories
   ]
-
+  
   constructor(props) {
     super(props);
     this.renderAdvertList = this.renderAdvertList.bind(this);
