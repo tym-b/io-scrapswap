@@ -30,6 +30,10 @@ const styles = {
   a: {
     color: '#5eb45e',
     fontWeight: 'bold'
+  },
+
+  selectError: {
+    marginTop: '-7px'
   }
 };
 
@@ -38,6 +42,10 @@ const validate = (values) => {
 
   if (!values.get('title')) {
     errors.title = 'Tytuł ogłoszenia jest wymagany';
+  }
+
+  if (!values.get('category')) {
+    errors.category = 'Proszę wybrać kategorię';
   }
 
   if (!values.get('location')) {
@@ -56,6 +64,7 @@ class AdvertDialog extends Component {
     super(props);
     this.closeAdvertDialog = this.closeAdvertDialog.bind(this);
     this.submitAdvert = this.submitAdvert.bind(this);
+    this.getCategories = this.getCategories.bind(this);
   }
 
   submitAdvert(values) {
@@ -83,6 +92,14 @@ class AdvertDialog extends Component {
       reset();
       this.props.dispatch(toggleDialog(false));
     }
+  }
+
+  getCategories() {
+    return this.props.category.categories.map((category, index) => {
+      return (
+        <MenuItem key={ index } value={ category._id } primaryText={ category.name } />
+      );
+    });
   }
 
   render() {
@@ -127,11 +144,14 @@ class AdvertDialog extends Component {
             component={category =>
               <SelectField
                 fullWidth={true}
+                value={category.value}
                 disabled={this.props.advert.pending}
                 floatingLabelText="Kategoria"
                 errorText={category.touched && category.error}
-                {...category}>
-                <MenuItem value={1} primaryText="Never" />
+                errorStyle={styles.selectError}
+                {...category}
+                onChange = {(event, index, value) => category.onChange(value)}>
+                { this.getCategories() }
               </SelectField>
             } />
           <Field name="location"
