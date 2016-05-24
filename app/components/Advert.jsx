@@ -74,6 +74,14 @@ const styles = {
       verticalAlign: 'middle',
       color: green500
     }
+  },
+
+  markedText: {
+    background: green500,
+    color: '#fff',
+    transition: 'transform 0.1s ease-in-out',
+    display: 'inline-block',
+    transform: 'scale(1.0)'
   }
 };
 
@@ -85,24 +93,39 @@ class Advert extends Component {
   render() {
     let { data: advert } = this.props;
 
+    let getMarked = (text, query) => {
+      let index = text.toLowerCase().indexOf(query),
+        length = query.length;
+
+      if (query === '' || index === -1) {
+        return text;
+      }
+
+      return (<span>
+          {text.slice(0, index)}
+          <span className="marked" style={styles.markedText}>{text.slice(index, index + length)}</span>
+          {text.slice(index + length)}
+        </span>);
+    };
+
     return (
       <div>
         <div style={ styles.headerBox.container }>
           <div style={ styles.headerBox.titleBox }>
             <div>
               <ArrowRightIcon style={ styles.headerBox.categoryIcon } color={styles.headerBox.categoryIcon.color} />
-              <span style={styles.headerBox.category}>{ advert.category.name }</span>
+              <span style={styles.headerBox.category}>{ getMarked(advert.category.name, this.props.mark) }</span>
             </div>
-            <h2 style={ styles.headerBox.title }>{ advert.title }</h2>
+            <h2 style={ styles.headerBox.title }>{ getMarked(advert.title, this.props.mark) }</h2>
           </div>
           <div style={ styles.headerBox.details }>
-            { advert.user.profile.name } <AuthorIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} /><br/>
+            { getMarked(advert.user.profile.name, this.props.mark) } <AuthorIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} /><br/>
             { moment(advert.date).fromNow() } <DateIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} /><br/>
-            { advert.location } <LocationIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} />
+            { getMarked(advert.location, this.props.mark) } <LocationIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} />
           </div>
         </div>
         <div style={ styles.contentBox.container }>
-          { advert.body }
+          { getMarked(advert.body, this.props.mark) }
         </div>
       </div>
     );
@@ -112,5 +135,6 @@ class Advert extends Component {
 export default Advert;
 
 Advert.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  mark: PropTypes.string
 };

@@ -70,3 +70,12 @@ export function toggleDialog(open) {
     }
   };
 }
+
+export function changeSearchQuery(value) {
+  return {
+    type: types.ADVERTS_SEARCH_QUERY,
+    data: {
+      value: value
+    }
+  };
+}

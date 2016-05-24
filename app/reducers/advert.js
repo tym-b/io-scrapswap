@@ -7,13 +7,15 @@ import {
   ADD_ADVERT_REQUEST,
   ADD_ADVERT_FAILURE,
   ADD_ADVERT_SUCCESS,
-  TOGGLE_ADVERT_DIALOG
+  TOGGLE_ADVERT_DIALOG,
+  ADVERTS_SEARCH_QUERY
 } from 'constants/index';
 
 const initialState = Immutable.fromJS({
   pending: false,
   adverts: [],
-  dialogOpen: false
+  dialogOpen: false,
+  searchQuery: ''
 });
 
 export default function advert(state = initialState, action) {
@@ -38,6 +40,9 @@ export default function advert(state = initialState, action) {
 
     case TOGGLE_ADVERT_DIALOG:
       return state.set('dialogOpen', action.data.open || !state.get('dialogOpen'));
+
+    case ADVERTS_SEARCH_QUERY:
+      return state.set('searchQuery', action.data.value);
 
     default:
       return state;

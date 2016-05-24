@@ -43,6 +43,41 @@ function renderFullPage(renderedContent, initialState, head={
           cursor: pointer;
           text-decoration: inherit;
         }
+
+        @keyframes mark {
+          from {
+            transform: scale(0.9);
+          }
+          to {
+            transform: scale(1.0);
+          }
+        }
+
+        .marked {
+          animation-name: mark;
+          animation-duration: 100ms;
+          animation-timing-function: ease-in-out;
+        }
+
+        .advert-enter {
+          opacity: 0;
+          transition: all 0.3s ease-in-out;
+        }
+
+        .advert-enter.advert-enter-active {
+          opacity: 1;
+        }
+
+        .advert-leave {
+          opacity: 1;
+          transform: scale(1);
+          transition: all 0.3s ease-in-out;
+        }
+
+        .advert-leave.advert-leave-active {
+          opacity: 0;
+          transform: scale(0.95);
+        }
       </style>
     </head>
     <body style="margin: 0px; padding: 0px;">
