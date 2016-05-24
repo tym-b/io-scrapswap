@@ -141,7 +141,7 @@ exports.remove = function(req, res) {
     if (req.user) {
         Advert.findById(req.params.id, function(err, advert) {
             if (!err) {
-                if (advert.user === req.user._id) {
+                if (advert.user.equals(req.user._id)) {
                     advert.remove(function(err) {
                         if (!err) {
                             res.status(200).send("Removed successfully");

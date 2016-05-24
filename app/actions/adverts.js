@@ -12,6 +12,22 @@ function makeAdvertRequest(method, id, data, api='/api/advert') {
   return request[method](api + (id ? ('/' + id) : ''), data);
 }
 
+export function confirmDelete(advert) {
+  return {
+    type: types.CONFIRM_DELETE_ADVERT,
+    data: {
+      advert: advert
+    }
+  };
+}
+
+export function removeAdvert(advert) {
+  return {
+    type: types.REMOVE_ADVERT,
+    promise: makeAdvertRequest('delete', advert._id)
+  };
+}
+
 export function fetchAdverts() {
   return {
     type: types.GET_ADVERTS,

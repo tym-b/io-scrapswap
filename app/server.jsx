@@ -78,6 +78,10 @@ function renderFullPage(renderedContent, initialState, head={
           opacity: 0;
           transform: scale(0.95);
         }
+
+        .advert:hover .advert-edit-box {
+          width: 60px !important;
+        }
       </style>
     </head>
     <body style="margin: 0px; padding: 0px;">
