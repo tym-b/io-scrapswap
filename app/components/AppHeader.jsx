@@ -49,7 +49,7 @@ class AppHeader extends Component {
 
   render() {
     return (
-      <AppBar title={<Link to="/">ScrapSwap</Link>} iconElementRight={this.renderAccountInfo()} />
+      <AppBar title={<Link to="/">ScrapSwap</Link>} iconElementRight={this.renderAccountInfo()} showMenuIconButton={false} />
     );
   }
 }
