@@ -5,6 +5,7 @@ import md5 from 'spark-md5';
 import * as types from 'constants/index';
 
 import { SubmissionError } from 'redux-form';
+import { setSnackbarInfo } from 'actions/layout';
 
 polyfill();
 
@@ -22,9 +23,19 @@ export function confirmDelete(advert) {
 }
 
 export function removeAdvert(advert) {
-  return {
-    type: types.REMOVE_ADVERT,
-    promise: makeAdvertRequest('delete', advert._id)
+  return dispatch => {
+    let promise = makeAdvertRequest('delete', advert._id);
+
+    promise.then(() => {
+      dispatch(setSnackbarInfo('Ogłoszenie zostało usunięte'));
+    }, () => {
+      dispatch(setSnackbarInfo('Błąd podczas usuwania ogłoszenia'));
+    });
+
+    dispatch({
+      type: types.REMOVE_ADVERT,
+      promise: promise
+    });
   };
 }
 

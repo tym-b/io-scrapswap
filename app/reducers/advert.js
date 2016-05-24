@@ -48,11 +48,12 @@ export default function advert(state = initialState, action) {
       return state.set('pending', true);
 
     case REMOVE_ADVERT_FAILURE:
-      return state.set('pending', false);
+      return state.set('pending', false)
+                  .set('confirmDelete', null);
 
     case REMOVE_ADVERT_SUCCESS:
       return state.set('pending', false)
-                  .updateIn(['adverts'], adverts => adverts.remove(adverts.indexOf(state.get('confirmDelete'))))
+                  .updateIn(['adverts'], adverts => adverts.remove(adverts.findIndex(advert => advert._id === state.get('confirmDelete')._id)))
                   .set('confirmDelete', null);
 
     case TOGGLE_ADVERT_DIALOG:
