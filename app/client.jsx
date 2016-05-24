@@ -12,6 +12,7 @@ import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import moment from 'moment';
+moment.locale('pl');
 
 const initialState = Immutable.fromJS(window.__INITIAL_STATE__);
 
@@ -24,9 +25,8 @@ const history = syncHistoryWithStore(browserHistory, store, {
 const routes = createRoutes(store);
 
 injectTapEventPlugin();
-moment.locale('pl');
 
-const muiTheme = scrapswapMuiThemeProvider(window.navigator.userAgent);
+const muiTheme = scrapswapMuiThemeProvider(false);
 
 render(
   <MuiThemeProvider muiTheme={muiTheme}>

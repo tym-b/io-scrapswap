@@ -13,6 +13,9 @@ import _ from 'lodash';
 import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import moment from 'moment';
+moment.locale('pl');
+
 const clientConfig = {
   host: process.env.HOSTNAME || 'localhost',
   port: process.env.PORT || '3000'
@@ -106,17 +109,17 @@ export default function render(req, res) {
 
   const authState = Immutable.fromJS({
     user: {
-      authenticated: req.isAuthenticated(),
       pending: false,
-      loginError: {},
-      ...req.user
+      authenticated: req.isAuthenticated(),
+      loginError: null,
+      registerError: null
     }
   });
 
-  const store = configureStore(authState, history);
+  const store = configureStore(authState.mergeIn(['user'], req.user), history);
   const routes = createRoutes(store);
  
-  const muiTheme = scrapswapMuiThemeProvider(req.headers['user-agent']);
+  const muiTheme = scrapswapMuiThemeProvider(false);
 
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {

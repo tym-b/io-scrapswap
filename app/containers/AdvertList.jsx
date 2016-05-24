@@ -127,6 +127,7 @@ class AdvertListContainer extends Component {
           Czy na pewno chcesz usunąć ogłoszenie <b>{ this.props.advert.confirmDelete ? this.props.advert.confirmDelete.title : '' }</b>?
         </Dialog>
         <TextField
+          id="searchField"
           style={ styles.searchField }
           fullWidth={true}
           onChange={this.handleSearchChange}
