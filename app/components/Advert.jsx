@@ -24,7 +24,7 @@ const styles = {
     }
   },
 
-  titleBox: {
+  headerBox: {
     container: {
       color: '#555',
       background: '#fbfbfb',
@@ -36,18 +36,22 @@ const styles = {
       boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
     },
 
+    titleBox: {
+      maxWidth: '550px',
+    },
+
     title: {
       fontWeight: '300',
       fontSize: '36px',
       letterSpacing: '0.01em',
-      maxWidth: '550px'
+      margin: '0px',
+      marginTop: '5px'
     },
 
     category: {
       fontSize: '16px',
       fontStyle: 'italic',
-      color: '#555',
-      lineHeight: '16px'
+      color: '#555'
     },
 
     categoryIcon: {
@@ -83,18 +87,18 @@ class Advert extends Component {
 
     return (
       <div>
-        <div style={ styles.titleBox.container }>
-          <div style={ styles.titleBox.title }>
+        <div style={ styles.headerBox.container }>
+          <div style={ styles.headerBox.titleBox }>
             <div>
-              <ArrowRightIcon style={ styles.titleBox.categoryIcon } color={styles.titleBox.categoryIcon.color} />
-              <span style={styles.titleBox.category}>{ advert.category.name }</span>
+              <ArrowRightIcon style={ styles.headerBox.categoryIcon } color={styles.headerBox.categoryIcon.color} />
+              <span style={styles.headerBox.category}>{ advert.category.name }</span>
             </div>
-            <span>{ advert.title }</span>
+            <h2 style={ styles.headerBox.title }>{ advert.title }</h2>
           </div>
-          <div style={ styles.titleBox.details }>
-            { advert.user.profile.name } <AuthorIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /><br/>
-            { moment(advert.date).fromNow() } <DateIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} /><br/>
-            { advert.location } <LocationIcon style={styles.titleBox.icon} color={styles.titleBox.icon.color} />
+          <div style={ styles.headerBox.details }>
+            { advert.user.profile.name } <AuthorIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} /><br/>
+            { moment(advert.date).fromNow() } <DateIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} /><br/>
+            { advert.location } <LocationIcon style={styles.headerBox.icon} color={styles.headerBox.icon.color} />
           </div>
         </div>
         <div style={ styles.contentBox.container }>
