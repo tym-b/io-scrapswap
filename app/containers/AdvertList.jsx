@@ -12,7 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Advert from 'components/Advert';
 import AdvertDialog from 'components/AdvertDialog';
 
-import { fetchAdverts, toggleDialog, changeSearchQuery, confirmDelete, removeAdvert } from 'actions/adverts';
+import { fetchAdverts, toggleDialog, changeSearchQuery, confirmDelete, removeAdvert, toggleEditDialog } from 'actions/adverts';
 import { fetchCategories } from 'actions/categories';
 
 const styles = {
@@ -58,6 +58,7 @@ class AdvertListContainer extends Component {
     this.handleOnAdvertDelete = this.handleOnAdvertDelete.bind(this);
     this.cancelAdvertDelete = this.cancelAdvertDelete.bind(this);
     this.confirmAdvertDelete = this.confirmAdvertDelete.bind(this);
+    this.handleOnAdvertEdit = this.handleOnAdvertEdit.bind(this);
   }
 
   openAdvertDialog() {
@@ -70,6 +71,10 @@ class AdvertListContainer extends Component {
 
   handleOnAdvertDelete(advert) {
     this.props.dispatch(confirmDelete(advert));
+  }
+
+  handleOnAdvertEdit(advert) {
+    this.props.dispatch(toggleDialog(true, advert));
   }
 
   cancelAdvertDelete() {
@@ -103,7 +108,7 @@ class AdvertListContainer extends Component {
     }
 
     return advertsToShow.map((advert, key) => {
-      return (<Advert key={key} data={advert} mark={searchQuery} onDelete={this.handleOnAdvertDelete} editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
+      return (<Advert key={key} data={advert} mark={searchQuery} onDelete={this.handleOnAdvertDelete} onEdit={this.handleOnAdvertEdit} editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
     });
   }
 
@@ -146,7 +151,7 @@ class AdvertListContainer extends Component {
         <FloatingActionButton onTouchTap={this.openAdvertDialog} disabled={ !this.props.user.authenticated } style={ styles.floatingButton }>
           <ContentAddIcon />
         </FloatingActionButton>
-        <AdvertDialog />
+        <AdvertDialog advert={this.props.advert} category={this.props.category} />
       </div>
     );
   }

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 
 import { reduxForm, Field } from 'redux-form/immutable';
 
@@ -9,7 +8,7 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import { toggleDialog, addAdvert } from 'actions/adverts';
+import { toggleDialog, addAdvert, editAdvert } from 'actions/adverts';
 import { setSnackbarInfo } from 'actions/layout';
 
 const styles = {
@@ -71,16 +70,28 @@ class AdvertDialog extends Component {
   submitAdvert(values) {
     const { reset } = this.props;
 
-    let promise = this.props.dispatch(addAdvert({
-      title: values.get('title'),
-      category: values.get('category'),
-      location: values.get('location'),
-      body: values.get('body')
-    }));
+    let promise;
+
+    if (this.props.advert.editAdvert) {
+      promise = this.props.dispatch(editAdvert({
+        _id: this.props.advert.editAdvert._id,
+        title: values.get('title'),
+        category: values.get('category'),
+        location: values.get('location'),
+        body: values.get('body')
+      }));
+    } else {
+      promise = this.props.dispatch(addAdvert({
+        title: values.get('title'),
+        category: values.get('category'),
+        location: values.get('location'),
+        body: values.get('body')
+      }));
+    }
 
     promise.then(() => {
       reset();
-      this.props.dispatch(setSnackbarInfo('Dodano ogłoszenie'));
+      this.props.dispatch(setSnackbarInfo('Ogłoszenie zapisane'));
       this.props.dispatch(toggleDialog(false));
     });
 
@@ -105,24 +116,31 @@ class AdvertDialog extends Component {
   }
 
   render() {
-    const { handleSubmit, advert } = this.props;
+    const { handleSubmit, advert: {editAdvert} } = this.props;
 
-    const actions = [
+    let actions = [
       <FlatButton
         label="Zamknij"
         disabled={this.props.advert.pending}
-        onTouchTap={this.closeAdvertDialog} />,
+        onTouchTap={this.closeAdvertDialog} />];
 
-      <FlatButton
+    if (!editAdvert) {
+      actions.push(<FlatButton
         label="Dodaj"
         primary={true}
         disabled={this.props.advert.pending}
-        onTouchTap={handleSubmit(this.submitAdvert)} />
-    ];
+        onTouchTap={handleSubmit(this.submitAdvert)} />);
+    } else {
+      actions.push(<FlatButton
+        label="Zatwierdź"
+        primary={true}
+        disabled={this.props.advert.pending}
+        onTouchTap={handleSubmit(this.submitAdvert)} />);
+    }
 
     return (
       <Dialog
-        title="Dodaj ogłoszenie"
+        title={editAdvert ? 'Edytuj ogłoszenie' : 'Dodaj ogłoszenie'}
         modal={true}
         actions={actions}
         open={this.props.advert.dialogOpen}
@@ -132,6 +150,7 @@ class AdvertDialog extends Component {
         <form style={styles.form} name="advertForm" onSubmit={handleSubmit(this.submitAdvert)}>
           <Field name="title"
             type="text"
+            defaultValue={editAdvert ? editAdvert.title : ''}
             component={title =>
               <TextField
                 fullWidth={true}
@@ -143,6 +162,7 @@ class AdvertDialog extends Component {
             } />
           <Field name="category"
             type="text"
+            defaultValue={editAdvert ? editAdvert.category._id : ''}
             component={category =>
               <SelectField
                 fullWidth={true}
@@ -158,6 +178,7 @@ class AdvertDialog extends Component {
             } />
           <Field name="location"
             type="text"
+            defaultValue={editAdvert ? editAdvert.location : ''}
             component={location =>
               <TextField
                 fullWidth={true}
@@ -169,6 +190,7 @@ class AdvertDialog extends Component {
             } />
           <Field name="body"
             type="text"
+            defaultValue={editAdvert ? editAdvert.body : ''}
             component={body =>
               <TextField
                 fullWidth={true}
@@ -186,16 +208,14 @@ class AdvertDialog extends Component {
   }
 }
 
+AdvertDialog.propTypes = {
+  advert: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
 const formData = {
   form: 'advert',
   validate
 };
 
-const mapStateToProps = (state) => {
-  return {
-    advert: state.get('advert').toJS(),
-    category: state.get('category').toJS()
-  };
-};
-
-export default connect(mapStateToProps)(reduxForm(formData)(AdvertDialog));
+export default reduxForm(formData)(AdvertDialog);

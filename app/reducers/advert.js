@@ -68,10 +68,13 @@ export default function advert(state = initialState, action) {
 
     case EDIT_ADVERT_SUCCESS:
       return state.set('pending', false)
+                  .set('dialogOpen', false)
                   .updateIn(['adverts'], adverts => adverts.update(adverts.findIndex(advert => advert._id === state.get('editAdvert')._id), advert => action.data.advert));
 
     case TOGGLE_ADVERT_DIALOG:
-      return state.set('dialogOpen', action.data.open || !state.get('dialogOpen'));
+      return state.set('dialogOpen', action.data.open || !state.get('dialogOpen'))
+                  .set('editAdvert', action.data.advert);
+
 
     case ADVERTS_SEARCH_QUERY:
       return state.set('searchQuery', action.data.value);

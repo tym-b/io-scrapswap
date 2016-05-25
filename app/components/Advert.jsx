@@ -49,6 +49,7 @@ const styles = {
       fontWeight: '300',
       fontSize: '2.2em !important',
       letterSpacing: '0.01em',
+      fontSize: '36px',
       margin: '0px',
       marginTop: '5px'
     },
@@ -114,10 +115,15 @@ class Advert extends Component {
     super(props);
     this.renderEditBox = this.renderEditBox.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   handleDelete() {
     this.props.onDelete(this.props.data);
+  }
+
+  handleEdit() {
+    this.props.onEdit(this.props.data);
   }
 
   renderEditBox() {
@@ -127,7 +133,7 @@ class Advert extends Component {
           <IconButton onTouchTap={ this.handleDelete }>
             <DeleteIcon color="#555" />
           </IconButton>
-          <IconButton>
+          <IconButton onTouchTap={ this.handleEdit }>
             <EditIcon color="#555" />
           </IconButton>
         </div>
@@ -187,5 +193,6 @@ Advert.propTypes = {
   data: PropTypes.object.isRequired,
   mark: PropTypes.string,
   editable: PropTypes.bool,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func
 };

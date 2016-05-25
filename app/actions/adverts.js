@@ -133,11 +133,12 @@ export function addAdvert(data) {
   }
 }
 
-export function toggleDialog(open) {
+export function toggleDialog(open, advert = null) {
   return {
     type: types.TOGGLE_ADVERT_DIALOG,
     data: {
-      open: open
+      open: open,
+      advert: advert
     }
   };
 }
