@@ -22,6 +22,50 @@ export function confirmDelete(advert) {
   };
 }
 
+export function editAdvertRequest() {
+  return {
+    type: types.EDIT_ADVERT_REQUEST
+  };
+}
+
+export function editAdvertSuccess(data) {
+  return {
+    type: types.EDIT_ADVERT_SUCCESS,
+    data: {
+      advert: data
+    }
+  };
+}
+
+export function editAdvertFailure(error = null) {
+  return {
+    type: types.EDIT_ADVERT_FAILURE,
+    data: {
+      error: error
+    }
+  };
+}
+
+export function editAdvert(data) {
+  return dispatch => {
+    dispatch(editAdvertRequest());
+    return makeAdvertRequest('put', data._id, data)
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(editAdvertSuccess(response.data));
+        dispatch(setSnackbarInfo('Ogłoszenie zostło zmienione'));
+      } else {
+        dispatch(editAdvertFailure());
+        dispatch(setSnackbarInfo('Błąd podczas edycji ogłoszenia'));
+      }
+    })
+    .catch(err => {
+      dispatch(editAdvertFailure());
+      dispatch(setSnackbarInfo('Błąd podczas edycji ogłoszenia'));
+    });
+  }
+}
+
 export function removeAdvert(advert) {
   return dispatch => {
     let promise = makeAdvertRequest('delete', advert._id);

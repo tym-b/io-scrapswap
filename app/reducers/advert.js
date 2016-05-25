@@ -10,6 +10,9 @@ import {
   REMOVE_ADVERT_REQUEST,
   REMOVE_ADVERT_FAILURE,
   REMOVE_ADVERT_SUCCESS,
+  EDIT_ADVERT_REQUEST,
+  EDIT_ADVERT_FAILURE,
+  EDIT_ADVERT_SUCCESS,
   TOGGLE_ADVERT_DIALOG,
   ADVERTS_SEARCH_QUERY,
   CONFIRM_DELETE_ADVERT
@@ -18,9 +21,10 @@ import {
 const initialState = Immutable.fromJS({
   pending: false,
   adverts: [],
+  editAdvert: null,
+  confirmDelete: null,
   dialogOpen: false,
-  searchQuery: '',
-  confirmDelete: null
+  searchQuery: ''
 });
 
 export default function advert(state = initialState, action) {
@@ -55,6 +59,16 @@ export default function advert(state = initialState, action) {
       return state.set('pending', false)
                   .updateIn(['adverts'], adverts => adverts.remove(adverts.findIndex(advert => advert._id === state.get('confirmDelete')._id)))
                   .set('confirmDelete', null);
+
+    case EDIT_ADVERT_REQUEST:
+      return state.set('pending', true);
+
+    case EDIT_ADVERT_FAILURE:
+      return state.set('pending', false);
+
+    case EDIT_ADVERT_SUCCESS:
+      return state.set('pending', false)
+                  .updateIn(['adverts'], adverts => adverts.update(adverts.findIndex(advert => advert._id === state.get('editAdvert')._id), advert => action.data.advert));
 
     case TOGGLE_ADVERT_DIALOG:
       return state.set('dialogOpen', action.data.open || !state.get('dialogOpen'));

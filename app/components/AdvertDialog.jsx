@@ -105,7 +105,7 @@ class AdvertDialog extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, advert } = this.props;
 
     const actions = [
       <FlatButton
@@ -123,7 +123,7 @@ class AdvertDialog extends Component {
     return (
       <Dialog
         title="Dodaj ogłoszenie"
-        modal={false}
+        modal={true}
         actions={actions}
         open={this.props.advert.dialogOpen}
         contentStyle={styles.dialog}
