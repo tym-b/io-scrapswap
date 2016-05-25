@@ -82,6 +82,16 @@ function renderFullPage(renderedContent, initialState, head={
           transform: scale(0.95);
         }
 
+        .advert-edit-box {
+          width: 0px;
+        }
+
+        @media screen and (max-width: 768px) {
+          .advert-edit-box {
+            width: 60px !important;
+          }
+        }
+
         .advert:hover .advert-edit-box {
           width: 60px !important;
         }

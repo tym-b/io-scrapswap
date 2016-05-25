@@ -12,7 +12,8 @@ import { toggleRegister, switchLogin, setSnackbarInfo } from 'actions/layout';
 
 const styles = {
   dialog: {
-    width: '400px'
+    width: '100%',
+    maxWidth: '400px'
   },
 
   submitButton: {

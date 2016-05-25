@@ -14,7 +14,8 @@ import { setSnackbarInfo } from 'actions/layout';
 
 const styles = {
   dialog: {
-    width: '830px'
+    width: '100%',
+    maxWidth: '830px'
   },
 
   submitButton: {

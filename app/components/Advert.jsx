@@ -34,6 +34,7 @@ const styles = {
       width: '100%',
       padding: '5px 15px',
       display: 'flex',
+      flexWrap: 'wrap',
       alignItems: 'center',
       position: 'relative',
       justifyContent: 'space-between',
@@ -41,12 +42,12 @@ const styles = {
     },
 
     titleBox: {
-      maxWidth: '550px',
+      maxWidth: '550px'
     },
 
     title: {
       fontWeight: '300',
-      fontSize: '36px',
+      fontSize: '2.2em !important',
       letterSpacing: '0.01em',
       margin: '0px',
       marginTop: '5px'
@@ -71,7 +72,9 @@ const styles = {
       alignItems: 'center',
       fontSize: '14px',
       fontWeight: '600',
-      textAlign: 'right'
+      textAlign: 'right',
+      flexGrow: '1',
+      justifyContent: 'flex-end'
     },
 
     icon: {
@@ -91,9 +94,10 @@ const styles = {
     alignItems: 'center',
     flexDirection: 'column',
     transition: 'width 0.2s ease-in-out',
-    marginLeft: '10px',
-    width: '0px',
-    height: '96px'
+    position: 'relative',
+    right: '-6px',
+    height: '96px',
+    maxWidth: '60px'
   },
 
   markedText: {

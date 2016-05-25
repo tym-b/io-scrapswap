@@ -17,8 +17,9 @@ import { fetchCategories } from 'actions/categories';
 
 const styles = {
   container: {
-    width: '800px',
-    margin: '50px auto'
+    width: '95%',
+    maxWidth: '800px',
+    margin: '40px auto'
   },
 
   floatingButton: {
@@ -28,13 +29,18 @@ const styles = {
   },
 
   searchField: {
-    marginBottom: '50px'
+    marginBottom: '40px'
   },
 
   advertInfo: {
     fontSize: '16px',
     color: '#444'
-  }
+  },
+
+  confirmDialog: {
+    width: '100%',
+    maxWidth: '400px'
+  },
 };
 
 class AdvertListContainer extends Component {
@@ -121,6 +127,7 @@ class AdvertListContainer extends Component {
         <Dialog
           title="Usuń ogłoszenie"
           actions={actions}
+          contentStyle={styles.confirmDialog}
           modal={false}
           onRequestClose={this.cancelAdvertDelete}
           open={!!this.props.advert.confirmDelete} >
