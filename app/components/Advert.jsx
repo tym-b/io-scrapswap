@@ -47,7 +47,6 @@ const styles = {
 
     title: {
       fontWeight: '300',
-      fontSize: '2.2em !important',
       letterSpacing: '0.01em',
       fontSize: '36px',
       margin: '0px',

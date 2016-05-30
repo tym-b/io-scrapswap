@@ -99,7 +99,7 @@ exports.update = function(req, res) {
     if (req.user) {
         Advert.findById(req.params.id, function(err, advert) {
             if (!err) {
-                if (advert.user === req.user._id) {
+                if (advert.user.equals(req.user._id)) {
                     var query = {
                         _id: req.params.id
                     };

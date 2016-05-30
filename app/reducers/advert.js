@@ -72,7 +72,7 @@ export default function advert(state = initialState, action) {
                   .updateIn(['adverts'], adverts => adverts.update(adverts.findIndex(advert => advert._id === state.get('editAdvert')._id), advert => action.data.advert));
 
     case TOGGLE_ADVERT_DIALOG:
-      return state.set('dialogOpen', action.data.open || !state.get('dialogOpen'))
+      return state.set('dialogOpen', typeof action.data.open === 'undefined' ? !state.get('dialogOpen') : action.data.open)
                   .set('editAdvert', action.data.advert);
 
 

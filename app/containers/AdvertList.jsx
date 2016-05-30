@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import Immutable from 'immutable';
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -127,6 +129,18 @@ class AdvertListContainer extends Component {
         onTouchTap={this.confirmAdvertDelete} />,
     ];
 
+    let advertInitialValues = null;
+
+    if (this.props.advert.editAdvert) {
+      advertInitialValues = Immutable.fromJS({
+        _id: this.props.advert.editAdvert._id,
+        title: this.props.advert.editAdvert.title,
+        category: this.props.advert.editAdvert.category._id,
+        location: this.props.advert.editAdvert.location,
+        body: this.props.advert.editAdvert.body
+      });
+    }
+
     return (
       <div style={ styles.container }>
         <Dialog
@@ -151,7 +165,11 @@ class AdvertListContainer extends Component {
         <FloatingActionButton onTouchTap={this.openAdvertDialog} disabled={ !this.props.user.authenticated } style={ styles.floatingButton }>
           <ContentAddIcon />
         </FloatingActionButton>
-        <AdvertDialog advert={this.props.advert} category={this.props.category} />
+        <AdvertDialog
+          open={ this.props.advert.dialogOpen }
+          pending={ this.props.advert.pending }
+          categories={ this.props.category.categories }
+          initialValues={ advertInitialValues } />
       </div>
     );
   }

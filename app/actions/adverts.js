@@ -53,15 +53,12 @@ export function editAdvert(data) {
     .then(response => {
       if (response.status === 200) {
         dispatch(editAdvertSuccess(response.data));
-        dispatch(setSnackbarInfo('Ogłoszenie zostło zmienione'));
       } else {
         dispatch(editAdvertFailure());
-        dispatch(setSnackbarInfo('Błąd podczas edycji ogłoszenia'));
       }
     })
     .catch(err => {
       dispatch(editAdvertFailure());
-      dispatch(setSnackbarInfo('Błąd podczas edycji ogłoszenia'));
     });
   }
 }
