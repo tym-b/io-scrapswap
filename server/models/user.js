@@ -26,7 +26,8 @@ var UserSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  google: {}
+  google: {},
+  conversations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' }]
 });
 
 

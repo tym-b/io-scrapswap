@@ -2,6 +2,7 @@
  * Routes for express app
  */
 var adverts = require('../controllers/adverts');
+var messages = require('../controllers/messages');
 var categories = require('../controllers/categories');
 var express = require('express');
 var users = require('../controllers/users');
@@ -50,6 +51,11 @@ module.exports = function(app, passport) {
   app.post('/api/advert', adverts.add);
   app.put('/api/advert/:id', adverts.update);
   app.delete('/api/advert/:id', adverts.remove);
+
+  //messages
+  app.post('/api/message/send', messages.send);
+  app.get('/api/conversation/all', messages.all);
+  app.get('/api/conversation/:id', messages.one);
 
   // This is where the magic happens. We take the locals data we have already
   // fetched and seed our stores with data.
