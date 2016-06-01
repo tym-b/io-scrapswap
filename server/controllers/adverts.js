@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var tools = require('lodash');
 var Advert = mongoose.model('Advert');
+var checkPermission = require('../tools/checkPermission.js');
+var errorExist = require('../tools/errorExist.js');
+var sendModel = require('../tools/sendModel.js');
 
 /**
  * @api {get} api/advert Get all adverts
@@ -11,11 +14,8 @@ var Advert = mongoose.model('Advert');
  */
 exports.all = function(req, res) {
     Advert.find({}).lean().sort('-date').populate('user').populate('category').exec(function(err, adverts) {
-        if (!err) {
-            res.json(adverts);
-        } else {
-            console.log(err);
-            res.status(404).send(err);
+        if (!errorExist(err, res)) {
+            sendModel(res, adverts);
         }
     });
 };
@@ -39,15 +39,9 @@ exports.all = function(req, res) {
  * @apiError Error404 Advert was not found.
  */
 exports.one = function(req, res) {
-    var query = {
-        _id: req.params.id
-    };
-    Advert.findOne(query).lean().populate('user').populate('category').exec(function(err, advert) {
-        if (!err) {
-            res.json(advert);
-        } else {
-            console.log(err);
-            res.status(404).send(err);
+    Advert.findById(req.params.id).lean().populate('user').populate('category').exec(function(err, advert) {
+        if (!errorExist(err, res)) {
+            sendModel(res, advert);
         }
     });
 };
@@ -60,29 +54,18 @@ exports.one = function(req, res) {
  * @apiError Error400 Error occured.
  */
 exports.add = function(req, res) {
-    if (req.user) {
-        var data = req.body;
-        data.user = req.user._id;
-        Advert.create(data, function(err, newAdvert) {
-            if (!err) {
-                var query = {
-                    _id: newAdvert._id
-                };
-                Advert.findOne(query).lean().populate('user').populate('category').exec(function(err, advert) {
-                    if (!err) {
-                        res.status(200).send(advert);
-                    } else {
-                        res.status(200).send(newAdvert);
+    if (checkPermission(req, res, "No permission to add")) {
+        req.body.user = req.user._id;
+
+        Advert.create(req.body, function(err, newAdvert) {
+            if (!errorExist(err, res)) {
+                Advert.findById(newAdvert._id).lean().populate('user').populate('category').exec(function(err, advert) {
+                    if (!errorExist(err, res)) {
+                        sendModel(res, advert);
                     }
                 });
-            } else {
-                console.log("--- Error in Advert.all ---");
-                console.log(err);
-                res.status(400).send(err);
             }
         });
-    } else {
-        res.status(400).send("No permission to add");
     }
 };
 
@@ -96,35 +79,29 @@ exports.add = function(req, res) {
  * @apiError Error400 Error occured.
  */
 exports.update = function(req, res) {
-    if (req.user) {
-        Advert.findById(req.params.id, function(err, advert) {
-            if (!err) {
-                if (advert.user.equals(req.user._id)) {
-                    var query = {
-                        _id: req.params.id
-                    };
-                    var data = tools.omit(req.body, ['_id', '_v', 'date', 'user']);
-                    var options = {
-                        runValidators: true
-                    };
-                    Advert.update(query, data, options, function(err) {
-                        if (!err) {
-                            res.status(200).send("Updated successfully");
-                        } else {
-                            console.log(err);
-                            res.status(400).send(err);
-                        }
-                    });
-                } else {
-                    res.status(400).send("No permission to update. Advert belongs to another user.");
+    if (checkPermission(req, res, "No permission to update")) {
+        var query = {
+            _id: req.params.id,
+            user: req.user._id
+        };
+
+        var data = tools.omit(req.body, ['_id', '_v', 'date', 'user']);
+
+        var options = {
+            runValidators: true,
+            new: true
+        };
+
+        Advert.findOneAndUpdate(query, data, options)
+            .lean()
+            .sort('-date')
+            .populate('user')
+            .populate('category')
+            .exec(function(err, adverts) {
+                if (!errorExist(err, res)) {
+                    sendModel(res, adverts);
                 }
-            } else {
-                console.log(err);
-                res.status(404).send(err);
-            }
-        });
-    } else {
-        res.status(400).send("No permission to update");
+            });
     };
 };
 
@@ -138,27 +115,23 @@ exports.update = function(req, res) {
  * @apiError Error400 Error occured.
  */
 exports.remove = function(req, res) {
-    if (req.user) {
-        Advert.findById(req.params.id, function(err, advert) {
-            if (!err) {
-                if (advert.user.equals(req.user._id)) {
+    if (checkPermission(req, res, "No permission to delete")) {
+        var query = {
+            _id: req.params.id,
+            user: req.user._id
+        };
+
+        Advert.findOne(query, function(err, advert) {
+            if (!errorExist(err, res)) {
+                if (advert) {
                     advert.remove(function(err) {
-                        if (!err) {
-                            res.status(200).send("Removed successfully");
-                        } else {
-                            console.log(err);
-                            res.status(400).send(err);
-                        }
+                        if (!errorExist(err, res))
+                            res.send("Removed successfully");
                     });
                 } else {
-                    res.status(400).send("No permission to delete. Advert belongs to another user.");
+                    res.status(404).send("Can not find advert to delete!!!");
                 }
-            } else {
-                console.log(err);
-                res.status(404).send(err);
             }
         });
-    } else {
-        res.status(400).send("No permission to delete");
     };
 };
