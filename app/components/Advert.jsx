@@ -142,9 +142,9 @@ class Advert extends Component {
   }
 
   render() {
-    let { data: advert } = this.props;
+    const { data: advert } = this.props;
 
-    let getMarked = (text, query) => {
+    const getMarked = (text, query) => {
       let index = text.toLowerCase().indexOf(query),
         length = query.length;
 
@@ -157,6 +157,14 @@ class Advert extends Component {
           <span className="marked" style={styles.markedText}>{text.slice(index, index + length)}</span>
           {text.slice(index + length)}
         </span>);
+    };
+
+    const breakLines = (text) => {
+      return (
+        <span>
+          { text.split('\n').map(line => (<span>{ line }<br/></span>)) }
+        </span>
+      );
     };
 
     return (
@@ -179,7 +187,7 @@ class Advert extends Component {
           </div>
         </div>
         <div style={ styles.contentBox.container }>
-          { getMarked(advert.body, this.props.mark) }
+          { breakLines(getMarked(advert.body, this.props.mark)) }
         </div>
       </div>
     );

@@ -68,7 +68,7 @@ class AdvertDialog extends Component {
 
     let promise;
 
-    if (this.props.initialValues.get('_id')) {
+    if (this.props.initialValues && this.props.initialValues.get('_id')) {
       promise = this.props.dispatch(editAdvert({
         _id: this.props.initialValues.get('_id'),
         title: values.get('title'),
@@ -97,16 +97,18 @@ class AdvertDialog extends Component {
   }
 
   closeAdvertDialog() {
-    const { reset, initialize, pending } = this.props;
+    const { reset, pending } = this.props;
 
     if (!pending) {
-      if (this.props.initialValues) {
-        initialize();
-      } else {
-        reset();
-      }
+      reset();
       this.props.dispatch(toggleDialog(false));
     }
+  }
+
+  componentWillMount() {
+    const { initialize } = this.props;
+    
+    initialize();
   }
 
   getCategories() {

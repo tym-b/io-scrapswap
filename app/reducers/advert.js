@@ -46,7 +46,7 @@ export default function advert(state = initialState, action) {
 
     case ADD_ADVERT_SUCCESS:
       return state.set('pending', false)
-                  .updateIn(['adverts'], adverts => adverts.push(action.data.advert).sort((a1, a2) => new Date(a1.date) < new Date(a2.date) ? -1 : 1));
+                  .updateIn(['adverts'], adverts => adverts.push(Immutable.fromJS(action.data.advert)).sort((a1, a2) => new Date(a1.date) < new Date(a2.date) ? -1 : 1));
 
     case REMOVE_ADVERT_REQUEST:
       return state.set('pending', true);
@@ -57,7 +57,7 @@ export default function advert(state = initialState, action) {
 
     case REMOVE_ADVERT_SUCCESS:
       return state.set('pending', false)
-                  .updateIn(['adverts'], adverts => adverts.remove(adverts.findIndex(advert => advert._id === state.get('confirmDelete')._id)))
+                  .updateIn(['adverts'], adverts => adverts.remove(adverts.findIndex(advert => advert.get('_id') === state.get('confirmDelete')._id)))
                   .set('confirmDelete', null);
 
     case EDIT_ADVERT_REQUEST:
@@ -69,7 +69,7 @@ export default function advert(state = initialState, action) {
     case EDIT_ADVERT_SUCCESS:
       return state.set('pending', false)
                   .set('dialogOpen', false)
-                  .updateIn(['adverts'], adverts => adverts.update(adverts.findIndex(advert => advert._id === state.get('editAdvert')._id), advert => action.data.advert));
+                  .updateIn(['adverts'], adverts => adverts.update(adverts.findIndex(advert => advert.get('_id') === state.get('editAdvert')._id), advert => Immutable.fromJS(action.data.advert)));
 
     case TOGGLE_ADVERT_DIALOG:
       return state.set('dialogOpen', typeof action.data.open === 'undefined' ? !state.get('dialogOpen') : action.data.open)
