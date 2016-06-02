@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-import { reduxForm, Field } from 'redux-form/immutable';
+import { reduxForm, Field, formValueSelector } from 'redux-form/immutable';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -64,29 +65,23 @@ class AdvertDialog extends Component {
   }
 
   submitAdvert(values) {
-    const { reset } = this.props;
-
     let promise;
 
-    if (this.props.initialValues && this.props.initialValues.get('_id')) {
-      promise = this.props.dispatch(editAdvert({
-        _id: this.props.initialValues.get('_id'),
-        title: values.get('title'),
-        category: values.get('category'),
-        location: values.get('location'),
-        body: values.get('body')
-      }));
+    const advert = {
+      _id: values.get('_id'),
+      title: values.get('title'),
+      category: values.get('category'),
+      location: values.get('location'),
+      body: values.get('body')
+    };
+
+    if (values.get('_id')) {
+      promise = this.props.dispatch(editAdvert(advert));
     } else {
-      promise = this.props.dispatch(addAdvert({
-        title: values.get('title'),
-        category: values.get('category'),
-        location: values.get('location'),
-        body: values.get('body')
-      }));
+      promise = this.props.dispatch(addAdvert(advert));
     }
 
     promise.then(() => {
-      reset();
       this.props.dispatch(setSnackbarInfo('Ogłoszenie zapisane'));
       this.props.dispatch(toggleDialog(false));
     }, () => {
@@ -105,12 +100,6 @@ class AdvertDialog extends Component {
     }
   }
 
-  componentWillMount() {
-    const { initialize } = this.props;
-    
-    initialize();
-  }
-
   getCategories() {
     return this.props.categories.map((category, index) => {
       return (
@@ -120,7 +109,7 @@ class AdvertDialog extends Component {
   }
 
   render() {
-    const { handleSubmit, initialValues: editAdvert } = this.props;
+    const { handleSubmit, editing } = this.props;
 
     let actions = [
       <FlatButton
@@ -128,7 +117,7 @@ class AdvertDialog extends Component {
         disabled={this.props.pending}
         onTouchTap={this.closeAdvertDialog} />];
 
-    if (!editAdvert) {
+    if (!editing) {
       actions.push(<FlatButton
         label="Dodaj"
         primary={true}
@@ -144,13 +133,13 @@ class AdvertDialog extends Component {
 
     return (
       <Dialog
-        title={editAdvert ? 'Edytuj ogłoszenie' : 'Dodaj ogłoszenie'}
+        title={editing ? 'Edytuj ogłoszenie' : 'Nowe ogłoszenie'}
         modal={true}
         actions={actions}
         open={this.props.open}
         contentStyle={styles.dialog}
         onRequestClose={this.closeAdvertDialog}>
-        <p>Znajdź ludzi, którzy zrobią pożytek z Twoich śmieci!</p>
+        <p>{editing ? 'Coś nie tak w Twoim ogłoszeniu? Nic nie szkodzi!' : 'Znajdź ludzi, którzy zrobią pożytek z Twoich śmieci!'}</p>
         <form style={styles.form} name="advertForm" onSubmit={handleSubmit(this.submitAdvert)}>
           <Field name="title"
             type="text"
@@ -218,4 +207,10 @@ const formData = {
   validate
 };
 
-export default reduxForm(formData)(AdvertDialog);
+const formSelector = formValueSelector('advert');
+
+export default connect((state) => {
+  return {
+    editing: formSelector(state, '_id')
+  };
+})(reduxForm(formData)(AdvertDialog));

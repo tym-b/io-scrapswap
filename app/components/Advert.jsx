@@ -23,7 +23,8 @@ const styles = {
       fontSize: '18px',
       color: '#333',
       fontWeight: '400',
-      lineHeight: '24px'
+      lineHeight: '24px',
+      whiteSpace: 'pre-wrap'
     }
   },
 
@@ -159,14 +160,6 @@ class Advert extends Component {
         </span>);
     };
 
-    const breakLines = (text) => {
-      return (
-        <span>
-          { text.split('\n').map(line => (<span>{ line }<br/></span>)) }
-        </span>
-      );
-    };
-
     return (
       <div style={ styles.mainBox } className="advert">
         <div style={ styles.headerBox.container }>
@@ -187,7 +180,7 @@ class Advert extends Component {
           </div>
         </div>
         <div style={ styles.contentBox.container }>
-          { breakLines(getMarked(advert.body, this.props.mark)) }
+          { getMarked(advert.body, this.props.mark) }
         </div>
       </div>
     );

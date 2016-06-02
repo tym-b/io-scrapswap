@@ -21,7 +21,6 @@ import {
 const initialState = Immutable.fromJS({
   pending: false,
   adverts: [],
-  editAdvert: null,
   confirmDelete: null,
   dialogOpen: false,
   searchQuery: ''
@@ -69,12 +68,10 @@ export default function advert(state = initialState, action) {
     case EDIT_ADVERT_SUCCESS:
       return state.set('pending', false)
                   .set('dialogOpen', false)
-                  .updateIn(['adverts'], adverts => adverts.update(adverts.findIndex(advert => advert.get('_id') === state.get('editAdvert')._id), advert => Immutable.fromJS(action.data.advert)));
+                  .updateIn(['adverts'], adverts => adverts.update(adverts.findIndex(advert => advert.get('_id') === action.data.advert._id), advert => Immutable.fromJS(action.data.advert)));
 
     case TOGGLE_ADVERT_DIALOG:
-      return state.set('dialogOpen', typeof action.data.open === 'undefined' ? !state.get('dialogOpen') : action.data.open)
-                  .set('editAdvert', action.data.advert);
-
+      return state.set('dialogOpen', typeof action.data.open === 'undefined' ? !state.get('dialogOpen') : action.data.open);
 
     case ADVERTS_SEARCH_QUERY:
       return state.set('searchQuery', action.data.value);

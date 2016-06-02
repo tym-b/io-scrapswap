@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { initialize } from 'redux-form/immutable';
 
 import Immutable from 'immutable';
 
@@ -55,7 +56,7 @@ class AdvertListContainer extends Component {
   constructor(props) {
     super(props);
     this.renderAdvertList = this.renderAdvertList.bind(this);
-    this.openAdvertDialog = this.openAdvertDialog.bind(this);
+    this.addNewAdvert = this.addNewAdvert.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleOnAdvertDelete = this.handleOnAdvertDelete.bind(this);
     this.cancelAdvertDelete = this.cancelAdvertDelete.bind(this);
@@ -63,7 +64,8 @@ class AdvertListContainer extends Component {
     this.handleOnAdvertEdit = this.handleOnAdvertEdit.bind(this);
   }
 
-  openAdvertDialog() {
+  addNewAdvert() {
+    this.props.dispatch(initialize('advert', {}));
     this.props.dispatch(toggleDialog(true));
   }
 
@@ -76,7 +78,14 @@ class AdvertListContainer extends Component {
   }
 
   handleOnAdvertEdit(advert) {
-    this.props.dispatch(toggleDialog(true, advert));
+    this.props.dispatch(initialize('advert', {
+      _id: advert._id,
+      title: advert.title,
+      category: advert.category._id,
+      location: advert.location,
+      body: advert.body
+    }));
+    this.props.dispatch(toggleDialog(true));
   }
 
   cancelAdvertDelete() {
@@ -129,18 +138,6 @@ class AdvertListContainer extends Component {
         onTouchTap={this.confirmAdvertDelete} />,
     ];
 
-    let advertInitialValues = null;
-
-    if (this.props.advert.editAdvert) {
-      advertInitialValues = Immutable.fromJS({
-        _id: this.props.advert.editAdvert._id,
-        title: this.props.advert.editAdvert.title,
-        category: this.props.advert.editAdvert.category._id,
-        location: this.props.advert.editAdvert.location,
-        body: this.props.advert.editAdvert.body
-      });
-    }
-
     return (
       <div style={ styles.container }>
         <Dialog
@@ -162,14 +159,13 @@ class AdvertListContainer extends Component {
         <ReactCSSTransitionGroup transitionName="advert" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
         { this.renderAdvertList() }
         </ReactCSSTransitionGroup>
-        <FloatingActionButton onTouchTap={this.openAdvertDialog} disabled={ !this.props.user.authenticated } style={ styles.floatingButton }>
+        <FloatingActionButton onTouchTap={this.addNewAdvert} disabled={ !this.props.user.authenticated } style={ styles.floatingButton }>
           <ContentAddIcon />
         </FloatingActionButton>
         <AdvertDialog
           open={ this.props.advert.dialogOpen }
           pending={ this.props.advert.pending }
-          categories={ this.props.category.categories }
-          initialValues={ advertInitialValues } />
+          categories={ this.props.category.categories } />
       </div>
     );
   }
@@ -180,12 +176,10 @@ AdvertListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
+export default connect((state) => {
   return {
     advert: state.get('advert').toJS(),
     user: state.get('user').toJS(),
     category: state.get('category').toJS()
   };
-}
-
-export default connect(mapStateToProps)(AdvertListContainer);
+})(AdvertListContainer);
