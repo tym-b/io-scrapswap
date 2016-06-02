@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import Badge from 'material-ui/Badge';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle';
-
-import { logout } from 'actions/users';
+import MessageIcon from 'material-ui/svg-icons/communication/message';
 
 const styles = {
   accountContainer: {
@@ -37,11 +36,18 @@ class UserMenuBlock extends Component {
 
   handleMenuClick(ev, item) {
     if (item.props.value === 'logout') {
-      this.props.dispatch(logout());
+      this.props.onLogout();
     }
   }
 
   render() {
+    let badgeStyle = {};
+    if (this.props.numMessages === 0) {
+      badgeStyle = {
+        display: 'none'
+      };
+    }
+
     return (
       <div style={styles.accountContainer}>
         <span style={styles.accountName}>{this.props.user.profile.name}</span>
@@ -54,13 +60,24 @@ class UserMenuBlock extends Component {
             value="logout"
             primaryText="Wyloguj" />
         </IconMenu>
+        <Badge
+          primary={ true }
+          badgeContent={ this.props.numMessages }
+          badgeStyle={badgeStyle}
+          className="badge">
+          <IconButton tooltip="Wiadomości" tooltipPosition="bottom-left">
+            <MessageIcon color={ styles.accountIcon.color } />
+          </IconButton>
+        </Badge>
       </div>
     );
   }
 }
 
-export default connect(state => {
-  return {
-    user: state.get('user').toJS()
-  };
-})(UserMenuBlock);
+UserMenuBlock.propTypes = {
+  user: PropTypes.object.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  numMessages: PropTypes.number.isRequired
+};
+
+export default UserMenuBlock;

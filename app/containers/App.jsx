@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
-import AppHeader from 'components/AppHeader';
-import LayoutComponents from 'components/LayoutComponents';
+import AppHeader from 'containers/AppHeader';
+import LayoutComponents from 'containers/LayoutComponents';
 
 const App = ({children}) => {
   return (

@@ -95,6 +95,11 @@ function renderFullPage(renderedContent, initialState, head={
         .advert:hover .advert-edit-box {
           width: 60px !important;
         }
+
+        .badge {
+          padding: 0px !important;
+          margin-right: 8px !important;
+        }
       </style>
     </head>
     <body style="margin: 0px; padding: 0px;">
