@@ -45,7 +45,7 @@ export default function advert(state = initialState, action) {
 
     case ADD_ADVERT_SUCCESS:
       return state.set('pending', false)
-                  .updateIn(['adverts'], adverts => adverts.push(Immutable.fromJS(action.data.advert)).sort((a1, a2) => new Date(a1.date) < new Date(a2.date) ? -1 : 1));
+                  .updateIn(['adverts'], adverts => adverts.push(Immutable.fromJS(action.data.advert)).sort((a1, a2) => new Date(a1.get('date')) > new Date(a2.get('date')) ? -1 : 1));
 
     case REMOVE_ADVERT_REQUEST:
       return state.set('pending', true);
