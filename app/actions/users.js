@@ -56,9 +56,15 @@ export function login(data) {
 }
 
 export function logout() {
-  return {
-    type: 'LOGOUT',
-    promise: makeUserRequest('post', null, '/logout')
+  return dispatch => {
+    const promise = makeUserRequest('post', null, '/logout');
+    promise.then(() => {
+      dispatch(push('/'));
+    });
+    return {
+      type: 'LOGOUT',
+      promise: promise
+    }
   }
 }
 
