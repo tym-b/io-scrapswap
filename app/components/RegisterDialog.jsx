@@ -128,6 +128,7 @@ class RegisterDialog extends Component {
       <Dialog
         title="Rejestracja"
         modal={false}
+        autoScrollBodyContent={true}
         actions={actions}
         open={this.props.open}
         contentStyle={styles.dialog}

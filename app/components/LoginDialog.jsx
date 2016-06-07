@@ -111,6 +111,7 @@ class LoginDialog extends Component {
       <Dialog
         title="Logowanie"
         modal={false}
+        autoScrollBodyContent={true}
         actions={actions}
         open={this.props.open}
         contentStyle={styles.dialog}

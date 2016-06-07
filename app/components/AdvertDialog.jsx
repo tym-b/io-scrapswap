@@ -18,6 +18,10 @@ const styles = {
     maxWidth: '830px'
   },
 
+  bodyInput: {
+    marginBottom: '12px'
+  },
+
   submitButton: {
     display: 'none'
   },
@@ -135,6 +139,7 @@ class AdvertDialog extends Component {
       <Dialog
         title={editing ? 'Edytuj ogłoszenie' : 'Nowe ogłoszenie'}
         modal={true}
+        autoScrollBodyContent={true}
         actions={actions}
         open={this.props.open}
         contentStyle={styles.dialog}
@@ -179,6 +184,7 @@ class AdvertDialog extends Component {
             } />
           <Field name="body"
             type="text"
+            style={styles.bodyInput}
             component={body =>
               <TextField
                 fullWidth={true}

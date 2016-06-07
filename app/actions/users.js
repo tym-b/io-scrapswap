@@ -55,16 +55,42 @@ export function login(data) {
   }
 }
 
+function logoutRequest() {
+  return {
+    type: types.LOGOUT_REQUEST
+  };
+}
+
+function logoutSuccess(data) {
+  return {
+    type: types.LOGOUT_SUCCESS
+  };
+}
+
+function logoutFailure(error = null) {
+  return {
+    type: types.LOGOUT_FAILURE,
+    data: {
+      error: error
+    }
+  };
+}
+
 export function logout() {
   return dispatch => {
-    const promise = makeUserRequest('post', null, '/logout');
-    promise.then(() => {
-      dispatch(push('/'));
+    dispatch(logoutRequest());
+    return makeUserRequest('post', null, '/logout')
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(logoutSuccess());
+        dispatch(push('/'));
+      } else {
+        dispatch(logoutFailure());
+      }
+    })
+    .catch(err => {
+      dispatch(logoutFailure());
     });
-    return {
-      type: 'LOGOUT',
-      promise: promise
-    }
   }
 }
 
