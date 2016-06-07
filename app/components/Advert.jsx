@@ -106,7 +106,8 @@ const styles = {
     color: '#fff',
     transition: 'transform 0.1s ease-in-out',
     display: 'inline-block',
-    transform: 'scale(1.0)'
+    transform: 'scale(1.0)',
+    whiteSpace: 'pre-wrap'
   }
 };
 
