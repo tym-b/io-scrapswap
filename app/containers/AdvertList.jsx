@@ -159,7 +159,10 @@ class AdvertListContainer extends Component {
         <ReactCSSTransitionGroup transitionName="advert" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
         { this.renderAdvertList() }
         </ReactCSSTransitionGroup>
-        <FloatingActionButton onTouchTap={this.addNewAdvert} disabled={ !this.props.user.authenticated } style={ styles.floatingButton }>
+        <FloatingActionButton
+          onTouchTap={ this.addNewAdvert }
+          disabled={ !this.props.user.authenticated }
+          style={ styles.floatingButton }>
           <ContentAddIcon />
         </FloatingActionButton>
         <AdvertDialog

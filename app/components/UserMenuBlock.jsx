@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -65,9 +66,11 @@ class UserMenuBlock extends Component {
           badgeContent={ this.props.numMessages }
           badgeStyle={badgeStyle}
           className="badge">
-          <IconButton tooltip="Wiadomości" tooltipPosition="bottom-left">
-            <MessageIcon color={ styles.accountIcon.color } />
-          </IconButton>
+          <Link to="messages">
+            <IconButton tooltip="Wiadomości" tooltipPosition="bottom-left">
+              <MessageIcon color={ styles.accountIcon.color } />
+            </IconButton>
+          </Link>
         </Badge>
       </div>
     );
