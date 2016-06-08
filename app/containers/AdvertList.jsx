@@ -20,9 +20,10 @@ import { fetchCategories } from 'actions/categories';
 
 const styles = {
   container: {
-    width: '95%',
+    width: 'calc(100% - 60px)',
     maxWidth: '800px',
-    margin: '40px auto'
+    margin: '0px auto',
+    padding: '30px 0px'
   },
 
   floatingButton: {

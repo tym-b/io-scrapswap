@@ -3,15 +3,23 @@ import { Link } from 'react-router';
 
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
+import Avatar from 'material-ui/Avatar';
 import MenuItem from 'material-ui/MenuItem';
 import Badge from 'material-ui/Badge';
-import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 import MessageIcon from 'material-ui/svg-icons/communication/message';
+import {green500} from 'material-ui/styles/colors';
 
 const styles = {
   accountContainer: {
     display: 'flex',
     alignItems: 'center'
+  },
+
+  avatarContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    height: '100%'
   },
 
   accountName: {
@@ -24,8 +32,18 @@ const styles = {
     display: 'flex'
   },
 
-  accountIcon: {
+  avatar: {
+    marginLeft: '20px',
+    marginRight: '8px'
+  },
+
+  messageIcon: {
     color: '#fff'
+  },
+
+  avatarColors: {
+    backgroundColor: '#fff',
+    color: green500
   }
 };
 
@@ -49,12 +67,18 @@ class UserMenuBlock extends Component {
       };
     }
 
+    const letter = this.props.user.profile.name.split(/\s+/).map(i => i[0]).splice(0, 2).join('');
+
     return (
       <div style={styles.accountContainer}>
-        <span style={styles.accountName}>{this.props.user.profile.name}</span>
         <IconMenu
           onItemTouchTap={this.handleMenuClick}
-          iconButtonElement={<IconButton style={styles.accountIconButton}><AccountIcon color={styles.accountIcon.color} /></IconButton>}
+          iconButtonElement={
+            <div style={styles.avatarContainer}>
+              <span style={styles.accountName}>{this.props.user.profile.name}</span>
+              <Avatar color={styles.avatarColors.color} backgroundColor={styles.avatarColors.backgroundColor} size={28} style={styles.avatar}>{letter}</Avatar>
+            </div>
+          }
           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
           targetOrigin={{horizontal: 'right', vertical: 'top'}}>
           <MenuItem
@@ -68,7 +92,7 @@ class UserMenuBlock extends Component {
           className="badge">
           <Link to="messages">
             <IconButton tooltip="Wiadomości" tooltipPosition="bottom-left">
-              <MessageIcon color={ styles.accountIcon.color } />
+              <MessageIcon color={ styles.messageIcon.color } />
             </IconButton>
           </Link>
         </Badge>

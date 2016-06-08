@@ -41,6 +41,10 @@ function renderFullPage(renderedContent, initialState, head={
           font-family: 'Roboto', sans-serif;
         }
 
+        #app {
+          min-height: 100vh;
+        }
+
         a {
           color: inherit;
           cursor: pointer;
