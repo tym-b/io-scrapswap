@@ -49,12 +49,14 @@ const styles = {
   formContainer: {
     height: '60px',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: '30px'
   },
 
   inputContainer: {
     display: 'flex',
-    flexGrow: '1'
+    flexGrow: '1',
+    paddingLeft: '40px'
   },
 
   submitContainer: {
@@ -62,6 +64,10 @@ const styles = {
   },
 
   conversationContainer: {
+    display: 'flex'
+  },
+
+  spacerContainer: {
     display: 'flex',
     flexGrow: '1'
   }
@@ -128,6 +134,7 @@ class MessageListContainer extends Component {
           </List>
         </div>
         <div style={styles.messagingContainer} className="messages__message-container">
+          <div style={styles.spacerContainer}></div>
           <div style={styles.conversationContainer}>
             <Conversation />
           </div>
