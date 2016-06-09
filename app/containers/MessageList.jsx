@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { reduxForm, Field } from 'redux-form/immutable';
 
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
@@ -10,14 +10,21 @@ import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAddIcon from 'material-ui/svg-icons/content/add';
+import MessageIcon from 'material-ui/svg-icons/communication/message';
+import {green400} from 'material-ui/styles/colors';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import Conversation from 'components/Conversation';
 
 const styles = {
   mainContainer: {
     width: 'calc(100% - 60px)',
     maxWidth: '1200px',
     margin: '0px auto',
-    padding: '30px 0px'
+    padding: '30px 0px',
+    display: 'flex',
+    alignItems: 'flex-start'
   },
 
   floatingButton: {
@@ -27,15 +34,36 @@ const styles = {
   },
 
   navigationContainer: {
-    position: 'aboslute',
-    bottom: '0px',
-    left: '0px',
     width: '350px',
     boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
   },
 
-  messageContainer: {
-    paddingRight: '300px'
+  messagingContainer: {
+    display: 'flex',
+    flexGrow: '1',
+    marginLeft: '30px',
+    height: 'calc(100vh - 195px)',
+    flexDirection: 'column'
+  },
+
+  formContainer: {
+    height: '60px',
+    display: 'flex',
+    alignItems: 'center'
+  },
+
+  inputContainer: {
+    display: 'flex',
+    flexGrow: '1'
+  },
+
+  submitContainer: {
+    marginLeft: '30px'
+  },
+
+  conversationContainer: {
+    display: 'flex',
+    flexGrow: '1'
   }
 };
 
@@ -80,7 +108,7 @@ class MessageListContainer extends Component {
       return (
         <div key={key}>
           <ListItem
-            leftAvatar={<Avatar>{letter}</Avatar>}
+            leftAvatar={<Avatar backgroundColor={green400}>{letter}</Avatar>}
             primaryText={conversation.user}
             secondaryText={conversation.text}
             secondaryTextLines={1} />
@@ -99,12 +127,31 @@ class MessageListContainer extends Component {
             { this.renderConversationsList() }
           </List>
         </div>
-        <div style={styles.messageContainer} className="messages__message-container">
-
+        <div style={styles.messagingContainer} className="messages__message-container">
+          <div style={styles.conversationContainer}>
+            <Conversation />
+          </div>
+          <form name="conversation" style={styles.formContainer}>
+            <div style={styles.inputContainer}>
+              <Field name="body"
+                type="text"
+                component={body =>
+                  <TextField
+                    fullWidth={true}
+                    disabled={this.props.pending}
+                    hintText="Tu wpisz wiadomość"
+                    errorText={body.touched && body.error}
+                    {...body} />
+                } />
+            </div>
+            <div style={styles.submitContainer}>
+              <RaisedButton label="Wyślij" primary={true} />
+            </div>
+          </form>
         </div>
         <FloatingActionButton
           style={ styles.floatingButton }>
-          <ContentAddIcon />
+          <MessageIcon />
         </FloatingActionButton>
       </div>
     );
@@ -114,6 +161,10 @@ class MessageListContainer extends Component {
 MessageListContainer.propTypes = {
 };
 
+const formData = {
+  form: 'conversation'
+};
+
 export default connect((state) => {
   return {};
-})(MessageListContainer);
+})(reduxForm(formData)(MessageListContainer));

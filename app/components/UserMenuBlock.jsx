@@ -7,7 +7,9 @@ import Avatar from 'material-ui/Avatar';
 import MenuItem from 'material-ui/MenuItem';
 import Badge from 'material-ui/Badge';
 import MessageIcon from 'material-ui/svg-icons/communication/message';
+import LogoutIcon from 'material-ui/svg-icons/action/exit-to-app';
 import {green500} from 'material-ui/styles/colors';
+import Subheader from 'material-ui/Subheader';
 
 const styles = {
   accountContainer: {
@@ -83,6 +85,7 @@ class UserMenuBlock extends Component {
           targetOrigin={{horizontal: 'right', vertical: 'top'}}>
           <MenuItem
             value="logout"
+            leftIcon={<LogoutIcon />}
             primaryText="Wyloguj" />
         </IconMenu>
         <Badge
