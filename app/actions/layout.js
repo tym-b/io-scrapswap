@@ -18,6 +18,15 @@ export function toggleRegister(open) {
   };
 }
 
+export function toggleMenu(open) {
+  return {
+    type: types.LAYOUT_TOGGLE_MENU,
+    data: {
+      open: open
+    }
+  };
+}
+
 export function switchLogin() {
   return {
     type: types.LAYOUT_SWITCH_LOGIN

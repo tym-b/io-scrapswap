@@ -7,7 +7,7 @@ import IconButton from 'material-ui/IconButton';
 import AccountIcon from 'material-ui/svg-icons/action/account-circle';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { toggleLogin } from 'actions/layout';
+import { toggleLogin, toggleMenu } from 'actions/layout';
 import { logout } from 'actions/users';
 
 import UserMenuBlock from 'components/UserMenuBlock';
@@ -23,6 +23,7 @@ class AppHeader extends Component {
     super(props);
     this.openLoginDialog = this.openLoginDialog.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleOpenMenu = this.handleOpenMenu.bind(this);
   }
 
   openLoginDialog() {
@@ -31,6 +32,10 @@ class AppHeader extends Component {
 
   handleLogout() {
     this.props.dispatch(logout());
+  }
+
+  handleOpenMenu() {
+    this.props.dispatch(toggleMenu(true));
   }
 
   renderAccountInfo() {
@@ -55,7 +60,7 @@ class AppHeader extends Component {
 
   render() {
     return (
-      <AppBar title={<Link to="/">ScrapSwap</Link>} iconElementRight={this.renderAccountInfo()} showMenuIconButton={false} />
+      <AppBar title={<Link to="/">ScrapSwap</Link>} iconElementRight={this.renderAccountInfo()} onLeftIconButtonTouchTap={this.handleOpenMenu} />
     );
   }
 }

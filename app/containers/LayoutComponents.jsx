@@ -3,18 +3,26 @@ import { connect } from 'react-redux';
 
 import LoginDialog from 'components/LoginDialog';
 import RegisterDialog from 'components/RegisterDialog';
-import Snackbar from 'material-ui/Snackbar';
 
-import { setSnackbarInfo } from 'actions/layout';
+import Snackbar from 'material-ui/Snackbar';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
+
+import { setSnackbarInfo, toggleMenu } from 'actions/layout';
 
 class LayoutComponents extends Component {
   constructor(props) {
     super(props);
     this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
+    this.handleMenuState = this.handleMenuState.bind(this);
   }
 
   handleSnackbarClose() {
     this.props.dispatch(setSnackbarInfo());
+  }
+
+  handleMenuState(open) {
+    this.props.dispatch(toggleMenu(open));
   }
 
   render() {
@@ -29,6 +37,10 @@ class LayoutComponents extends Component {
           autoHideDuration={4000} />
         <LoginDialog open={this.props.layout.loginOpen} />
         <RegisterDialog open={this.props.layout.registerOpen} />
+        <Drawer open={this.props.layout.menuOpen} onRequestChange={this.handleMenuState}>
+          <MenuItem>Menu Item</MenuItem>
+          <MenuItem>Menu Item 2</MenuItem>
+        </Drawer>
       </div>
     );
   }
