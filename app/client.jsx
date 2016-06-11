@@ -11,27 +11,54 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import {fetchComponentDataBeforeRender} from 'api/fetchComponentDataBeforeRender';
+
 import moment from 'moment';
 moment.locale('pl');
 
 const initialState = Immutable.fromJS(window.__INITIAL_STATE__);
 
+/* https://github.com/reactjs/react-router-redux/issues/314 */
+const createSelectLocationState = () => {
+  let prevRoutingState, prevRoutingStateJS;
+
+  return (state) => {
+    const routingState = state.get('routing');
+
+    if (typeof prevRoutingState === 'undefined' || prevRoutingState !== routingState) {
+      prevRoutingState = routingState;
+      prevRoutingStateJS = routingState.toJS();
+    }
+
+    return prevRoutingStateJS;
+  };
+};
+
 const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState (state) {
-    return state.get('routing').toJS();
-  }
+  selectLocationState: createSelectLocationState()
 });
 const routes = createRoutes(store);
 
 injectTapEventPlugin();
+
+function onUpdate() {
+  if (window.__INITIAL_STATE__ !== null) {
+    window.__INITIAL_STATE__ = null;
+    return;
+  }
+
+  const { components, params } = this.state;
+
+  fetchComponentDataBeforeRender(store.dispatch, components, params);
+}
 
 const muiTheme = scrapswapMuiThemeProvider(false);
 
 render(
   <MuiThemeProvider muiTheme={muiTheme}>
     <Provider store={store}>
-      <Router history={history}>
+      <Router history={history} onUpdate={onUpdate}>
         {routes}
       </Router>
     </Provider>

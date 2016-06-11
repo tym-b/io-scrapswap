@@ -70,6 +70,10 @@ const styles = {
   spacerContainer: {
     display: 'flex',
     flexGrow: '1'
+  },
+
+  submitButton: {
+    display: 'none'
   }
 };
 
@@ -154,6 +158,7 @@ class MessageListContainer extends Component {
             <div style={styles.submitContainer}>
               <RaisedButton label="Wyślij" primary={true} />
             </div>
+            <input disabled={this.props.pending} type="submit" style={styles.submitButton} />
           </form>
         </div>
         <FloatingActionButton
