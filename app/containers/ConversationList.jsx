@@ -17,7 +17,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import Conversation from 'components/Conversation';
 
-import { conversationsInitialFetch } from 'actions/conversations';
+import { conversationsInitialFetch, selectConversation } from 'actions/conversations';
 
 const styles = {
   mainContainer: {
@@ -76,6 +76,10 @@ const styles = {
 
   submitButton: {
     display: 'none'
+  },
+
+  selectedItem: {
+    backgroundColor: '#dedede'
   }
 };
 
@@ -91,8 +95,14 @@ class MessageListContainer extends Component {
     this.renderSelectedConversation = this.renderSelectedConversation.bind(this);
   }
 
+  handleSelectConversation(id) {
+    if (id !== this.props.conversation.selectedConversation._id) {
+      this.props.dispatch(selectConversation(id));
+    }
+  }
+
   renderConversationsList() {
-    const { user, conversation: { conversations } } = this.props;
+    const { user, conversation: { conversations, selectedConversation } } = this.props;
 
     return conversations.map((conversation, key) => {
       const dividerStyle = {};
@@ -107,10 +117,12 @@ class MessageListContainer extends Component {
       return (
         <div key={key}>
           <ListItem
+            onTouchTap={this.handleSelectConversation.bind(this, conversation._id)}
             leftAvatar={<Avatar backgroundColor={green400}>{letter}</Avatar>}
             primaryText={partner.profile.name}
             secondaryText={conversation.lastMessage.text}
-            secondaryTextLines={1} />
+            secondaryTextLines={1}
+            style={selectedConversation._id === conversation._id ? styles.selectedItem : {}} />
           <Divider inset={true} style={dividerStyle} />
         </div>
       );

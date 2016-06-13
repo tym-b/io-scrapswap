@@ -26,11 +26,11 @@ function conversationsInitialFetchRequest() {
   };
 }
 
-function conversationsInitialFetchSuccess(conversation, selectedConversation = null) {
+function conversationsInitialFetchSuccess(conversations, selectedConversation = null) {
   return {
     type: types.GET_CONVERSATIONS_SUCCESS,
     data: {
-      conversation,
+      conversations,
       selectedConversation
     }
   };
@@ -62,4 +62,11 @@ export function conversationsInitialFetch() {
       dispatch(conversationsInitialFetchFailure());
     });
   }
+};
+
+export function selectConversation(id) {
+  return {
+    type: types.SELECT_CONVERSATION,
+    promise: makeConversationRequest('get', id, {}, 'api/conversation')
+  };
 };
