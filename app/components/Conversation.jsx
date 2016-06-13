@@ -109,7 +109,7 @@ class Conversation extends Component {
           const lastMessageGroup = _.last(prev);
           const lastMessage = _.last(lastMessageGroup.messages);
 
-          if (lastMessageGroup.sender === curr.sender && moment(lastMessage.date).diff(curr.date, 'minutes') < 2) {
+          if (lastMessageGroup.sender === curr.sender && moment(curr.date).diff(lastMessage.date, 'minutes') < 2) {
             lastMessageGroup.messages.push({
               date: curr.date,
               text: curr.text
