@@ -17,3 +17,10 @@ export function sendMessage(message) {
     promise: makeMessageRequest('post', false, message, 'api/message/send')
   };
 };
+
+export function getConversations() {
+  return {
+    type: types.GET_CONVERSATIONS,
+    promise: makeMessageRequest('get', false, {}, 'api/conversation/all')
+  };
+};

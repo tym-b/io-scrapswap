@@ -9,7 +9,7 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import { sendMessage } from 'actions/messages';
+import { sendMessage } from 'actions/conversations';
 import { setSnackbarInfo } from 'actions/layout';
 
 const styles = {

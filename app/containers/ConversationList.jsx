@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
+import _ from 'lodash';
+
 import { reduxForm, Field } from 'redux-form/immutable';
 
 import { List, ListItem } from 'material-ui/List';
@@ -9,13 +11,13 @@ import Subheader from 'material-ui/Subheader';
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import MessageIcon from 'material-ui/svg-icons/communication/message';
 import {green400} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Conversation from 'components/Conversation';
+
+import { getConversations } from 'actions/conversations';
 
 const styles = {
   mainContainer: {
@@ -79,7 +81,9 @@ const styles = {
 
 class MessageListContainer extends Component {
 
-  static need = [];
+  static need = [
+    getConversations
+  ];
 
   constructor(props) {
     super(props);
@@ -87,24 +91,7 @@ class MessageListContainer extends Component {
   }
 
   renderConversationsList() {
-    const conversations = [
-      {
-        user: 'Paweł Husak',
-        text: 'Lorem ipsum lorem'
-      },
-      {
-        user: 'Magda Łątkowska',
-        text: 'Lorem ipsum lorem'
-      },
-      {
-        user: 'Michał Kaźmierczak',
-        text: 'Lorem ipsum lorem'
-      },
-      {
-        user: 'Tymon',
-        text: 'Lorem ipsum lorem'
-      }
-    ];
+    const { user, conversation: { conversations } } = this.props;
 
     return conversations.map((conversation, key) => {
       const dividerStyle = {};
@@ -113,14 +100,16 @@ class MessageListContainer extends Component {
         dividerStyle.display = 'none';
       }
 
-      const letter = conversation.user.split(/\s+/).map(i => i[0]).splice(0, 2).join('');
+      const partner = _.first(conversation.members.filter(m => m._id !== user._id)) || _.first(conversation.members);
+      debugger;
+      const letter = partner.profile.name.split(/\s+/).map(i => i[0]).splice(0, 2).join('');
 
       return (
         <div key={key}>
           <ListItem
             leftAvatar={<Avatar backgroundColor={green400}>{letter}</Avatar>}
-            primaryText={conversation.user}
-            secondaryText={conversation.text}
+            primaryText={partner.profile.name}
+            secondaryText={conversation.lastMessage.text}
             secondaryTextLines={1} />
           <Divider inset={true} style={dividerStyle} />
         </div>
@@ -142,29 +131,7 @@ class MessageListContainer extends Component {
           <div style={styles.conversationContainer}>
             <Conversation />
           </div>
-          <form name="conversation" style={styles.formContainer}>
-            <div style={styles.inputContainer}>
-              <Field name="body"
-                type="text"
-                component={body =>
-                  <TextField
-                    fullWidth={true}
-                    disabled={this.props.pending}
-                    hintText="Tu wpisz wiadomość"
-                    errorText={body.touched && body.error}
-                    {...body} />
-                } />
-            </div>
-            <div style={styles.submitContainer}>
-              <RaisedButton label="Wyślij" primary={true} />
-            </div>
-            <input disabled={this.props.pending} type="submit" style={styles.submitButton} />
-          </form>
         </div>
-        <FloatingActionButton
-          style={ styles.floatingButton }>
-          <MessageIcon />
-        </FloatingActionButton>
       </div>
     );
   }
@@ -173,10 +140,9 @@ class MessageListContainer extends Component {
 MessageListContainer.propTypes = {
 };
 
-const formData = {
-  form: 'conversation'
-};
-
 export default connect((state) => {
-  return {};
-})(reduxForm(formData)(MessageListContainer));
+  return {
+    user: state.get('user').toJS(),
+    conversation: state.get('conversation').toJS()
+  };
+})(MessageListContainer);
