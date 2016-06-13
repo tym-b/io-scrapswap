@@ -12,6 +12,8 @@ import ArrowRightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 import { green500 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 
+const initialAdvertHeight = 48;
+
 const styles = {
   container: {
     display: 'flex',
@@ -28,7 +30,7 @@ const styles = {
       lineHeight: '24px',
       whiteSpace: 'pre-wrap',
       overflow: 'hidden',
-      maxHeight: '48px',
+      maxHeight: initialAdvertHeight + 'px',
       boxSizing: 'content-box',
       transition: 'max-height 0.3s ease-in-out'
     },
@@ -53,7 +55,7 @@ const styles = {
       left: '0px',
       width: '100%',
       height: '100%',
-      boxShadow: 'inset 0px -20px 20px 10px rgba(255,255,255,1)',
+      boxShadow: 'inset 0px -20px 40px 10px rgba(255,255,255,1)',
       transition: 'box-shadow 0.3s ease-in-out'
     },
 
@@ -191,7 +193,7 @@ class Advert extends Component {
   }
 
   handleExpand() {
-    this.props.onExpand(this.props.data);
+    this.refs.advertBody && this.refs.advertBody.clientHeight > initialAdvertHeight && this.props.onExpand(this.props.data);
   }
 
   handleSendMessage() {
@@ -253,11 +255,11 @@ class Advert extends Component {
         </div>
         <div style={ advert.expanded ? styles.contentBox.containerExpanded : styles.contentBox.container }>
           <div ref="advertBody">{ getMarked(advert.body, this.props.mark) }</div>
-          <div style={ (advert.expanded || this.refs.advertBody.clientHeight <= 48) ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
+          <div style={ (advert.expanded || (this.refs.advertBody && this.refs.advertBody.clientHeight <= initialAdvertHeight)) ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
         </div>
         <div style={styles.contentBox.actionsContainer}>
           <FlatButton
-              style={this.refs.advertBody.clientHeight > 48 ? {} : styles.hidden}
+              style={(this.refs.advertBody && this.refs.advertBody.clientHeight > initialAdvertHeight) ? {} : styles.hidden}
               label={advert.expanded ? 'Zwiń' : 'Czytaj dalej'}
               secondary={true}
               onTouchTap={this.handleExpand} />
