@@ -28,7 +28,8 @@ const styles = {
       lineHeight: '24px',
       whiteSpace: 'pre-wrap',
       overflow: 'hidden',
-      maxHeight: '120px',
+      maxHeight: '48px',
+      boxSizing: 'content-box',
       transition: 'max-height 0.3s ease-in-out'
     },
 
@@ -162,6 +163,10 @@ const styles = {
     display: 'inline-block',
     transform: 'scale(1.0)',
     whiteSpace: 'pre-wrap'
+  },
+
+  hidden: {
+    display: 'none'
   }
 };
 
@@ -247,11 +252,15 @@ class Advert extends Component {
           </div>
         </div>
         <div style={ advert.expanded ? styles.contentBox.containerExpanded : styles.contentBox.container }>
-          { getMarked(advert.body, this.props.mark) }
-          <div style={ advert.expanded ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
+          <div ref="advertBody">{ getMarked(advert.body, this.props.mark) }</div>
+          <div style={ (advert.expanded || this.refs.advertBody.clientHeight <= 48) ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
         </div>
         <div style={styles.contentBox.actionsContainer}>
-          <FlatButton label={advert.expanded ? 'Zwiń' : 'Czytaj dalej'} secondary={true} onTouchTap={this.handleExpand} />
+          <FlatButton
+              style={this.refs.advertBody.clientHeight > 48 ? {} : styles.hidden}
+              label={advert.expanded ? 'Zwiń' : 'Czytaj dalej'}
+              secondary={true}
+              onTouchTap={this.handleExpand} />
           <FlatButton label="Wyślij wiadomość" primary={true} onTouchTap={this.handleSendMessage} />
         </div>
       </div>
