@@ -11,7 +11,8 @@ describe('Advert reducer', () => {
     let expectedDefaultState = {
       pending: false,
       adverts: [],
-      dialogOpen: false
+      dialogOpen: false,
+      searchQuery: ''
     };
 
     expect(defaultState.toJS()).toEqual(expectedDefaultState);
