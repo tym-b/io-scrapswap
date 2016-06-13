@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import moment from 'moment';
 
+import FlatButton from 'material-ui/FlatButton';
 import LocationIcon from 'material-ui/svg-icons/communication/location-on';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import EditIcon from 'material-ui/svg-icons/image/edit';
@@ -21,7 +22,6 @@ const styles = {
     container: {
       position: 'relative',
       padding: '25px 25px 30px 15px',
-      marginBottom: '30px',
       fontSize: '18px',
       color: '#333',
       fontWeight: '400',
@@ -35,7 +35,6 @@ const styles = {
     containerExpanded: {
       position: 'relative',
       padding: '25px 25px 30px 15px',
-      marginBottom: '30px',
       fontSize: '18px',
       color: '#333',
       fontWeight: '400',
@@ -68,16 +67,17 @@ const styles = {
       transition: 'box-shadow 0.3s ease-in-out'
     },
 
-    expandLink: {
+    actionsContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      marginBottom: '30px'
+    },
+
+    link: {
       color: green500,
       fontSize: '16px',
       textDecoration: 'underline',
-      cursor: 'pointer',
-      pointerEvents: 'all',
-      position: 'absolute',
-      right: '15px',
-      bottom: '0px',
-      display: 'inline-block'
+      cursor: 'pointer'
     }
   },
 
@@ -243,11 +243,11 @@ class Advert extends Component {
         </div>
         <div style={ advert.expanded ? styles.contentBox.containerExpanded : styles.contentBox.container }>
           { getMarked(advert.body, this.props.mark) }
-          <div style={ advert.expanded ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }>
-            <a onTouchTap={this.handleExpand} style={styles.contentBox.expandLink}>
-              { advert.expanded ? 'Zwiń' : 'Czytaj dalej' }
-            </a>
-          </div>
+          <div style={ advert.expanded ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
+        </div>
+        <div style={styles.contentBox.actionsContainer}>
+          <FlatButton label={advert.expanded ? 'Zwiń' : 'Czytaj dalej'} secondary={true} onTouchTap={this.handleExpand} />
+          <FlatButton label="Wyślij wiadomość" primary={true} onTouchTap={this.handleExpand} />
         </div>
       </div>
     );
