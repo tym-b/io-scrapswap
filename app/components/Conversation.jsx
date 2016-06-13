@@ -136,7 +136,6 @@ class Conversation extends Component {
         }];
 
       }, false).map((group, key) => {
-        debugger;
         const senderName = _.find(members, m => m._id === group.sender).profile.name;
         return (<MessageGroup key={key} senderName={senderName} messages={group.messages} />);
       });

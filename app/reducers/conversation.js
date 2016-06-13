@@ -6,7 +6,8 @@ import {
   GET_CONVERSATIONS_FAILURE,
   SELECT_CONVERSATION_REQUEST,
   SELECT_CONVERSATION_SUCCESS,
-  SELECT_CONVERSATION_FAILURE
+  SELECT_CONVERSATION_FAILURE,
+  MESSAGE_SEND_SUCCESS
 } from 'constants/index';
 
 const initialState = Immutable.fromJS({
@@ -37,7 +38,15 @@ export default function conversation(state = initialState, action) {
 
     case SELECT_CONVERSATION_SUCCESS:
       return state.set('pending', false)
-                  .set('selectedConversation', action.req.data);
+                  .set('selectedConversation', Immutable.fromJS(action.req.data));
+
+    case MESSAGE_SEND_SUCCESS:
+      return state.updateIn(['selectedConversation', 'messages'], messages => messages.push(Immutable.fromJS(action.req.data)))
+                  .updateIn(['conversations'], conversations => {
+                    return conversations.update(conversations.findIndex(conversation => conversation.get('_id') === state.get('selectedConversation').get('_id')), conversation => {
+                      return conversation.set('lastMessage', Immutable.fromJS(action.req.data));
+                    });
+                  });
 
     default:
       return state;

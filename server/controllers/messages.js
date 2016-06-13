@@ -6,12 +6,11 @@ var messagingSystem = require('../services/messagingSystem.js');
 
 exports.send = function(req, res) {
     const reqBody = Object.assign(req.body, {sender: req.user._id});
-    
+
     if (req.user) {
         messagingSystem.createMessage(reqBody, successMessage, errorMessage);
 
         function successMessage(message) {
-            console.log(req.user._id);
             messagingSystem.getOrCreateConversation(reqBody, successConv, errorConv);
 
             function successConv(conversation) {

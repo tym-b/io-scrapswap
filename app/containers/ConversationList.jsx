@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 
 import _ from 'lodash';
 
-import { reduxForm, Field } from 'redux-form/immutable';
-
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
@@ -13,9 +11,11 @@ import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import {green400} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
+import LinearProgress from 'material-ui/LinearProgress';
 
 import Conversation from 'components/Conversation';
+import ConversationMessageInput from 'components/ConversationMessageInput';
 
 import { conversationsInitialFetch, selectConversation } from 'actions/conversations';
 
@@ -56,23 +56,6 @@ const styles = {
     flexDirection: 'column'
   },
 
-  formContainer: {
-    height: '60px',
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: '30px'
-  },
-
-  inputContainer: {
-    display: 'flex',
-    flexGrow: '1',
-    paddingLeft: '40px'
-  },
-
-  submitContainer: {
-    marginLeft: '30px'
-  },
-
   conversationContainer: {
     display: 'flex'
   },
@@ -82,12 +65,22 @@ const styles = {
     flexGrow: '1'
   },
 
-  submitButton: {
+  selectedItem: {
+    backgroundColor: '#dedede'
+  },
+
+  hide: {
     display: 'none'
   },
 
-  selectedItem: {
-    backgroundColor: '#dedede'
+  conversationProgress: {
+    alignSelf: 'center'
+  },
+
+  conversationFrame: {
+    display: 'flex',
+    flexGrow: '1',
+    flexDirection: 'column'
   }
 };
 
@@ -138,13 +131,28 @@ class MessageListContainer extends Component {
   }
 
   renderSelectedConversation() {
-    const { conversations, selectedConversation } = this.props.conversation;
+    const { conversations, selectedConversation, selectedConversation: { members }, pending } = this.props.conversation;
+    const recipient = _.find(members, m => m._id !== this.props.user._id) || _.first(members);
+
+    if (pending) {
+      return (
+        <CircularProgress size={0.75} />
+      );
+    }
 
     if (selectedConversation) {
       return (
-        <Conversation data={selectedConversation} />
+        <div style={styles.conversationFrame}>
+          <div style={styles.spacerContainer}></div>
+          <div style={styles.conversationContainer}>
+            <Conversation data={selectedConversation} />
+          </div>
+          <ConversationMessageInput style={styles.conversationProgress} recipient={recipient} />
+        </div>
       );
     }
+
+    return (<div></div>);
   }
 
   render() {
@@ -160,26 +168,23 @@ class MessageListContainer extends Component {
     }
 
     return (
-      <div style={styles.mainContainer}>
-        <div style={styles.navigationContainer} className="messages__navigation-container">
-          <List>
-            <Subheader>Twoje konwersacje</Subheader>
-            { this.renderConversationsList() }
-          </List>
-        </div>
-        <div style={styles.messagingContainer} className="messages__message-container">
-          <div style={styles.spacerContainer}></div>
-          <div style={styles.conversationContainer}>
+      <div>
+        <div style={this.props.conversation.initialLoad ? styles.hide : styles.mainContainer}>
+          <div style={styles.navigationContainer} className="messages__navigation-container">
+            <List>
+              <Subheader>Twoje konwersacje</Subheader>
+              { this.renderConversationsList() }
+            </List>
+          </div>
+          <div style={styles.messagingContainer} className="messages__message-container">
             { this.renderSelectedConversation() }
           </div>
         </div>
+        <LinearProgress mode="indeterminate" style={this.props.conversation.initialLoad ? {} : styles.hide} />
       </div>
     );
   }
 }
-
-MessageListContainer.propTypes = {
-};
 
 export default connect((state) => {
   return {
