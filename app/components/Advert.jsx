@@ -172,6 +172,7 @@ class Advert extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleExpand = this.handleExpand.bind(this);
+    this.handleSendMessage = this.handleSendMessage.bind(this);
   }
 
   handleDelete(e) {
@@ -186,6 +187,10 @@ class Advert extends Component {
 
   handleExpand() {
     this.props.onExpand(this.props.data);
+  }
+
+  handleSendMessage() {
+    this.props.onSendMessage(this.props.data);
   }
 
   renderEditBox() {
@@ -247,7 +252,7 @@ class Advert extends Component {
         </div>
         <div style={styles.contentBox.actionsContainer}>
           <FlatButton label={advert.expanded ? 'Zwiń' : 'Czytaj dalej'} secondary={true} onTouchTap={this.handleExpand} />
-          <FlatButton label="Wyślij wiadomość" primary={true} onTouchTap={this.handleExpand} />
+          <FlatButton label="Wyślij wiadomość" primary={true} onTouchTap={this.handleSendMessage} />
         </div>
       </div>
     );
@@ -262,5 +267,6 @@ Advert.propTypes = {
   editable: PropTypes.bool,
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
+  onSendMessage: PropTypes.func.isRequired,
   onExpand: PropTypes.func.isRequired
 };

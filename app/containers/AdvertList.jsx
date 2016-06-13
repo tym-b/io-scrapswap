@@ -69,6 +69,7 @@ class AdvertListContainer extends Component {
     this.confirmAdvertDelete = this.confirmAdvertDelete.bind(this);
     this.handleOnAdvertEdit = this.handleOnAdvertEdit.bind(this);
     this.handleOnAdvertExpand = this.handleOnAdvertExpand.bind(this);
+    this.handleOnSendMessage = this.handleOnSendMessage.bind(this);
   }
 
   addNewAdvert() {
@@ -82,6 +83,10 @@ class AdvertListContainer extends Component {
 
   handleOnAdvertDelete(advert) {
     this.props.dispatch(confirmDelete(advert));
+  }
+
+  handleOnSendMessage(advert) {
+    
   }
 
   handleOnAdvertEdit(advert) {
@@ -130,7 +135,7 @@ class AdvertListContainer extends Component {
     }
 
     return advertsToShow.map((advert, key) => {
-      return (<Advert key={key} data={advert} mark={searchQuery} onExpand={this.handleOnAdvertExpand} onDelete={this.handleOnAdvertDelete} onEdit={this.handleOnAdvertEdit} editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
+      return (<Advert key={key} data={advert} mark={searchQuery} onSendMessage={this.handleOnSendMessage} onExpand={this.handleOnAdvertExpand} onDelete={this.handleOnAdvertDelete} onEdit={this.handleOnAdvertEdit} editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
     });
   }
 
