@@ -17,7 +17,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import Conversation from 'components/Conversation';
 
-import { getConversations } from 'actions/conversations';
+import { conversationsInitialFetch } from 'actions/conversations';
 
 const styles = {
   mainContainer: {
@@ -82,12 +82,13 @@ const styles = {
 class MessageListContainer extends Component {
 
   static need = [
-    getConversations
+    conversationsInitialFetch
   ];
 
   constructor(props) {
     super(props);
     this.renderConversationsList = this.renderConversationsList.bind(this);
+    this.renderSelectedConversation = this.renderSelectedConversation.bind(this);
   }
 
   renderConversationsList() {
@@ -101,7 +102,6 @@ class MessageListContainer extends Component {
       }
 
       const partner = _.first(conversation.members.filter(m => m._id !== user._id)) || _.first(conversation.members);
-      debugger;
       const letter = partner.profile.name.split(/\s+/).map(i => i[0]).splice(0, 2).join('');
 
       return (
@@ -117,6 +117,16 @@ class MessageListContainer extends Component {
     });
   }
 
+  renderSelectedConversation() {
+    const { selectedConversation } = this.props.conversation;
+
+    if (selectedConversation) {
+      return (
+        <Conversation data={selectedConversation} />
+      );
+    }
+  }
+
   render() {
     return (
       <div style={styles.mainContainer}>
@@ -129,7 +139,7 @@ class MessageListContainer extends Component {
         <div style={styles.messagingContainer} className="messages__message-container">
           <div style={styles.spacerContainer}></div>
           <div style={styles.conversationContainer}>
-            <Conversation />
+            { this.renderSelectedConversation() }
           </div>
         </div>
       </div>

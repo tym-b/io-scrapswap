@@ -8,7 +8,8 @@ import {
 
 const initialState = Immutable.fromJS({
   pending: false,
-  conversations: []
+  conversations: [],
+  selectedConversation: null
 });
 
 export default function advert(state = initialState, action) {
@@ -17,10 +18,8 @@ export default function advert(state = initialState, action) {
       return state.set('pending', true);
       
     case GET_CONVERSATIONS_SUCCESS:
-      return state.set('pending', false).set('conversations', Immutable.fromJS(action.req.data.map(a => {
-        a.expanded = false;
-        return a;
-      })));
+      debugger;
+      return state.set('pending', false).set('conversations', Immutable.fromJS(action.req.data));
 
     case GET_CONVERSATIONS_FAILURE:
       return state.set('pending', false);
