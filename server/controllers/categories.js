@@ -10,8 +10,6 @@ var Category = mongoose.model('Category');
  * @apiError Error404 Categories were not found.
  */
 exports.all = function(req, res) {
-    console.log("------------------- USER ------------------");
-    console.log(req.user);
     Category.find({}).lean().exec(function(err, categories) {
         if (!err) {
             res.json(categories);

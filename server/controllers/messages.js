@@ -15,7 +15,7 @@ exports.send = function(req, res) {
                 conversation.messages.push(message._id);
                 conversation.lastMessage = message._id;
                 conversation.hasUnreadMessages = true;
-                conversation.lastModificationDate = Date.now;
+                conversation.lastModificationDate = Date.now();
 
                 conversation.save(function(err) {
                     if (!err) {
