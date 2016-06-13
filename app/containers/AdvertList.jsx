@@ -11,6 +11,7 @@ import ContentAddIcon from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import LinearProgress from 'material-ui/LinearProgress';
 
 import Advert from 'components/Advert';
 import AdvertDialog from 'components/AdvertDialog';
@@ -45,6 +46,10 @@ const styles = {
     width: '100%',
     maxWidth: '400px'
   },
+
+  hide: {
+    display: 'none'
+  }
 };
 
 class AdvertListContainer extends Component {
@@ -139,37 +144,42 @@ class AdvertListContainer extends Component {
         onTouchTap={this.confirmAdvertDelete} />,
     ];
 
+
+
     return (
-      <div style={ styles.container }>
-        <Dialog
-          title="Usuń ogłoszenie"
-          actions={actions}
-          contentStyle={styles.confirmDialog}
-          modal={false}
-          onRequestClose={this.cancelAdvertDelete}
-          open={!!this.props.advert.confirmDelete} >
-          Czy na pewno chcesz usunąć ogłoszenie <b>{ this.props.advert.confirmDelete ? this.props.advert.confirmDelete.title : '' }</b>?
-        </Dialog>
-        <TextField
-          id="searchField"
-          style={ styles.searchField }
-          fullWidth={true}
-          onChange={this.handleSearchChange}
-          defaultValue={this.props.advert.searchQuery}
-          hintText="Wyszukaj ogłoszenie" />
-        <ReactCSSTransitionGroup transitionName="advert" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
-        { this.renderAdvertList() }
-        </ReactCSSTransitionGroup>
-        <FloatingActionButton
-          onTouchTap={ this.addNewAdvert }
-          disabled={ !this.props.user.authenticated }
-          style={ styles.floatingButton }>
-          <ContentAddIcon />
-        </FloatingActionButton>
-        <AdvertDialog
-          open={ this.props.advert.dialogOpen }
-          pending={ this.props.advert.pending }
-          categories={ this.props.category.categories } />
+      <div>
+        <div style={ this.props.advert.pending ? styles.hide : styles.container }>
+          <Dialog
+            title="Usuń ogłoszenie"
+            actions={actions}
+            contentStyle={styles.confirmDialog}
+            modal={false}
+            onRequestClose={this.cancelAdvertDelete}
+            open={!!this.props.advert.confirmDelete} >
+            Czy na pewno chcesz usunąć ogłoszenie <b>{ this.props.advert.confirmDelete ? this.props.advert.confirmDelete.title : '' }</b>?
+          </Dialog>
+          <TextField
+            id="searchField"
+            style={ styles.searchField }
+            fullWidth={true}
+            onChange={this.handleSearchChange}
+            defaultValue={this.props.advert.searchQuery}
+            hintText="Wyszukaj ogłoszenie" />
+          <ReactCSSTransitionGroup transitionName="list-animation" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+          { this.renderAdvertList() }
+          </ReactCSSTransitionGroup>
+          <FloatingActionButton
+            onTouchTap={ this.addNewAdvert }
+            disabled={ !this.props.user.authenticated }
+            style={ styles.floatingButton }>
+            <ContentAddIcon />
+          </FloatingActionButton>
+          <AdvertDialog
+            open={ this.props.advert.dialogOpen }
+            pending={ this.props.advert.pending }
+            categories={ this.props.category.categories } />
+        </div>
+        <LinearProgress mode="indeterminate" style={this.props.advert.pending ? {} : styles.hide} />
       </div>
     );
   }

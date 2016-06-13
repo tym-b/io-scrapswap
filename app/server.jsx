@@ -66,22 +66,22 @@ function renderFullPage(renderedContent, initialState, head={
           animation-timing-function: ease-in-out;
         }
 
-        .advert-enter {
+        .list-animation-enter {
           opacity: 0;
           transition: all 0.3s ease-in-out;
         }
 
-        .advert-enter.advert-enter-active {
+        .list-animation-enter.list-animation-enter-active {
           opacity: 1;
         }
 
-        .advert-leave {
+        .list-animation-leave {
           opacity: 1;
           transform: scale(1);
           transition: all 0.3s ease-in-out;
         }
 
-        .advert-leave.advert-leave-active {
+        .list-animation-leave.list-animation-leave-active {
           opacity: 0;
           transform: scale(0.95);
         }

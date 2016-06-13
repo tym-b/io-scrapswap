@@ -238,7 +238,9 @@ class Conversation extends Component {
   render() {
     return (
       <div style={styles.mainContainer}>
-        {this.renderMessageGroups()}
+        <ReactCSSTransitionGroup transitionName="list-animation" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+          {this.renderMessageGroups()}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }

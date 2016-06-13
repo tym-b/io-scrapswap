@@ -41,6 +41,7 @@ class LayoutComponents extends Component {
   }
 
   handleLocationChange(location = '/') {
+    this.props.dispatch(toggleMenu(false));
     this.props.dispatch(push(location));
   }
 
