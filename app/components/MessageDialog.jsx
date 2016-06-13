@@ -108,7 +108,6 @@ class MessageDialog extends Component {
 }
 
 MessageDialog.propTypes = {
-  recipient: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired
 };
 

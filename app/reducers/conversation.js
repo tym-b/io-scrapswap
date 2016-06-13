@@ -45,7 +45,7 @@ export default function conversation(state = initialState, action) {
                   .updateIn(['conversations'], conversations => {
                     return conversations.update(conversations.findIndex(conversation => conversation.get('_id') === state.get('selectedConversation').get('_id')), conversation => {
                       return conversation.set('lastMessage', Immutable.fromJS(action.req.data));
-                    });
+                    }).sort((c1, c2) => new Date(c1.get('lastMessage').get('date')) > new Date(c2.get('lastMessage').get('date')) ? -1 : 1);
                   });
 
     default:
