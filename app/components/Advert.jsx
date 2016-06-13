@@ -12,7 +12,7 @@ import ArrowRightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 import { green500 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 
-const initialAdvertHeight = 48;
+const initialAdvertHeight = 72;
 
 const styles = {
   container: {
@@ -23,7 +23,7 @@ const styles = {
   contentBox: {
     container: {
       position: 'relative',
-      padding: '25px 25px 30px 15px',
+      padding: '15px 15px 5px 15px',
       fontSize: '18px',
       color: '#333',
       fontWeight: '400',
@@ -37,7 +37,7 @@ const styles = {
 
     containerExpanded: {
       position: 'relative',
-      padding: '25px 25px 30px 15px',
+      padding: '15px 15px 5px 15px',
       fontSize: '18px',
       color: '#333',
       fontWeight: '400',
@@ -95,8 +95,7 @@ const styles = {
       alignItems: 'center',
       position: 'relative',
       justifyContent: 'space-between',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
-      cursor: 'pointer'
+      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
     },
 
     titleBox: {
@@ -180,6 +179,12 @@ class Advert extends Component {
     this.handleEdit = this.handleEdit.bind(this);
     this.handleExpand = this.handleExpand.bind(this);
     this.handleSendMessage = this.handleSendMessage.bind(this);
+    this.mounted = false;
+  }
+
+  componentDidMount() {
+    this.mounted = true;
+    this.forceUpdate();
   }
 
   handleDelete(e) {
@@ -193,11 +198,15 @@ class Advert extends Component {
   }
 
   handleExpand() {
-    this.refs.advertBody && this.refs.advertBody.clientHeight > initialAdvertHeight && this.props.onExpand(this.props.data);
+    this.isExpandable() && this.props.onExpand(this.props.data);
   }
 
   handleSendMessage() {
     this.props.onSendMessage(this.props.data);
+  }
+
+  isExpandable() {
+    return this.mounted && this.refs.advertBody && this.refs.advertBody.clientHeight > initialAdvertHeight;
   }
 
   renderEditBox() {
@@ -236,7 +245,7 @@ class Advert extends Component {
 
     return (
       <div style={ styles.mainBox } className="advert">
-        <div style={ styles.headerBox.container } onTouchTap={this.handleExpand}>
+        <div style={ this.isExpandable() ? Object.assign({cursor: 'pointer'}, styles.headerBox.container) : styles.headerBox.container} onTouchTap={this.handleExpand}>
           <div style={ styles.headerBox.titleBox }>
             <div>
               <ArrowRightIcon style={ styles.headerBox.categoryIcon } color={styles.headerBox.categoryIcon.color} />
@@ -255,11 +264,11 @@ class Advert extends Component {
         </div>
         <div style={ advert.expanded ? styles.contentBox.containerExpanded : styles.contentBox.container }>
           <div ref="advertBody">{ getMarked(advert.body, this.props.mark) }</div>
-          <div style={ (advert.expanded || (this.refs.advertBody && this.refs.advertBody.clientHeight <= initialAdvertHeight)) ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
+          <div style={ (advert.expanded || !this.isExpandable()) ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
         </div>
         <div style={styles.contentBox.actionsContainer}>
           <FlatButton
-              style={(this.refs.advertBody && this.refs.advertBody.clientHeight > initialAdvertHeight) ? {} : styles.hidden}
+              style={this.isExpandable() ? {} : styles.hidden}
               label={advert.expanded ? 'Zwiń' : 'Czytaj dalej'}
               secondary={true}
               onTouchTap={this.handleExpand} />
