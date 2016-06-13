@@ -19,12 +19,65 @@ const styles = {
 
   contentBox: {
     container: {
-      padding: '25px 25px 60px 15px',
+      position: 'relative',
+      padding: '25px 25px 30px 15px',
+      marginBottom: '30px',
       fontSize: '18px',
       color: '#333',
       fontWeight: '400',
       lineHeight: '24px',
-      whiteSpace: 'pre-wrap'
+      whiteSpace: 'pre-wrap',
+      overflow: 'hidden',
+      maxHeight: '120px',
+      transition: 'max-height 0.3s ease-in-out'
+    },
+
+    containerExpanded: {
+      position: 'relative',
+      padding: '25px 25px 30px 15px',
+      marginBottom: '30px',
+      fontSize: '18px',
+      color: '#333',
+      fontWeight: '400',
+      lineHeight: '24px',
+      whiteSpace: 'pre-wrap',
+      overflow: 'hidden',
+      maxHeight: '500px',
+      transition: 'max-height 0.3s ease-in-out'
+    },
+
+    shadowContainer: {
+      position: 'absolute',
+      pointerEvents: 'none',
+      top: '0px',
+      left: '0px',
+      width: '100%',
+      height: '100%',
+      boxShadow: 'inset 0px -20px 20px 10px rgba(255,255,255,1)',
+      transition: 'box-shadow 0.3s ease-in-out'
+    },
+
+    shadowContainerHidden: {
+      position: 'absolute',
+      pointerEvents: 'none',
+      top: '0px',
+      left: '0px',
+      width: '100%',
+      height: '100%',
+      boxShadow: 'none',
+      transition: 'box-shadow 0.3s ease-in-out'
+    },
+
+    expandLink: {
+      color: green500,
+      fontSize: '16px',
+      textDecoration: 'underline',
+      cursor: 'pointer',
+      pointerEvents: 'all',
+      position: 'absolute',
+      right: '15px',
+      bottom: '0px',
+      display: 'inline-block'
     }
   },
 
@@ -39,7 +92,8 @@ const styles = {
       alignItems: 'center',
       position: 'relative',
       justifyContent: 'space-between',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)'
+      boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
+      cursor: 'pointer'
     },
 
     titleBox: {
@@ -117,14 +171,21 @@ class Advert extends Component {
     this.renderEditBox = this.renderEditBox.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleExpand = this.handleExpand.bind(this);
   }
 
-  handleDelete() {
+  handleDelete(e) {
+    e.stopPropagation();
     this.props.onDelete(this.props.data);
   }
 
-  handleEdit() {
+  handleEdit(e) {
+    e.stopPropagation();
     this.props.onEdit(this.props.data);
+  }
+
+  handleExpand() {
+    this.props.onExpand(this.props.data);
   }
 
   renderEditBox() {
@@ -163,7 +224,7 @@ class Advert extends Component {
 
     return (
       <div style={ styles.mainBox } className="advert">
-        <div style={ styles.headerBox.container }>
+        <div style={ styles.headerBox.container } onTouchTap={this.handleExpand}>
           <div style={ styles.headerBox.titleBox }>
             <div>
               <ArrowRightIcon style={ styles.headerBox.categoryIcon } color={styles.headerBox.categoryIcon.color} />
@@ -180,8 +241,13 @@ class Advert extends Component {
             { this.renderEditBox() }
           </div>
         </div>
-        <div style={ styles.contentBox.container }>
+        <div style={ advert.expanded ? styles.contentBox.containerExpanded : styles.contentBox.container }>
           { getMarked(advert.body, this.props.mark) }
+          <div style={ advert.expanded ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }>
+            <a onTouchTap={this.handleExpand} style={styles.contentBox.expandLink}>
+              { advert.expanded ? 'Zwiń' : 'Czytaj dalej' }
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -195,5 +261,6 @@ Advert.propTypes = {
   mark: PropTypes.string,
   editable: PropTypes.bool,
   onDelete: PropTypes.func,
-  onEdit: PropTypes.func
+  onEdit: PropTypes.func,
+  onExpand: PropTypes.func.isRequired
 };

@@ -15,7 +15,8 @@ import {
   EDIT_ADVERT_SUCCESS,
   TOGGLE_ADVERT_DIALOG,
   ADVERTS_SEARCH_QUERY,
-  CONFIRM_DELETE_ADVERT
+  CONFIRM_DELETE_ADVERT,
+  TOGGLE_ADVERT
 } from 'constants/index';
 
 const initialState = Immutable.fromJS({
@@ -32,7 +33,10 @@ export default function advert(state = initialState, action) {
       return state.set('pending', true);
       
     case GET_ADVERTS_SUCCESS:
-      return state.set('pending', false).set('adverts', Immutable.fromJS(action.req.data));
+      return state.set('pending', false).set('adverts', Immutable.fromJS(action.req.data.map(a => {
+        a.expanded = false;
+        return a;
+      })));
 
     case GET_ADVERTS_FAILURE:
       return state.set('pending', false);
@@ -78,6 +82,16 @@ export default function advert(state = initialState, action) {
 
     case CONFIRM_DELETE_ADVERT:
       return state.set('confirmDelete', action.data.advert);
+
+    case TOGGLE_ADVERT:
+      return state.updateIn(['adverts'], adverts => {
+        return adverts.map(advert => {
+          if (advert.get('_id') === action.data.advert._id) {
+            return advert.set('expanded', typeof action.data.open === 'undefined' ? !advert.get('expanded') : action.data.open);
+          }
+          return advert.set('expanded', false);
+        });
+      });
 
     default:
       return state;

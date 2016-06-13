@@ -16,7 +16,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import Advert from 'components/Advert';
 import AdvertDialog from 'components/AdvertDialog';
 
-import { fetchAdverts, toggleDialog, changeSearchQuery, confirmDelete, removeAdvert, toggleEditDialog } from 'actions/adverts';
+import { fetchAdverts, toggleDialog, changeSearchQuery, confirmDelete, removeAdvert, toggleEditDialog, toggleAdvert } from 'actions/adverts';
 import { fetchCategories } from 'actions/categories';
 
 const styles = {
@@ -68,6 +68,7 @@ class AdvertListContainer extends Component {
     this.cancelAdvertDelete = this.cancelAdvertDelete.bind(this);
     this.confirmAdvertDelete = this.confirmAdvertDelete.bind(this);
     this.handleOnAdvertEdit = this.handleOnAdvertEdit.bind(this);
+    this.handleOnAdvertExpand = this.handleOnAdvertExpand.bind(this);
   }
 
   addNewAdvert() {
@@ -92,6 +93,10 @@ class AdvertListContainer extends Component {
       body: advert.body
     }));
     this.props.dispatch(toggleDialog(true));
+  }
+
+  handleOnAdvertExpand(advert, open) {
+    this.props.dispatch(toggleAdvert(advert, open));
   }
 
   cancelAdvertDelete() {
@@ -125,7 +130,7 @@ class AdvertListContainer extends Component {
     }
 
     return advertsToShow.map((advert, key) => {
-      return (<Advert key={key} data={advert} mark={searchQuery} onDelete={this.handleOnAdvertDelete} onEdit={this.handleOnAdvertEdit} editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
+      return (<Advert key={key} data={advert} mark={searchQuery} onExpand={this.handleOnAdvertExpand} onDelete={this.handleOnAdvertDelete} onEdit={this.handleOnAdvertEdit} editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
     });
   }
 

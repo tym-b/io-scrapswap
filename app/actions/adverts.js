@@ -147,3 +147,13 @@ export function changeSearchQuery(value) {
     }
   };
 }
+
+export function toggleAdvert(advert, open) {
+  return {
+    type: types.TOGGLE_ADVERT,
+    data: {
+      open: open,
+      advert: advert
+    }
+  };
+}
