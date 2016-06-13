@@ -4,6 +4,7 @@ import layout from 'reducers/layout';
 import advert from 'reducers/advert';
 import routing from 'reducers/routing';
 import category from 'reducers/category';
+import conversation from 'reducers/conversation';
 import { reducer as form } from 'redux-form/immutable';
 
 const rootReducer = combineReducers({
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   advert,
   routing,
   form,
-  category
+  category,
+  conversation
 });
 
 export default rootReducer;

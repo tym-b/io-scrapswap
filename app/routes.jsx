@@ -3,7 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 
 import App from 'containers/App';
 import AdvertListContainer from 'containers/AdvertList';
-import MessageListContainer from 'containers/MessageList';
+import ConversationListContainer from 'containers/ConversationList';
 
 export default (store) => {
   const requireAuth = (nextState, replace, callback) => {
@@ -19,7 +19,7 @@ export default (store) => {
   return (
     <Route path="/" component={App}>
       <IndexRoute component={AdvertListContainer} />
-      <Route path="messages" component={MessageListContainer} onEnter={requireAuth} />
+      <Route path="messages" component={ConversationListContainer} onEnter={requireAuth} />
     </Route>
   );
 };
