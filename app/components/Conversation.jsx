@@ -141,9 +141,14 @@ class Conversation extends Component {
       });
   }
 
+  componentDidUpdate() {
+    const scroller = this.refs.scroller;
+    scroller.scrollTop = scroller.scrollHeight;
+  }
+
   render() {
     return (
-      <div style={styles.mainContainer}>
+      <div style={styles.mainContainer} ref="scroller">
         <ReactCSSTransitionGroup transitionName="list-animation" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
           {this.renderMessageGroups()}
         </ReactCSSTransitionGroup>
