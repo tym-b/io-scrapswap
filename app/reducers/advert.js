@@ -16,7 +16,8 @@ import {
   TOGGLE_ADVERT_DIALOG,
   ADVERTS_SEARCH_QUERY,
   CONFIRM_DELETE_ADVERT,
-  TOGGLE_ADVERT
+  TOGGLE_ADVERT,
+  TOGGLE_ADVERT_MESSAGE_DIALOG
 } from 'constants/index';
 
 const initialState = Immutable.fromJS({
@@ -24,6 +25,7 @@ const initialState = Immutable.fromJS({
   adverts: [],
   confirmDelete: null,
   dialogOpen: false,
+  messageDialogOpen: false,
   searchQuery: ''
 });
 
@@ -76,6 +78,9 @@ export default function advert(state = initialState, action) {
 
     case TOGGLE_ADVERT_DIALOG:
       return state.set('dialogOpen', typeof action.data.open === 'undefined' ? !state.get('dialogOpen') : action.data.open);
+
+    case TOGGLE_ADVERT_MESSAGE_DIALOG:
+      return state.set('messageDialogOpen', typeof action.data.open === 'undefined' ? !state.get('messageDialogOpen') : action.data.open);
 
     case ADVERTS_SEARCH_QUERY:
       return state.set('searchQuery', action.data.value);

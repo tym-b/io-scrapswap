@@ -157,3 +157,12 @@ export function toggleAdvert(advert, open) {
     }
   };
 }
+
+export function toggleMessageDialog(open) {
+  return {
+    type: types.TOGGLE_ADVERT_MESSAGE_DIALOG,
+    data: {
+      open: open
+    }
+  };
+}

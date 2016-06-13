@@ -11,7 +11,9 @@ describe('Advert reducer', () => {
     let expectedDefaultState = {
       pending: false,
       adverts: [],
+      confirmDelete: null,
       dialogOpen: false,
+      messageDialogOpen: false,
       searchQuery: ''
     };
 

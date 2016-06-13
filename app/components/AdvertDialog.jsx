@@ -139,7 +139,6 @@ class AdvertDialog extends Component {
       <Dialog
         title={editing ? 'Edytuj ogłoszenie' : 'Nowe ogłoszenie'}
         modal={true}
-        autoDetectWindowHeight={false}
         autoScrollBodyContent={true}
         actions={actions}
         open={this.props.open}

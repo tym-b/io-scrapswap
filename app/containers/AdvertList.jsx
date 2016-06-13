@@ -15,8 +15,17 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import Advert from 'components/Advert';
 import AdvertDialog from 'components/AdvertDialog';
+import MessageDialog from 'components/MessageDialog';
 
-import { fetchAdverts, toggleDialog, changeSearchQuery, confirmDelete, removeAdvert, toggleEditDialog, toggleAdvert } from 'actions/adverts';
+import {
+  fetchAdverts,
+  toggleDialog,
+  changeSearchQuery,
+  confirmDelete,
+  removeAdvert,
+  toggleEditDialog,
+  toggleAdvert,
+  toggleMessageDialog } from 'actions/adverts';
 import { fetchCategories } from 'actions/categories';
 
 const styles = {
@@ -70,6 +79,7 @@ class AdvertListContainer extends Component {
     this.handleOnAdvertEdit = this.handleOnAdvertEdit.bind(this);
     this.handleOnAdvertExpand = this.handleOnAdvertExpand.bind(this);
     this.handleOnSendMessage = this.handleOnSendMessage.bind(this);
+    this.handleOnMessageDialogClose = this.handleOnMessageDialogClose.bind(this);
   }
 
   addNewAdvert() {
@@ -86,7 +96,16 @@ class AdvertListContainer extends Component {
   }
 
   handleOnSendMessage(advert) {
-    
+    this.props.dispatch(initialize('message', {
+      recipient: advert.user._id,
+      recipientName: advert.user.profile.name,
+      text: 'Witam!\n\nCzy możemy skontaktować się w związku z ogłoszeniem "' + advert.title + '"?\n\nPozdrawiam,\n' + this.props.user.profile.name
+    }));
+    this.props.dispatch(toggleMessageDialog(true));
+  }
+
+  handleOnMessageDialogClose() {
+    this.props.dispatch(toggleMessageDialog(false));
   }
 
   handleOnAdvertEdit(advert) {
@@ -135,10 +154,19 @@ class AdvertListContainer extends Component {
     }
 
     return advertsToShow.map((advert, key) => {
-      return (<Advert key={key} data={advert} mark={searchQuery} onSendMessage={this.handleOnSendMessage} onExpand={this.handleOnAdvertExpand} onDelete={this.handleOnAdvertDelete} onEdit={this.handleOnAdvertEdit} editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
+      return (
+        <Advert
+          key={key}
+          data={advert}
+          mark={searchQuery}
+          onSendMessage={this.handleOnSendMessage}
+          onMessageDialogClose={this.handleOnMessageDialogClose}
+          onExpand={this.handleOnAdvertExpand}
+          onDelete={this.handleOnAdvertDelete}
+          onEdit={this.handleOnAdvertEdit}
+          editable={this.props.user.authenticated && advert.user._id === this.props.user._id} />);
     });
   }
-
 
   render() {
     const actions = [
@@ -153,8 +181,6 @@ class AdvertListContainer extends Component {
         disabled={this.props.advert.pending}
         onTouchTap={this.confirmAdvertDelete} />,
     ];
-
-
 
     return (
       <div>
@@ -188,6 +214,9 @@ class AdvertListContainer extends Component {
             open={ this.props.advert.dialogOpen }
             pending={ this.props.advert.pending }
             categories={ this.props.category.categories } />
+          <MessageDialog
+            onClose={ this.handleOnMessageDialogClose }
+            open={ this.props.advert.messageDialogOpen } />
         </div>
         <LinearProgress mode="indeterminate" style={this.props.advert.pending ? {} : styles.hide} />
       </div>
