@@ -52,8 +52,7 @@ class MessageDialog extends Component {
   submitMessage(values) {
     this.props.dispatch(sendMessage({
       recipient: values.get('recipient'),
-      text: values.get('text'),
-      sender: '575e9f7b316680b450222c82'
+      text: values.get('text')
     })).then(response => {
       if (response) {
         this.props.dispatch(setSnackbarInfo('Wiadomość wysłana'));

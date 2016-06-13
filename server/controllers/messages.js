@@ -5,11 +5,14 @@ var Conversation = mongoose.model('Conversation');
 var messagingSystem = require('../services/messagingSystem.js');
 
 exports.send = function(req, res) {
+    const reqBody = Object.assign(req.body, {sender: req.user._id});
+    
     if (req.user) {
-        messagingSystem.createMessage(req.body, successMessage, errorMessage);
+        messagingSystem.createMessage(reqBody, successMessage, errorMessage);
 
         function successMessage(message) {
-            messagingSystem.getOrCreateConversation(req.body, successConv, errorConv);
+            console.log(req.user._id);
+            messagingSystem.getOrCreateConversation(reqBody, successConv, errorConv);
 
             function successConv(conversation) {
                 conversation.messages.push(message._id);
