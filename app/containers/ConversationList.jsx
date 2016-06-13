@@ -20,6 +20,14 @@ import Conversation from 'components/Conversation';
 import { conversationsInitialFetch, selectConversation } from 'actions/conversations';
 
 const styles = {
+  noConversationsContainer: {
+    padding: '30px 0px',
+    textAlign: 'center',
+    width: 'calc(100% - 60px)',
+    maxWidth: '800px',
+    margin: '0px auto'
+  },
+
   mainContainer: {
     width: 'calc(100% - 60px)',
     maxWidth: '1200px',
@@ -130,7 +138,7 @@ class MessageListContainer extends Component {
   }
 
   renderSelectedConversation() {
-    const { selectedConversation } = this.props.conversation;
+    const { conversations, selectedConversation } = this.props.conversation;
 
     if (selectedConversation) {
       return (
@@ -140,6 +148,17 @@ class MessageListContainer extends Component {
   }
 
   render() {
+    const { conversations } = this.props.conversation;
+
+    if (conversations.length === 0) {
+      return (
+        <div style={styles.noConversationsContainer}>
+          Nie masz jeszcze żadnych konwersacji.
+          Aby rozpocząć konwersację, kliknij przycisk "wyślij wiadomość" wybranym pod ogłoszeniem.
+        </div>
+      );
+    }
+
     return (
       <div style={styles.mainContainer}>
         <div style={styles.navigationContainer} className="messages__navigation-container">

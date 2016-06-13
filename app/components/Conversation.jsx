@@ -8,105 +8,6 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 
-const mock = [
-  {
-    date: new Date(),
-    sender: {
-      _id: 'aaa',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'aaa',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'bbb',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  },
-  {
-    date: new Date(),
-    sender: {
-      _id: 'ccc',
-      name: 'Paweł Husak'
-    },
-    body: 'Lorem ipsum lorem ipsumLorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum Lorem ipsum lorem ipsum'
-  }
-];
-
 const styles = {
   mainContainer: {
     overflowY: 'auto',
@@ -152,8 +53,9 @@ const styles = {
     fontSize: '14px'
   },
 
-  noMargin: {
-    margin: '0px'
+  textParagraph: {
+    margin: '0px',
+    whiteSpace: 'pre-wrap'
   }
 };
 
@@ -167,20 +69,20 @@ class MessageGroup extends Component {
   renderMessages() {
     return this.props.messages.map((message, key) => {
       return (
-        <p key={key} style={styles.noMargin}>{message.body}</p>
+        <p key={key} style={styles.textParagraph}>{message.text}</p>
       );
     });
   }
 
   render() {
-    const letter = this.props.sender.name.split(/\s+/).map(i => i[0]).splice(0, 2).join('');
+    const letter = this.props.senderName.split(/\s+/).map(i => i[0]).splice(0, 2).join('');
     const dateLabel = moment(this.props.messages[0].date).fromNow();
 
     return (
       <div style={styles.messageGroupContainer}>
         <div style={styles.senderContainer}>
           <Avatar size={30}>{letter}</Avatar>
-          <div style={styles.senderNameContainer}>{this.props.sender.name}</div>
+          <div style={styles.senderNameContainer}>{this.props.senderName}</div>
           <div style={styles.spacerContainer}></div>
           <div style={styles.dateContainer}>{dateLabel}</div>
         </div>
@@ -200,22 +102,24 @@ class Conversation extends Component {
   }
 
   renderMessageGroups() {
-    return mock.reduce((prev, curr) => {
+    const { members, messages } = this.props.data;
+
+    return messages.reduce((prev, curr) => {
         if (prev) {
           const lastMessageGroup = _.last(prev);
           const lastMessage = _.last(lastMessageGroup.messages);
 
-          if (lastMessageGroup.sender._id === curr.sender._id && moment(lastMessage.date).diff(curr.date, 'minutes') < 2) {
+          if (lastMessageGroup.sender === curr.sender && moment(lastMessage.date).diff(curr.date, 'minutes') < 2) {
             lastMessageGroup.messages.push({
               date: curr.date,
-              body: curr.body
+              text: curr.text
             });
           } else {
             prev.push({
               sender: curr.sender,
               messages: [{
                 date: curr.date,
-                body: curr.body
+                text: curr.text
               }]
             });
           }
@@ -227,11 +131,14 @@ class Conversation extends Component {
           sender: curr.sender,
           messages: [{
             date: curr.date,
-            body: 'aaa'
+            text: curr.text
           }]
         }];
+
       }, false).map((group, key) => {
-        return (<MessageGroup key={key} sender={group.sender} messages={group.messages} />);
+        debugger;
+        const senderName = _.find(members, m => m._id === group.sender).profile.name;
+        return (<MessageGroup key={key} senderName={senderName} messages={group.messages} />);
       });
   }
 
@@ -246,5 +153,9 @@ class Conversation extends Component {
   }
 
 }
+
+Conversation.propTypes = {
+  data: PropTypes.object.isRequired
+};
 
 export default Conversation;
