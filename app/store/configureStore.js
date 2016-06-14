@@ -4,6 +4,7 @@ import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
 import promiseMiddleware from 'middlewares/promiseMiddleware';
+import { conversationMiddleware } from 'middlewares/conversationMiddleware';
 import createLogger from 'redux-logger';
 
 /*
@@ -13,7 +14,7 @@ import createLogger from 'redux-logger';
  *                          rendering.
  */
 export default function configureStore(initialState, history) {
-  let middleware = [ thunk, promiseMiddleware ];
+  let middleware = [ thunk, promiseMiddleware, conversationMiddleware];
   // Installs hooks that always keep react-router and redux
   // store in sync
   const reactRouterReduxMiddleware = routerMiddleware(history);

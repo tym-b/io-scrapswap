@@ -1,18 +1,15 @@
 import io from 'socket.io-client';
-import { LOGIN_SUCCESS } from 'constants/index';
+import { LOGIN_SUCCESS, REGISTER_SUCCESS } from 'constants/index';
 import { receiveMessage } from 'actions/conversations';
  
 var socket = null;
  
 export function conversationMiddleware(store) {
   return next => action => {
-    const result = next(action);
- 
-    if (socket && action.type === LOGIN_SUCCESS) {
-      socket.emit('init', action.req.data._id);
+    if (socket && action.type === LOGIN_SUCCESS && action.type === REGISTER_SUCCESS) {
+      socket.emit('init', action.data.user._id);
     }
- 
-    return result;
+    return next(action);
   };
 };
  
