@@ -3,11 +3,11 @@ var tools = require('lodash');
 var Message = mongoose.model('Message');
 var Conversation = mongoose.model('Conversation');
 var messagingSystem = require('../services/messagingSystem.js');
+var webSockets = require('../config/webSockets');
 
 exports.send = function(req, res) {
-    const reqBody = Object.assign(req.body, {sender: req.user._id});
-
     if (req.user) {
+        const reqBody = Object.assign(req.body, {sender: req.user._id});
         messagingSystem.createMessage(reqBody, successMessage, errorMessage);
 
         function successMessage(message) {
@@ -21,6 +21,7 @@ exports.send = function(req, res) {
 
                 conversation.save(function(err) {
                     if (!err) {
+                        webSockets.sendMessage(message);
                         res.send(message);
                     } else {
                         message.remove();

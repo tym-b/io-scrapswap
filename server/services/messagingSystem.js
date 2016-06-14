@@ -55,19 +55,18 @@ exports.createConversation = function(data, successCal, errorCal) {
 exports.createMessage = function(data, successCal, errorCal) {
     var messageBody = {
         text: data.text,
-        sender: mongoose.Types.ObjectId(data.sender)
+        sender: mongoose.Types.ObjectId(data.sender),
+        recipient: mongoose.Types.ObjectId(data.recipient)
     };
 
     Message.create(messageBody, function(err, newMessage) {
         if (!err) {
             if (newMessage) {
-                console.log("Wiadomosc stworzona");
                 successCal(newMessage);
             } else {
                 errorCal("Null new message");
             }
         } else {
-            console.log("Wiadomosc blad");
             errorCal(err);
         }
     });
