@@ -21,6 +21,7 @@ exports.send = function(req, res) {
 
                 conversation.save(function(err) {
                     if (!err) {
+                        messagingSystem.incrementNewMessagesCount(message.recipient);
                         webSockets.sendMessage(message);
                         res.send(message);
                     } else {
@@ -54,6 +55,7 @@ exports.all = function(req, res) {
         messagingSystem.getUserConversations(req.user, success, error);
 
         function success(user) {
+            messagingSystem.clearNewMessagesCount(req.user._id)
             res.send(user);
         }
 

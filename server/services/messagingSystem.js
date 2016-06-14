@@ -115,8 +115,6 @@ exports.getUserConversations = function(user, successCal, errorCal) {
     });
 }
 
-
-
 exports.getConversationById = function(conversationID, successCal, errorCal) {
     var query = {
         _id: conversationID
@@ -129,4 +127,12 @@ exports.getConversationById = function(conversationID, successCal, errorCal) {
             errorCal(err);
         }
     });
+}
+
+exports.incrementNewMessagesCount = function(userId) {
+    User.update({_id: userId}, { $inc: { newMessagesCount: 1 }}, function(err, succ){});
+}
+
+exports.clearNewMessagesCount = function(userId) {
+    User.update({_id: userId}, {newMessagesCount: 0}, function(err, succ){});
 }

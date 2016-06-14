@@ -24,6 +24,7 @@ var UserSchema = new mongoose.Schema({
     website: { type: String, default: ''},
     picture: { type: String, default: ''}
   },
+  newMessagesCount: { type: Number, default: 0},
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   google: {},
