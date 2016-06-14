@@ -25,8 +25,7 @@ axios.defaults.baseURL = `http://${clientConfig.host}:${clientConfig.port}`;
 
 function renderFullPage(renderedContent, initialState, head={
   title: 'ScrapSwap',
-  meta: '<meta name="viewport" content="width=device-width, initial-scale=1" />',
-  link: '<link rel="stylesheet" href="/assets/styles/main.css"/>'
+  meta: '<meta name="viewport" content="width=device-width, initial-scale=1" />'
 }) {
   return `
   <!doctype html>
@@ -34,7 +33,6 @@ function renderFullPage(renderedContent, initialState, head={
     <head>
       ${head.title}
       ${head.meta}
-      ${head.link}
       <style>
         * {
           box-sizing: border-box;
@@ -160,8 +158,7 @@ export default function render(req, res) {
         const initialState = store.getState();
         res.status(200).end(renderFullPage(componentHTML, initialState, {
           title: headconfig.title,
-          meta: headconfig.meta,
-          link: headconfig.link
+          meta: headconfig.meta
         }));
       })
       .catch(err => {
