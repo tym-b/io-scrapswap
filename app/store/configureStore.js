@@ -3,7 +3,7 @@ import { Iterable } from 'immutable';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import rootReducer from 'reducers';
-import promiseMiddleware from 'api/promiseMiddleware';
+import promiseMiddleware from 'middlewares/promiseMiddleware';
 import createLogger from 'redux-logger';
 
 /*
