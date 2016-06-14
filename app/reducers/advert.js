@@ -22,6 +22,7 @@ import {
 
 const initialState = Immutable.fromJS({
   pending: false,
+  initialLoad: false,
   adverts: [],
   confirmDelete: null,
   dialogOpen: false,
@@ -32,16 +33,16 @@ const initialState = Immutable.fromJS({
 export default function advert(state = initialState, action) {
   switch (action.type) {
     case GET_ADVERTS_REQUEST:
-      return state.set('pending', true);
+      return state.set('initialLoad', true);
       
     case GET_ADVERTS_SUCCESS:
-      return state.set('pending', false).set('adverts', Immutable.fromJS(action.req.data.map(a => {
+      return state.set('initialLoad', false).set('adverts', Immutable.fromJS(action.req.data.map(a => {
         a.expanded = false;
         return a;
       })));
 
     case GET_ADVERTS_FAILURE:
-      return state.set('pending', false);
+      return state.set('initialLoad', false);
 
     case ADD_ADVERT_REQUEST:
       return state.set('pending', true);

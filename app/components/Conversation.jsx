@@ -104,38 +104,35 @@ class Conversation extends Component {
   renderMessageGroups() {
     const { members, messages } = this.props.data;
 
+    const initMessagesCollection = [{
+      sender: messages[0].sender,
+      messages: [{
+        date: messages[0].date,
+        text: messages[0].text
+      }]
+    }];
+
     return messages.reduce((prev, curr) => {
-        if (prev) {
-          const lastMessageGroup = _.last(prev);
-          const lastMessage = _.last(lastMessageGroup.messages);
+        const lastMessageGroup = _.last(prev);
+        const lastMessage = _.last(lastMessageGroup.messages);
 
-          if (lastMessageGroup.sender === curr.sender && moment(curr.date).diff(lastMessage.date, 'minutes') < 2) {
-            lastMessageGroup.messages.push({
-              date: curr.date,
-              text: curr.text
-            });
-          } else {
-            prev.push({
-              sender: curr.sender,
-              messages: [{
-                date: curr.date,
-                text: curr.text
-              }]
-            });
-          }
-
-          return prev;
-        }
-
-        return [{
-          sender: curr.sender,
-          messages: [{
+        if (lastMessageGroup.sender === curr.sender && moment(curr.date).diff(lastMessage.date, 'minutes') < 2) {
+          lastMessageGroup.messages.push({
             date: curr.date,
             text: curr.text
-          }]
-        }];
+          });
+        } else {
+          prev.push({
+            sender: curr.sender,
+            messages: [{
+              date: curr.date,
+              text: curr.text
+            }]
+          });
+        }
 
-      }, false).map((group, key) => {
+        return prev;
+      }, initMessagesCollection).map((group, key) => {
         const senderName = _.find(members, m => m._id === group.sender).profile.name;
         return (<MessageGroup key={key} senderName={senderName} messages={group.messages} />);
       });

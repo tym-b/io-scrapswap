@@ -136,7 +136,7 @@ class MessageListContainer extends Component {
 
     if (pending) {
       return (
-        <CircularProgress size={0.75} />
+        <CircularProgress style={styles.conversationProgress} size={0.75} />
       );
     }
 

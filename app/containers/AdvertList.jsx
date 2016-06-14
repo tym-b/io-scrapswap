@@ -159,6 +159,7 @@ class AdvertListContainer extends Component {
           key={key}
           data={advert}
           mark={searchQuery}
+          authenticated={this.props.user.authenticated}
           onSendMessage={this.handleOnSendMessage}
           onMessageDialogClose={this.handleOnMessageDialogClose}
           onExpand={this.handleOnAdvertExpand}
@@ -184,7 +185,7 @@ class AdvertListContainer extends Component {
 
     return (
       <div>
-        <div style={ this.props.advert.pending ? styles.hide : styles.container }>
+        <div style={ this.props.advert.initialLoad ? styles.hide : styles.container }>
           <Dialog
             title="Usuń ogłoszenie"
             actions={actions}
@@ -218,7 +219,7 @@ class AdvertListContainer extends Component {
             onClose={ this.handleOnMessageDialogClose }
             open={ this.props.advert.messageDialogOpen } />
         </div>
-        <LinearProgress mode="indeterminate" style={this.props.advert.pending ? {} : styles.hide} />
+        <LinearProgress mode="indeterminate" style={this.props.advert.pending || this.props.advert.initialLoad ? {} : styles.hide} />
       </div>
     );
   }

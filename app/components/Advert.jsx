@@ -35,19 +35,6 @@ const styles = {
       transition: 'max-height 0.3s ease-in-out'
     },
 
-    containerExpanded: {
-      position: 'relative',
-      padding: '15px 15px 5px 15px',
-      fontSize: '18px',
-      color: '#333',
-      fontWeight: '400',
-      lineHeight: '24px',
-      whiteSpace: 'pre-wrap',
-      overflow: 'hidden',
-      maxHeight: '500px',
-      transition: 'max-height 0.3s ease-in-out'
-    },
-
     shadowContainer: {
       position: 'absolute',
       pointerEvents: 'none',
@@ -175,6 +162,7 @@ class Advert extends Component {
   constructor(props) {
     super(props);
     this.renderEditBox = this.renderEditBox.bind(this);
+    this.renderSendMessageButton = this.renderSendMessageButton.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleExpand = this.handleExpand.bind(this);
@@ -225,6 +213,19 @@ class Advert extends Component {
     return (<div style={ styles.editBox }></div>);
   }
 
+  renderSendMessageButton() {
+    if (this.props.authenticated) {
+      return (
+        <FlatButton
+          label="Wyślij wiadomość"
+          primary={true}
+          onTouchTap={this.handleSendMessage} />
+      );
+    } else {
+      return (<div></div>);
+    }
+  }
+
   render() {
     const { data: advert } = this.props;
 
@@ -262,7 +263,7 @@ class Advert extends Component {
             { this.renderEditBox() }
           </div>
         </div>
-        <div style={ advert.expanded ? styles.contentBox.containerExpanded : styles.contentBox.container }>
+        <div style={ advert.expanded && this.refs.advertBody ? Object.assign(styles.contentBox.container, {maxHeight: this.refs.advertBody.clientHeight + 'px'}) : Object.assign(styles.contentBox.container, {maxHeight: initialAdvertHeight + 'px'}) }>
           <div ref="advertBody">{ getMarked(advert.body, this.props.mark) }</div>
           <div style={ (advert.expanded || !this.isExpandable()) ? styles.contentBox.shadowContainerHidden : styles.contentBox.shadowContainer }></div>
         </div>
@@ -272,7 +273,7 @@ class Advert extends Component {
               label={advert.expanded ? 'Zwiń' : 'Czytaj dalej'}
               secondary={true}
               onTouchTap={this.handleExpand} />
-          <FlatButton label="Wyślij wiadomość" primary={true} onTouchTap={this.handleSendMessage} />
+          {this.renderSendMessageButton()}
         </div>
       </div>
     );
@@ -285,6 +286,7 @@ Advert.propTypes = {
   data: PropTypes.object.isRequired,
   mark: PropTypes.string,
   editable: PropTypes.bool,
+  authenticated: PropTypes.bool,
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
   onSendMessage: PropTypes.func.isRequired,
