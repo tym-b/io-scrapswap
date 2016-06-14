@@ -121,7 +121,6 @@ class MessageListContainer extends Component {
           <ListItem
             onTouchTap={this.handleSelectConversation.bind(this, conversation._id)}
             leftAvatar={<Avatar backgroundColor={green400}>{letter}</Avatar>}
-            rightIcon={conversation.hasUnreadMessages ? <MessageIcon /> : <span></span>}
             primaryText={partner.profile.name}
             secondaryText={conversation.lastMessage.text}
             secondaryTextLines={1}
