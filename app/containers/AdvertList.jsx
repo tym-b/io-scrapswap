@@ -159,7 +159,7 @@ class AdvertListContainer extends Component {
           key={key}
           data={advert}
           mark={searchQuery}
-          authenticated={this.props.user.authenticated}
+          renderSendMessageButton={this.props.user.authenticated && this.props.user._id !== advert.user._id}
           onSendMessage={this.handleOnSendMessage}
           onMessageDialogClose={this.handleOnMessageDialogClose}
           onExpand={this.handleOnAdvertExpand}

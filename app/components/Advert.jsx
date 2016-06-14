@@ -214,7 +214,7 @@ class Advert extends Component {
   }
 
   renderSendMessageButton() {
-    if (this.props.authenticated) {
+    if (this.props.renderSendMessageButton) {
       return (
         <FlatButton
           label="Wyślij wiadomość"
@@ -290,5 +290,6 @@ Advert.propTypes = {
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
   onSendMessage: PropTypes.func.isRequired,
-  onExpand: PropTypes.func.isRequired
+  onExpand: PropTypes.func.isRequired,
+  renderSendMessageButton: PropTypes.bool
 };
