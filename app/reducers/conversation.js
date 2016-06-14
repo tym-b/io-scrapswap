@@ -7,7 +7,8 @@ import {
   SELECT_CONVERSATION_REQUEST,
   SELECT_CONVERSATION_SUCCESS,
   SELECT_CONVERSATION_FAILURE,
-  MESSAGE_SEND_SUCCESS
+  MESSAGE_SEND_SUCCESS,
+  MESSAGE_RECEIVE
 } from 'constants/index';
 
 const initialState = Immutable.fromJS({
@@ -41,13 +42,43 @@ export default function conversation(state = initialState, action) {
                   .set('selectedConversation', Immutable.fromJS(action.req.data));
 
     case MESSAGE_SEND_SUCCESS:
-      if (state.get('selectedConversation')) { 
-        return state.updateIn(['selectedConversation', 'messages'], messages => messages.push(Immutable.fromJS(action.req.data)))
-                    .updateIn(['conversations'], conversations => {
-                      return conversations.update(conversations.findIndex(conversation => conversation.get('_id') === state.get('selectedConversation').get('_id')), conversation => {
-                        return conversation.set('lastMessage', Immutable.fromJS(action.req.data));
-                      }).sort((c1, c2) => new Date(c1.get('lastMessage').get('date')) > new Date(c2.get('lastMessage').get('date')) ? -1 : 1);
+      if (state.get('selectedConversation')) {
+        const message = Immutable.fromJS(action.req.data);
+        return state.updateIn(['selectedConversation', 'messages'], messages => messages.push(message))
+                    .update('conversations', conversations => {
+                      return conversations.update(
+                        conversations.findIndex(conversation => conversation.get('_id') === state.get('selectedConversation').get('_id')),
+                        conversation => {
+                          return conversation.set('lastMessage', message)
+                                             .set('lastModificationDate', message.get('date'));
+                        }).sort((c1, c2) => new Date(c1.get('lastModificationDate')) > new Date(c2.get('lastModificationDate')) ? -1 : 1);
                     });
+      }
+      return state;
+
+    case MESSAGE_RECEIVE:
+      if (state.get('selectedConversation')) {
+        const message = Immutable.fromJS(action.data.message);
+
+        return state.update('conversations', conversations => {
+          return conversations.map(conversation => {
+            if (conversation.get('members').find(m => m.get('_id') === message.get('sender'))) {
+              if (state.get('selectedConversation').get('_id') !== conversation.get('_id')) {
+                return conversation.set('hasUnreadMessages', true)
+                                   .set('lastMessage', message)
+                                   .set('lastModificationDate', message.get('date'));
+              }
+              return conversation.set('lastMessage', message)
+                                 .set('lastModificationDate', message.get('date'));
+            }
+            return conversation;
+          }).sort((c1, c2) => new Date(c1.get('lastModificationDate')) > new Date(c2.get('lastModificationDate')) ? -1 : 1);
+        }).update('selectedConversation', selectedConversation => {
+          if (selectedConversation.get('members').find(m => m.get('_id') === message.get('sender'))) {
+            return selectedConversation.update('messages', messages => messages.push(message));
+          }
+          return selectedConversation;
+        });
       }
       return state;
 

@@ -20,6 +20,15 @@ export function sendMessage(message) {
   };
 };
 
+export function receiveMessage(message) {
+  return {
+    type: types.MESSAGE_RECEIVE,
+    data: {
+      message: message
+    }
+  };
+}
+
 function conversationsInitialFetchRequest() {
   return {
     type: types.GET_CONVERSATIONS_REQUEST

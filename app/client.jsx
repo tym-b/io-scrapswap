@@ -7,11 +7,10 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import createRoutes from 'routes.jsx';
 import configureStore from 'store/configureStore';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
 import scrapswapMuiThemeProvider from './scrapswapMuiThemeProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
 import {fetchComponentDataBeforeRender} from 'api/fetchComponentDataBeforeRender';
+import startConversations from 'middlewares/conversationMiddleware';
 
 import moment from 'moment';
 moment.locale('pl');
@@ -41,6 +40,7 @@ const history = syncHistoryWithStore(browserHistory, store, {
 const routes = createRoutes(store);
 
 injectTapEventPlugin();
+startConversations(store);
 
 function onUpdate() {
   if (window.__INITIAL_STATE__ !== null) {
