@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { sendMessage } from 'actions/conversations';
 import { setSnackbarInfo } from 'actions/layout';
 
-import { reduxForm, Field } from 'redux-form/immutable';
+import { reduxForm, Field, formValueSelector } from 'redux-form/immutable';
 
 const styles = {
   formContainer: {
@@ -39,14 +39,16 @@ class ConversationMessageInput extends Component {
   }
 
   handleSendMessage(values) {
-    this.props.dispatch(sendMessage({
-      recipient: this.props.recipient._id,
-      text: values.get('text')
-    })).then(() => {
-      this.props.reset();
-    }, () => {
-      this.props.dispatch(setSnackbarInfo('Wystąpił problem z wysyłaniem wiadomości'));
-    });
+    if (this.props.text) {
+      this.props.dispatch(sendMessage({
+        recipient: this.props.recipient._id,
+        text: values.get('text')
+      })).then(() => {
+        this.props.reset();
+      }, () => {
+        this.props.dispatch(setSnackbarInfo('Wystąpił problem z wysyłaniem wiadomości'));
+      });
+    }
   }
 
   render() {
@@ -67,9 +69,9 @@ class ConversationMessageInput extends Component {
             } />
         </div>
         <div style={styles.submitContainer}>
-          <RaisedButton label="Wyślij" primary={true} onTouchTap={handleSubmit(this.handleSendMessage)} />
+          <RaisedButton label="Wyślij" primary={true} disabled={!this.props.text} onTouchTap={handleSubmit(this.handleSendMessage)} />
         </div>
-        <input disabled={this.props.pending} type="submit" style={styles.submitButton} />
+        <input disabled={this.props.pending || !this.props.text} type="submit" style={styles.submitButton} />
       </form>
     );
   }
@@ -83,4 +85,10 @@ const formData = {
   form: 'conversation-message'
 };
 
-export default reduxForm(formData)(ConversationMessageInput);
+const formSelector = formValueSelector(formData.form);
+
+export default connect(state => {
+  return {
+    text: formSelector(state, 'text')
+  };
+})(reduxForm(formData)(ConversationMessageInput));
