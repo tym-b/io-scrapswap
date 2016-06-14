@@ -55,19 +55,18 @@ exports.createConversation = function(data, successCal, errorCal) {
 exports.createMessage = function(data, successCal, errorCal) {
     var messageBody = {
         text: data.text,
-        sender: mongoose.Types.ObjectId(data.sender)
+        sender: mongoose.Types.ObjectId(data.sender),
+        recipient: mongoose.Types.ObjectId(data.recipient)
     };
 
     Message.create(messageBody, function(err, newMessage) {
         if (!err) {
             if (newMessage) {
-                console.log("Wiadomosc stworzona");
                 successCal(newMessage);
             } else {
                 errorCal("Null new message");
             }
         } else {
-            console.log("Wiadomosc blad");
             errorCal(err);
         }
     });
@@ -116,8 +115,6 @@ exports.getUserConversations = function(user, successCal, errorCal) {
     });
 }
 
-
-
 exports.getConversationById = function(conversationID, successCal, errorCal) {
     var query = {
         _id: conversationID
@@ -130,4 +127,12 @@ exports.getConversationById = function(conversationID, successCal, errorCal) {
             errorCal(err);
         }
     });
+}
+
+exports.incrementNewMessagesCount = function(userId) {
+    User.update({_id: userId}, { $inc: { newMessagesCount: 1 }}, function(err, succ){});
+}
+
+exports.clearNewMessagesCount = function(userId) {
+    User.update({_id: userId}, {newMessagesCount: 0}, function(err, succ){});
 }

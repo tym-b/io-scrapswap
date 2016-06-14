@@ -5,6 +5,10 @@ var passport = require('passport');
 var secrets = require('./config/secrets');
 var webpack = require('webpack');
 var app = express();
+var server = require('http').Server(app);
+var webSockets = require('./config/webSockets');
+
+webSockets.runServer(server);
 
 app.use(function(req, res, next) {
   global.navigator = {
@@ -55,4 +59,4 @@ require('./config/express')(app, passport);
 // Bootstrap routes
 require('./config/routes')(app, passport);
 
-app.listen(app.get('port'));
+server.listen(app.get('port'));
