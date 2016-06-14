@@ -9,7 +9,8 @@ import {
   REGISTER_FAILURE,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
-  LOGOUT_FAILURE } from 'constants/index';
+  LOGOUT_FAILURE,
+  GET_CONVERSATIONS_SUCCESS } from 'constants/index';
 
 import { CHANGE as FORM_CHANGE } from 'redux-form/lib/actionTypes';
 
@@ -56,6 +57,9 @@ export default function user(state = initialState, action) {
     case LOGOUT_FAILURE:
       return state.set('pending', false)
         .set('authenticated', true);
+
+    case GET_CONVERSATIONS_SUCCESS:
+      return state.set('newMessagesCount', 0);
 
     default:
       return state;

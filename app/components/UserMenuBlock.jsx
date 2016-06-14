@@ -62,11 +62,9 @@ class UserMenuBlock extends Component {
   }
 
   render() {
-    let badgeStyle = {};
-    if (this.props.numMessages === 0) {
-      badgeStyle = {
-        display: 'none'
-      };
+    const badgeStyle = {};
+    if (this.props.user.newMessagesCount === 0) {
+      badgeStyle.display = 'none';
     }
 
     const letter = this.props.user.profile.name.split(/\s+/).map(i => i[0]).splice(0, 2).join('');
@@ -90,8 +88,8 @@ class UserMenuBlock extends Component {
         </IconMenu>
         <Badge
           primary={ true }
-          badgeContent={ this.props.numMessages }
-          badgeStyle={badgeStyle}
+          badgeContent={ this.props.user.newMessagesCount }
+          badgeStyle={ badgeStyle }
           className="badge">
           <Link to="messages">
             <IconButton tooltip="Wiadomości" tooltipPosition="bottom-left">
@@ -106,8 +104,7 @@ class UserMenuBlock extends Component {
 
 UserMenuBlock.propTypes = {
   user: PropTypes.object.isRequired,
-  onLogout: PropTypes.func.isRequired,
-  numMessages: PropTypes.number.isRequired
+  onLogout: PropTypes.func.isRequired
 };
 
 export default UserMenuBlock;

@@ -47,7 +47,7 @@ class AppHeader extends Component {
 
     if (this.props.user.authenticated) {
       return (
-        <UserMenuBlock user={ this.props.user } onLogout={ this.handleLogout } numMessages={0} />
+        <UserMenuBlock user={ this.props.user } onLogout={ this.handleLogout } />
       );
     }
 
