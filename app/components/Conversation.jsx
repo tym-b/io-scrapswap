@@ -112,11 +112,16 @@ class Conversation extends Component {
       }]
     }];
 
-    return messages.reduce((prev, curr) => {
+    let messageGroups;
+
+    if (messages.length === 1) {
+      messageGroups = initMessagesCollection;
+    } else {
+      messageGroups = messages.reduce((prev, curr) => {
         const lastMessageGroup = _.last(prev);
         const lastMessage = _.last(lastMessageGroup.messages);
 
-        if (lastMessageGroup.sender === curr.sender && moment(curr.date).diff(lastMessage.date, 'minutes') < 2) {
+        if (lastlastMessageGroup.sender === curr.sender && moment(curr.date).diff(lastMessage.date, 'minutes') < 2) {
           lastMessageGroup.messages.push({
             date: curr.date,
             text: curr.text
@@ -132,10 +137,13 @@ class Conversation extends Component {
         }
 
         return prev;
-      }, initMessagesCollection).map((group, key) => {
-        const senderName = _.find(members, m => m._id === group.sender).profile.name;
-        return (<MessageGroup key={key} senderName={senderName} messages={group.messages} />);
-      });
+      }, initMessagesCollection);
+    }
+
+    return messageGroups.map((group, key) => {
+      const senderName = _.find(members, m => m._id === group.sender).profile.name;
+      return (<MessageGroup key={key} senderName={senderName} messages={group.messages} />);
+    });
   }
 
   componentDidUpdate() {
