@@ -13,7 +13,7 @@ import {
 
 const initialState = Immutable.fromJS({
   pending: false,
-  initialLoad: false,
+  initialLoad: true,
   conversations: [],
   selectedConversation: null
 });
