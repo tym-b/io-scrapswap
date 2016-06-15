@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import expect from 'expect';
-import AppHeader from 'components/AppHeader';
+import AppHeader from 'containers/AppHeader';
 import UserMenuBlock from 'components/UserMenuBlock';
 import _ from 'lodash';
 

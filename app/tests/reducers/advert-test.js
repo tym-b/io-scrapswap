@@ -10,6 +10,7 @@ describe('Advert reducer', () => {
 
     let expectedDefaultState = {
       pending: false,
+      initialLoad: false,
       adverts: [],
       confirmDelete: null,
       dialogOpen: false,
