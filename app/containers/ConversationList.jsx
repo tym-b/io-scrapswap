@@ -159,7 +159,7 @@ class MessageListContainer extends Component {
   render() {
     const { conversations } = this.props.conversation;
 
-    if (conversations.length === 0) {
+    if (conversations.length === 0 && !this.props.conversation.initialLoad) {
       return (
         <div style={styles.noConversationsContainer}>
           Nie masz jeszcze żadnych konwersacji.
