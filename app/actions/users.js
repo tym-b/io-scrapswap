@@ -140,3 +140,9 @@ export function register(data) {
     promise: makeUserRequest('post', data, '/signup')
   };
 }
+
+export function incrementUnreadMessages() {
+  return {
+    type: types.INCREMENT_UNREAD_MESSAGES
+  };
+}

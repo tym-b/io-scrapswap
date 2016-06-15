@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import { LOGIN_SUCCESS, REGISTER_SUCCESS } from 'constants/index';
 import { receiveMessage } from 'actions/conversations';
+import { incrementUnreadMessages } from 'actions/users';
  
 var socket = null;
  
@@ -25,5 +26,8 @@ export default function (store) {
  
   socket.on('message', data => {
     store.dispatch(receiveMessage(data));
+    if (store.getState().get('routing').get('locationBeforeTransitions').get('pathname') !== 'messages') {
+      store.dispatch(incrementUnreadMessages());
+    }
   });
 };

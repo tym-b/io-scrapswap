@@ -10,7 +10,7 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
-  MESSAGE_RECEIVE,
+  INCREMENT_UNREAD_MESSAGES,
   GET_CONVERSATIONS_SUCCESS } from 'constants/index';
 
 import { CHANGE as FORM_CHANGE } from 'redux-form/lib/actionTypes';
@@ -62,7 +62,7 @@ export default function user(state = initialState, action) {
     case GET_CONVERSATIONS_SUCCESS:
       return state.set('newMessagesCount', 0);
 
-    case MESSAGE_RECEIVE:
+    case INCREMENT_UNREAD_MESSAGES:
       return state.update('newMessagesCount', c => c + 1);
 
     default:
