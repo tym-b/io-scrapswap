@@ -87,10 +87,6 @@ const styles = {
 
 class MessageListContainer extends Component {
 
-  static need = [
-    conversationsInitialFetch
-  ];
-
   constructor(props) {
     super(props);
     this.renderConversationsList = this.renderConversationsList.bind(this);
@@ -101,6 +97,10 @@ class MessageListContainer extends Component {
     if (id !== this.props.conversation.selectedConversation._id) {
       this.props.dispatch(selectConversation(id));
     }
+  }
+
+  componentDidMount() {
+    this.props.dispatch(conversationsInitialFetch());
   }
 
   renderConversationsList() {
@@ -132,8 +132,7 @@ class MessageListContainer extends Component {
   }
 
   renderSelectedConversation() {
-    const { conversations, selectedConversation, selectedConversation: { members }, pending } = this.props.conversation;
-    const recipient = _.find(members, m => m._id !== this.props.user._id) || _.first(members);
+    const { conversations, selectedConversation, pending } = this.props.conversation;
 
     if (pending) {
       return (
@@ -142,6 +141,8 @@ class MessageListContainer extends Component {
     }
 
     if (selectedConversation) {
+      const recipient = _.find(selectedConversation.members, m => m._id !== this.props.user._id) || _.first(selectedConversation.members);
+
       return (
         <div style={styles.conversationFrame}>
           <div style={styles.spacerContainer}></div>
